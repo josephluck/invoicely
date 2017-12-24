@@ -14,6 +14,7 @@ Create and send invoices.
 ## Premium features
 
 * Create account
+* Removal of invoicely branding
 * Save own templates
 * Duplicate existing invoices for quicker creation
 * Online payment collection platform
@@ -24,7 +25,7 @@ Create and send invoices.
 
 ## Technology
 
-* Elixir (pheonix)
+* Node (express)
 * Typescript (react + helix)
 
 ## External services
@@ -44,3 +45,8 @@ Create and send invoices.
 
 * Amazon AWS
 * Kubernetes
+
+## Design inspiration
+
+* https://github.com/hql287/Manta
+* https://dribbble.com/josephluck/buckets/621968-Invoicely
