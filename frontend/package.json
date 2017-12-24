@@ -3,14 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "crux-css": "^4.0.4",
     "helix-js": "^2.0.0",
     "prettier": "^1.9.2",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-scripts-ts": "2.8.0",
+    "space-lift": "^0.6.4",
     "tslint": "^5.8.0",
     "tslint-config-prettier": "^1.6.0",
-    "twine-log": "^1.0.0"
+    "twine-log": "^1.0.0",
+    "validate.js": "^0.12.0"
   },
   "scripts": {
     "start": "react-scripts-ts start",

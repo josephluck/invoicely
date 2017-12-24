@@ -173,6 +173,10 @@ argparse@^1.0.7:
   dependencies:
     sprintf-js "~1.0.2"
 
+argv@0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/argv/-/argv-0.0.2.tgz#ecbd16f8949b157183711b1bda334f37840185ab"
+
 arr-diff@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/arr-diff/-/arr-diff-2.0.0.tgz#8f3b827f955a8bd669697e4a4256ac3ceae356cf"
@@ -1118,6 +1122,13 @@ cross-spawn@5.1.0, cross-spawn@^5.0.1:
     shebang-command "^1.2.0"
     which "^1.2.9"
 
+crux-css@^4.0.4:
+  version "4.0.4"
+  resolved "https://registry.yarnpkg.com/crux-css/-/crux-css-4.0.4.tgz#60e1233a5f5dd72659fd55f9db52490dd2c5ba7a"
+  dependencies:
+    argv "0.0.2"
+    fs "0.0.1-security"
+
 cryptiles@2.x.x:
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/cryptiles/-/cryptiles-2.0.5.tgz#3bdfecdc608147c1c67202fa291e7dca59eaa3b8"
@@ -2039,6 +2050,10 @@ fs.realpath@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/fs.realpath/-/fs.realpath-1.0.0.tgz#1504ad2523158caa40db4a2787cb01411994ea4f"
 
+fs@0.0.1-security:
+  version "0.0.1-security"
+  resolved "https://registry.yarnpkg.com/fs/-/fs-0.0.1-security.tgz#8a7bd37186b6dddf3813f23858b57ecaaf5e41d4"
+
 fsevents@1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/fsevents/-/fsevents-1.1.2.tgz#3282b713fb3ad80ede0e9fcf4611b5aa6fc033f4"
@@ -2545,6 +2560,10 @@ icss-utils@^2.1.0:
 ieee754@^1.1.4:
   version "1.1.8"
   resolved "https://registry.yarnpkg.com/ieee754/-/ieee754-1.1.8.tgz#be33d40ac10ef1926701f6f08a2d86fbfd1ad3e4"
+
+immupdate@1.1.6:
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/immupdate/-/immupdate-1.1.6.tgz#34c622c21f86591f62c4b782ddc022be4406a521"
 
 imurmurhash@^0.1.4:
   version "0.1.4"
@@ -5378,6 +5397,12 @@ source-map@^0.6.1, source-map@~0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.6.1.tgz#74722af32e9614e9c287a8d0bbde48b5e2f1a263"
 
+space-lift@^0.6.4:
+  version "0.6.4"
+  resolved "https://registry.yarnpkg.com/space-lift/-/space-lift-0.6.4.tgz#a1bd9fdcafb70416f4f55fac7a6adb7d37e2d782"
+  dependencies:
+    immupdate "1.1.6"
+
 spdx-correct@~1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/spdx-correct/-/spdx-correct-1.0.2.tgz#4b3073d933ff51f3912f03ac5519498a4150db40"
@@ -6025,6 +6050,10 @@ validate-npm-package-license@^3.0.1:
   dependencies:
     spdx-correct "~1.0.0"
     spdx-expression-parse "~1.0.0"
+
+validate.js@^0.12.0:
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/validate.js/-/validate.js-0.12.0.tgz#17f989e37c192ea2f826bbf19bf4e97e6e4be68f"
 
 vary@~1.1.2:
   version "1.1.2"

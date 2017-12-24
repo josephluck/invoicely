@@ -4,6 +4,9 @@ import log from 'twine-log'
 import renderer from 'helix-js/lib/renderers/react'
 import model, { GlobalState, GlobalActions } from './models'
 import routes from './routes'
+import css from './css'
+
+css.inject()
 
 helix<GlobalState, GlobalActions>({
   model,
