@@ -32,7 +32,10 @@ export interface Effects<F extends any> {
   validateOnSubmit: Helix.Effect0<State<F>, Actions<F>, V<F>>
 }
 
-export type Actions<F extends any> = Helix.Actions<Reducers<F>, Effects<F>>
+export type Actions<F extends any> = Helix.Actions<
+  Reducers<F>,
+  Effects<F>
+>
 
 interface Opts<F> {
   constraints: FormConstraints<F>
@@ -75,7 +78,10 @@ export function model<F extends any>({
         return { fields, errors, valid }
       },
       validateEntireForm(state) {
-        const errors = validate(state.fields, constraints(state.fields))
+        const errors = validate(
+          state.fields,
+          constraints(state.fields),
+        )
         return {
           ...state,
           errors: errors || emptyErrors,
@@ -89,7 +95,10 @@ export function model<F extends any>({
             [key]: state.fields[key],
           }
         }, {})
-        const newErrors = getErrorsForFields(fieldsToValidate, constraints)
+        const newErrors = getErrorsForFields(
+          fieldsToValidate,
+          constraints,
+        )
         const errors = Object.assign({}, state.errors, newErrors)
         return {
           errors,
@@ -115,7 +124,9 @@ export function model<F extends any>({
   }
 }
 
-export function makeDefaultErrors<F>(constraints: Record<keyof F, any>): Errors<F> {
+export function makeDefaultErrors<F>(
+  constraints: Record<keyof F, any>,
+): Errors<F> {
   const errors = Object.keys(constraints).reduce((prev, curr) => {
     return {
       ...prev,
@@ -131,16 +142,24 @@ export function getErrorsForFields<F>(
 ): Record<keyof F, string[]> {
   const constraints = makeConstraints(fields) || {}
   const keys = Object.keys(fields) as (keyof F)[]
-  const initialErrors = keys.reduce((prev, key) => ({ ...prev, [key]: [] }), {})
+  const initialErrors = keys.reduce(
+    (prev, key) => ({ ...prev, [key]: [] }),
+    {},
+  )
 
   const filteredConstraints = keys.reduce((prev, key) => {
-    return constraints[key] ? { ...prev, [key]: constraints[key] } : prev
+    return constraints[key]
+      ? { ...prev, [key]: constraints[key] }
+      : prev
   }, {})
   const errors = validate(fields, filteredConstraints) || {}
   return { ...initialErrors, ...errors }
 }
 
-export function isFormValid<F>(fields: F, makeConstraints: Constraints<F>) {
+export function isFormValid<F>(
+  fields: F,
+  makeConstraints: Constraints<F>,
+) {
   const errors = getErrorsForFields(fields, makeConstraints)
   const keys = Object.keys(errors) as (keyof F)[]
   return keys.reduce((prev, key) => {

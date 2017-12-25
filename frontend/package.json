@@ -4,16 +4,19 @@
   "private": true,
   "dependencies": {
     "crux-css": "^4.0.4",
+    "date-fns": "^1.29.0",
     "helix-js": "^2.0.0",
     "prettier": "^1.9.2",
     "react": "^16.2.0",
+    "react-collapse": "^4.0.3",
     "react-dom": "^16.2.0",
+    "react-motion": "^0.5.2",
     "react-scripts-ts": "2.8.0",
     "space-lift": "^0.6.4",
     "tslint": "^5.8.0",
     "tslint-config-prettier": "^1.6.0",
     "twine-log": "^1.0.0",
-    "validate.js": "^0.12.0"
+    "validate.js": "^0.11.1"
   },
   "scripts": {
     "start": "react-scripts-ts start",
@@ -28,7 +31,7 @@
     "@types/react-dom": "^16.0.3"
   },
   "prettier": {
-    "printWidth": 100,
+    "printWidth": 70,
     "parser": "typescript",
     "semi": false,
     "tabWidth": 2,

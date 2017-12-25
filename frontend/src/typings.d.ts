@@ -100,3 +100,8 @@ declare function gr8(options?: gr8.Options): gr8.Css
 declare module 'gr8' {
   export = gr8
 }
+
+declare module 'react-collapse' {
+  const value: any
+  export = value
+}

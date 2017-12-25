@@ -1,8 +1,11 @@
 import { Helix } from 'helix-js'
+import * as dates from 'date-fns'
 import * as Form from './form'
 
 interface Fields {
-  number: number
+  number: string
+  dateCreated: string
+  dateDue: string
 }
 
 interface LocalState {}
@@ -25,12 +28,21 @@ export const model: Helix.Model<LocalState, Reducers, Effects> = {
   state: {},
   reducers: {},
   models: {
-    form: Form.model({
-      constraints: fields => ({
-        number: { presence: true },
-      }),
+    form: Form.model<Fields>({
+      constraints: fields => {
+        return {
+          number: { presence: true },
+          dateCreated: { presence: true },
+          dateDue: { presence: true },
+        }
+      },
       defaultForm: () => ({
-        number: 0,
+        number: '',
+        dateCreated: dates.format(new Date(), 'YYYY-MM-DD'),
+        dateDue: dates.format(
+          dates.addMonths(new Date(), 1),
+          'YYYY-MM-DD',
+        ),
       }),
       onValidationError: () => null,
     }),

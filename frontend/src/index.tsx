@@ -5,6 +5,7 @@ import renderer from 'helix-js/lib/renderers/react'
 import model, { GlobalState, GlobalActions } from './models'
 import routes from './routes'
 import css from './css'
+require('./css.css')
 
 css.inject()
 
@@ -15,4 +16,4 @@ helix<GlobalState, GlobalActions>({
   plugins: [log],
 })
 
-registerServiceWorker();
+registerServiceWorker()
