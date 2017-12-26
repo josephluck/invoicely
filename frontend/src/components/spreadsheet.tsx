@@ -5,16 +5,19 @@ import Label from './label'
 interface Column {
   description: string
   key: string // Matches the key of the row
+  type: CellInputType
 }
 
 type ValidValue = string | number | boolean
-type Row = Record<string, ValidValue>
+type CellInputType = 'string' | 'number' | 'boolean'
+export type Row = Record<string, ValidValue>
 
 interface SpreadsheetCell {
   value: ValidValue
+  type: CellInputType
 }
 
-function makeRows(
+function unzipRows(
   columns: Column[],
   rows: Row[],
 ): SpreadsheetCell[][] {
@@ -22,34 +25,54 @@ function makeRows(
     return columns.map(column => {
       return {
         value: row[column.key],
+        type: column.type,
       }
     })
   })
 }
 
-class Spreadsheet extends React.Component<any, any> {
+function updateCell(
+  columns: Column[],
+  rows: Row[],
+  rowIndex: number,
+  columnIndex: number,
+  value: ValidValue,
+): Row[] {
+  const key = columns[columnIndex].key
+  return rows.map((row, rowI) => {
+    return rowIndex === rowI ? { ...row, [key]: value } : row
+  })
+}
+
+interface Props {
+  columns: Column[]
+  rows: Row[]
+  onChange: (rows: Row[]) => any
+}
+
+interface State {}
+
+class Spreadsheet extends React.Component<Props, State> {
   constructor(props: any) {
     super(props)
     this.state = {}
   }
+  onCellChange(rowIndex: number, columnIndex: number, value: string) {
+    const rows = updateCell(
+      this.props.columns,
+      this.props.rows,
+      rowIndex,
+      columnIndex,
+      value,
+    )
+    this.props.onChange(rows)
+  }
   render() {
-    const props = {
-      columns: [
-        { description: 'Description', key: 'description' },
-        { description: 'Quantity', key: 'quantity' },
-        { description: 'Price', key: 'price' },
-      ],
-      rows: [
-        { description: 'Panda Egg Cup', quantity: 1, price: 12.5 },
-        { description: 'Quail Eggs', quantity: 1, price: 11 },
-        { description: 'Sourdough Bread', quantity: 1, price: 13.75 },
-      ],
-    }
-    const rows = makeRows(props.columns, props.rows)
+    const rows = unzipRows(this.props.columns, this.props.rows)
     return (
       <div>
         <div className="d-flex">
-          {props.columns.map((column, columnIndex) => {
+          {this.props.columns.map((column, columnIndex) => {
             return (
               <div className="flex-1" key={columnIndex}>
                 <Label>{column.description}</Label>
@@ -64,7 +87,20 @@ class Spreadsheet extends React.Component<any, any> {
                 {row.map((cell, cellIndex) => {
                   return (
                     <div className="flex-1" key={cellIndex}>
-                      {cell.value}
+                      {cell.type === 'string' ||
+                      cell.type === 'number' ? (
+                        <input
+                          value={cell.value.toString()}
+                          type={cell.type}
+                          onChange={e =>
+                            this.onCellChange(
+                              rowIndex,
+                              cellIndex,
+                              e.target.value,
+                            )
+                          }
+                        />
+                      ) : null}
                     </div>
                   )
                 })}

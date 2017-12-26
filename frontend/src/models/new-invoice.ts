@@ -1,6 +1,7 @@
 import { Helix } from 'helix-js'
 import * as dates from 'date-fns'
 import * as Form from './form'
+import { Row } from '../components/spreadsheet'
 
 interface Fields {
   number: string
@@ -8,13 +9,17 @@ interface Fields {
   dateDue: string
 }
 
-interface LocalState {}
+interface LocalState {
+  lineItems: Row[]
+}
 
 export interface State extends LocalState {
   form: Form.State<Fields>
 }
 
-interface Reducers {}
+interface Reducers {
+  setLineItems: Helix.Reducer<State, Row[]>
+}
 
 interface Effects {}
 
@@ -24,9 +29,31 @@ export interface Actions extends LocalActions {
   form: Form.Actions<Fields>
 }
 
+function emptyState(): LocalState {
+  return {
+    lineItems: [
+      {
+        description: 'Panda Egg Cup',
+        quantity: 1,
+        price: 12.5,
+      },
+      { description: 'Quail Eggs', quantity: 1, price: 11 },
+      {
+        description: 'Sourdough Bread',
+        quantity: 1,
+        price: 13.75,
+      },
+    ],
+  }
+}
+
 export const model: Helix.Model<LocalState, Reducers, Effects> = {
-  state: {},
-  reducers: {},
+  state: emptyState(),
+  reducers: {
+    setLineItems(state, lineItems) {
+      return { lineItems }
+    },
+  },
   models: {
     form: Form.model<Fields>({
       constraints: fields => {

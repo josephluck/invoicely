@@ -174,7 +174,27 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
           </div>
         </Card>
         <Card title="Line Items" defaultOpen={true}>
-          <Spreadsheet />
+          <Spreadsheet
+            columns={[
+              {
+                description: 'Description',
+                key: 'description',
+                type: 'string',
+              },
+              {
+                description: 'Quantity',
+                key: 'quantity',
+                type: 'number',
+              },
+              {
+                description: 'Price',
+                key: 'price',
+                type: 'number',
+              },
+            ]}
+            rows={state.newInvoice.lineItems}
+            onChange={actions.newInvoice.setLineItems}
+          />
         </Card>
       </Layout>
     )
