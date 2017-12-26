@@ -4,6 +4,7 @@ import { GlobalState, GlobalActions } from '../models'
 import Layout, { Title as LayoutTitle } from './layout'
 import Card from '../components/card'
 import TextField from '../components/textfield'
+import Spreadsheet from '../components/spreadsheet'
 import fieldChangeHandler from '../utils/field-change-handler'
 
 const page: Helix.Page<GlobalState, GlobalActions> = {
@@ -112,7 +113,11 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
             />
           </div>
         </Card>
-        <Card title="Recipient Address" defaultOpen={true}>
+        <Card
+          className="mb-5"
+          title="Recipient Address"
+          defaultOpen={true}
+        >
           <div className="d-flex mb-4">
             <TextField
               id="billing-address-line-1"
@@ -167,6 +172,9 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
               className="flex-1 ml-2"
             />
           </div>
+        </Card>
+        <Card title="Line Items" defaultOpen={true}>
+          <Spreadsheet />
         </Card>
       </Layout>
     )
