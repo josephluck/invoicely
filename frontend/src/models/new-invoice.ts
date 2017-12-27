@@ -4,7 +4,7 @@ import * as Form from './form'
 import { Row } from '../components/spreadsheet'
 
 interface Fields {
-  number: string
+  invoiceNumber: string
   dateCreated: string
   dateDue: string
   billingAddress: string
@@ -60,7 +60,7 @@ export const model: Helix.Model<LocalState, Reducers, Effects> = {
     form: Form.model<Fields>({
       constraints: fields => {
         return {
-          number: { presence: true },
+          invoiceNumber: { presence: true },
           billingAddress: { presence: true },
           companyAddress: { presence: true },
           dateCreated: { presence: true },
@@ -68,10 +68,9 @@ export const model: Helix.Model<LocalState, Reducers, Effects> = {
         }
       },
       defaultForm: () => ({
-        number: '',
-        billingAddress: 'Acme Corp\n13\nThe Street\nThe Town\n19920',
-        companyAddress:
-          'Apple Inc\nSillicon Roundabout\nAmerica\n17380',
+        invoiceNumber: '1001',
+        billingAddress: 'Acme Corp\n13 The Street\nThe Town\n19920',
+        companyAddress: 'Apple Inc\nSilicon Roundabout\n17380',
         dateCreated: dates.format(new Date(), 'YYYY-MM-DD'),
         dateDue: dates.format(
           dates.addMonths(new Date(), 1),

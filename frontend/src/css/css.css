@@ -9,9 +9,9 @@ html, body {
   Resets
 */
 
-* { box-sizing: border-box }
+* { box-sizing: border-box; }
 
-input, textarea, select { outline: none }
+input, textarea, select { outline: none; -webkit-appearance: none; }
 textarea { display: block }
 
 /* 

@@ -5,7 +5,8 @@ import renderer from 'helix-js/lib/renderers/react'
 import model, { GlobalState, GlobalActions } from './models'
 import routes from './routes'
 import css from './css'
-require('./css.css')
+require('./css/css.css')
+require('./css/react-datepicker.css')
 
 css.inject()
 

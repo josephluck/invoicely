@@ -101,7 +101,7 @@ export class TextField extends Component<Props, State> {
       onChange: this.onChange,
       name: id,
       className: `
-        fs-medium lh-4 w-100 ba input-reset transition
+        lh-4 w-100 ba input-reset transition
         ${disabled ? 'fc-gray-600' : 'bg-white bc-blue-f'}
         ${errors.length ? 'bc-red' : 'bc-transparent'}
         ${inputClassName}
@@ -120,15 +120,10 @@ export class TextField extends Component<Props, State> {
       disabled,
       min,
       max,
-      rows: 4,
     }
     return (
       <div className={className}>
-        {label ? (
-          <Label className="mb-1" id={id}>
-            {label}
-          </Label>
-        ) : null}
+        {label ? <Label id={id}>{label}</Label> : null}
         <div className="d-flex">
           <div className="pos-relative d-flex w-100">
             {type === 'textarea' ? (

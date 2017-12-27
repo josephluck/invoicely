@@ -39,6 +39,8 @@ function makeCss() {
         6: '32rem',
         7: '64rem',
         8: '128rem',
+        50: '50%',
+        70: '70%',
         100: '100%',
       },
       fontFamilies: {
