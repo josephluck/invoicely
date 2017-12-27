@@ -98,15 +98,22 @@ class Spreadsheet extends React.Component<Props, State> {
       input.focus()
     }
   }
+  removeRow(rowIndex: number) {
+    const rows = this.props.rows.filter((_, i) => i !== rowIndex)
+    this.props.onChange(rows)
+    setTimeout(() => {
+      this.focusBottomLeftInput()
+    }, 10)
+  }
   render() {
     const rows = unzipRows(this.props.columns, this.props.rows)
     return (
       <div className="spreadsheet">
-        <div className="d-flex bw-medium bbs-solid bc-gray-300 pb-2 mb-1">
+        <div className="d-flex">
           {this.props.columns.map((column, columnIndex) => {
             return (
               <div
-                className="flex-1"
+                className="flex-1 bw-medium bbs-solid bc-gray-300 pb-2 mb-1"
                 key={columnIndex}
                 style={{ textAlign: column.textAlign || 'left' }}
               >
@@ -114,46 +121,50 @@ class Spreadsheet extends React.Component<Props, State> {
               </div>
             )
           })}
+          <i
+            style={{ pointerEvents: 'none' }}
+            className="ion-close-round d-b o-0 ml-3"
+          />
         </div>
-        <div>
-          {rows.map((row, rowIndex) => {
-            return (
-              <div
-                className="d-flex bbs-solid bc-gray-200 pb-1 mt-1"
-                key={rowIndex}
-              >
-                {row.map((cell, cellIndex) => {
-                  return (
-                    <div className="flex-1" key={cellIndex}>
-                      {cell.type === 'string' ||
-                      cell.type === 'number' ? (
-                        <Textfield
-                          id={`spreadsheet-input-${rowIndex}-${cellIndex}`}
-                          inputStyle={{ textAlign: cell.textAlign }}
-                          value={cell.value.toString()}
-                          onChange={value =>
-                            this.onCellChange(
-                              rowIndex,
-                              cellIndex,
-                              value,
-                            )
-                          }
-                        />
-                      ) : null}
-                    </div>
-                  )
-                })}
-              </div>
-            )
-          })}
+        {rows.map((row, rowIndex) => {
+          return (
+            <div className="d-flex align-items-center" key={rowIndex}>
+              {row.map((cell, cellIndex) => {
+                return cell.type === 'string' ||
+                  cell.type === 'number' ? (
+                  <Textfield
+                    id={`spreadsheet-input-${rowIndex}-${cellIndex}`}
+                    inputStyle={{ textAlign: cell.textAlign }}
+                    value={cell.value.toString()}
+                    className="flex-1 pb-1 mt-1 bbs-solid bc-gray-200"
+                    key={cellIndex}
+                    onChange={value =>
+                      this.onCellChange(rowIndex, cellIndex, value)
+                    }
+                  />
+                ) : null
+              })}
+              <a
+                href=""
+                onClick={() => this.removeRow(rowIndex)}
+                className="ion-close-round ta-c fc-blue bc-blue-h bc-blue-f transition d-b ml-3"
+              />
+            </div>
+          )
+        })}
+        <div className="d-flex">
           <a
             onClick={() => this.addNewRow()}
             href=""
-            className="bbs-solid bc-gray-200 pv-3 ta-c fc-blue bc-blue-h bc-blue-f transition d-b"
+            className="flex-1 bbs-solid bc-gray-200 pv-3 ta-c fc-blue bc-blue-h bc-blue-f transition d-b"
             style={{ textDecoration: 'none' }}
           >
             Add Another Line Item
           </a>
+          <i
+            style={{ pointerEvents: 'none' }}
+            className="ion-close-round d-b o-0 ml-3"
+          />
         </div>
       </div>
     )
