@@ -1,6 +1,11 @@
 import * as React from 'react'
 import Label from './label'
 import Textfield from './invoice/textfield'
+import {
+  SortableContainer,
+  SortableElement,
+  arrayMove,
+} from 'react-sortable-hoc'
 
 interface Column {
   description: string
@@ -67,10 +72,98 @@ interface Props {
 
 interface State {}
 
+interface SortableItemProps {
+  row: SpreadsheetCell[]
+  rowIndex: number
+  showRemoveRow: boolean
+  onCellChange: (
+    rowIndex: number,
+    cellIndex: number,
+    value: string,
+  ) => any
+  removeRow: (rowIndex: number) => any
+}
+
+const SortableItem = SortableElement(
+  ({ value }: { value: SortableItemProps }) => {
+    return (
+      <div className="d-flex align-items-center">
+        <a className="ion-more pt-1 rotate-90 ta-c fc-blue d-b mr-1" />
+        {value.row.map((cell, cellIndex) => {
+          return cell.type === 'string' || cell.type === 'number' ? (
+            <Textfield
+              key={`spreadsheet-input-${value.rowIndex}-${cellIndex}`}
+              id={`spreadsheet-input-${value.rowIndex}-${cellIndex}`}
+              inputStyle={{ textAlign: cell.textAlign }}
+              value={cell.value.toString()}
+              className="flex-1 pb-1 mt-1 bbs-solid bc-gray-200"
+              onChange={val =>
+                value.onCellChange(value.rowIndex, cellIndex, val)
+              }
+            />
+          ) : null
+        })}
+        <a
+          href={!value.showRemoveRow ? undefined : ''}
+          onClick={() => value.removeRow(value.rowIndex)}
+          className={`ion-close-round pb-1 mt-1 ta-c transition d-b ml-3 ${
+            !value.showRemoveRow ? 'fc-gray-300' : 'fc-blue'
+          }`}
+        />
+      </div>
+    )
+  },
+)
+
+interface SortableListProps {
+  items: SpreadsheetCell[][]
+  showRemoveRow: boolean
+  onCellChange: (
+    rowIndex: number,
+    cellIndex: number,
+    value: string,
+  ) => any
+  removeRow: (rowIndex: number) => any
+}
+
+const SortableList = SortableContainer(
+  ({
+    items,
+    showRemoveRow,
+    onCellChange,
+    removeRow,
+  }: SortableListProps) => {
+    return (
+      <div>
+        {items.map((row, rowIndex) => {
+          return (
+            <SortableItem
+              key={`spreadsheet-row-${rowIndex}`}
+              value={{
+                row,
+                rowIndex,
+                showRemoveRow: items.length > 1,
+                onCellChange,
+                removeRow,
+              }}
+              index={rowIndex}
+            />
+          )
+        })}
+      </div>
+    )
+  },
+)
+
 class Spreadsheet extends React.Component<Props, State> {
   constructor(props: any) {
     super(props)
     this.state = {}
+    this.onCellChange = this.onCellChange.bind(this)
+    this.addNewRow = this.addNewRow.bind(this)
+    this.focusBottomLeftInput = this.focusBottomLeftInput.bind(this)
+    this.removeRow = this.removeRow.bind(this)
+    this.onSortEnd = this.onSortEnd.bind(this)
   }
   onCellChange(rowIndex: number, columnIndex: number, value: string) {
     const rows = updateCell(
@@ -107,11 +200,25 @@ class Spreadsheet extends React.Component<Props, State> {
       }, 10)
     }
   }
+  onSortEnd({
+    oldIndex,
+    newIndex,
+  }: {
+    oldIndex: number
+    newIndex: number
+  }) {
+    const rows = arrayMove(this.props.rows, oldIndex, newIndex)
+    this.props.onChange(rows)
+  }
   render() {
     const rows = unzipRows(this.props.columns, this.props.rows)
     return (
       <div className="spreadsheet">
         <div className="d-flex">
+          <a
+            className="ion-more pt-1 rotate-90 ta-c fc-blue d-b mr-1 o-0"
+            style={{ pointerEvents: 'none' }}
+          />
           {this.props.columns.map((column, columnIndex) => {
             return (
               <div
@@ -128,34 +235,13 @@ class Spreadsheet extends React.Component<Props, State> {
             className="ion-close-round d-b o-0 ml-3"
           />
         </div>
-        {rows.map((row, rowIndex) => {
-          return (
-            <div className="d-flex align-items-center" key={rowIndex}>
-              {row.map((cell, cellIndex) => {
-                return cell.type === 'string' ||
-                  cell.type === 'number' ? (
-                  <Textfield
-                    id={`spreadsheet-input-${rowIndex}-${cellIndex}`}
-                    inputStyle={{ textAlign: cell.textAlign }}
-                    value={cell.value.toString()}
-                    className="flex-1 pb-1 mt-1 bbs-solid bc-gray-200"
-                    key={cellIndex}
-                    onChange={value =>
-                      this.onCellChange(rowIndex, cellIndex, value)
-                    }
-                  />
-                ) : null
-              })}
-              <a
-                href={rows.length === 1 ? undefined : ''}
-                onClick={() => this.removeRow(rowIndex)}
-                className={`ion-close-round ta-c transition d-b ml-3 ${
-                  rows.length === 1 ? 'fc-gray-300' : 'fc-blue'
-                }`}
-              />
-            </div>
-          )
-        })}
+        <SortableList
+          items={rows}
+          onSortEnd={this.onSortEnd}
+          showRemoveRow={rows.length > 1}
+          onCellChange={this.onCellChange}
+          removeRow={this.removeRow}
+        />
         <div className="d-flex">
           <a
             onClick={() => this.addNewRow()}

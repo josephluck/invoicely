@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@types/react-sortable-hoc": "^0.6.0",
     "crux-css": "^4.0.4",
     "date-fns": "^1.29.0",
     "helix-js": "^2.0.0",
@@ -15,6 +16,7 @@
     "react-dom": "^16.2.0",
     "react-motion": "^0.5.2",
     "react-scripts-ts": "2.8.0",
+    "react-sortable-hoc": "^0.6.8",
     "space-lift": "^0.6.4",
     "tslint": "^5.8.0",
     "tslint-config-prettier": "^1.6.0",

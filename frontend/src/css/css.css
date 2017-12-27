@@ -34,4 +34,5 @@ textarea { display: block }
 .transition { transition: all 0.2s ease-in-out }
 
 .rotate-0 { transform: rotate(0deg) }
+.rotate-90 { transform: rotate(90deg) }
 .rotate-180 { transform: rotate(180deg) }
