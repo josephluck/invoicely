@@ -5,7 +5,7 @@ import Layout, { Title as LayoutTitle } from './layout'
 import Card from '../components/card'
 import fieldChangeHandler from '../utils/field-change-handler'
 import TextField from '../components/invoice/textfield'
-import DatePicker from '../components/invoice/datepicker'
+import Spreadsheet from '../components/spreadsheet'
 
 const page: Helix.Page<GlobalState, GlobalActions> = {
   view: (state, prev, actions) => {
@@ -19,42 +19,14 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
         <Card
           className={`ml-auto mr-auto h-a4 ${false ? 'w-a4' : ''}`}
         >
-          <div className="d-flex align-items-center bb bbs-solid bc-gray-200 pb-3">
+          <div className="d-flex align-items-center bb bbs-solid bc-gray-200 pb-3 mb-6">
             <div className="flex-1">
               <img
                 style={{ width: '100%', height: 'auto' }}
                 src="http://householdairfresheners.com/wp-content/uploads/2017/02/Best-Squarespace-Logo-Design-63-For-logo-design-online-with-Squarespace-Logo-Design-728x278.jpg"
               />
             </div>
-            <div className="h-100 w-70 d-flex">
-              <div className="ml-2 ta-r lh-4 flex-1">
-                <TextField
-                  id="invoice-number"
-                  label="Invoice Number"
-                  type="text"
-                  className="mb-1"
-                  inputClassName="ta-r"
-                  onChange={change('invoiceNumber')}
-                  value={state.newInvoice.form.fields.invoiceNumber}
-                />
-                <DatePicker
-                  id="date-created"
-                  label="Raised"
-                  type="date"
-                  className="mb-1"
-                  inputClassName="ta-r"
-                  onChange={change('dateCreated')}
-                  value={state.newInvoice.form.fields.dateCreated}
-                />
-                <DatePicker
-                  id="date-due"
-                  label="Due"
-                  type="date"
-                  inputClassName="ta-r"
-                  onChange={change('dateDue')}
-                  value={state.newInvoice.form.fields.dateDue}
-                />
-              </div>
+            <div className="ml-3 h-100 w-50 d-flex">
               <div className="ml-2 ta-r flex-1">
                 <TextField
                   id="company-address"
@@ -76,6 +48,34 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                 />
               </div>
             </div>
+          </div>
+          <div>
+            <Spreadsheet
+              rows={state.newInvoice.lineItems}
+              columns={[
+                {
+                  description: 'Description',
+                  key: 'description',
+                  type: 'string',
+                  defaultValue: '',
+                },
+                {
+                  description: 'Quantity',
+                  key: 'quantity',
+                  type: 'number',
+                  textAlign: 'right',
+                  defaultValue: 1,
+                },
+                {
+                  description: 'Price',
+                  key: 'price',
+                  type: 'number',
+                  textAlign: 'right',
+                  defaultValue: 0,
+                },
+              ]}
+              onChange={actions.newInvoice.setLineItems}
+            />
           </div>
         </Card>
       </Layout>

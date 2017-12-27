@@ -32,6 +32,7 @@ export interface Props {
   min?: string
   max?: string
   inputClassName?: string
+  inputStyle?: any
 }
 
 export interface State {
@@ -91,6 +92,7 @@ export class TextField extends Component<Props, State> {
       min,
       max,
       inputClassName = '',
+      inputStyle = {},
     } = this.props
     const inputProps = {
       ref: (el: any) => {
@@ -120,6 +122,7 @@ export class TextField extends Component<Props, State> {
       disabled,
       min,
       max,
+      style: inputStyle,
     }
     return (
       <div className={className}>
