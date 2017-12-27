@@ -99,11 +99,13 @@ class Spreadsheet extends React.Component<Props, State> {
     }
   }
   removeRow(rowIndex: number) {
-    const rows = this.props.rows.filter((_, i) => i !== rowIndex)
-    this.props.onChange(rows)
-    setTimeout(() => {
-      this.focusBottomLeftInput()
-    }, 10)
+    if (this.props.rows.length > 1) {
+      const rows = this.props.rows.filter((_, i) => i !== rowIndex)
+      this.props.onChange(rows)
+      setTimeout(() => {
+        this.focusBottomLeftInput()
+      }, 10)
+    }
   }
   render() {
     const rows = unzipRows(this.props.columns, this.props.rows)
@@ -145,9 +147,11 @@ class Spreadsheet extends React.Component<Props, State> {
                 ) : null
               })}
               <a
-                href=""
+                href={rows.length === 1 ? undefined : ''}
                 onClick={() => this.removeRow(rowIndex)}
-                className="ion-close-round ta-c fc-blue bc-blue-h bc-blue-f transition d-b ml-3"
+                className={`ion-close-round ta-c transition d-b ml-3 ${
+                  rows.length === 1 ? 'fc-gray-300' : 'fc-blue'
+                }`}
               />
             </div>
           )
@@ -156,7 +160,7 @@ class Spreadsheet extends React.Component<Props, State> {
           <a
             onClick={() => this.addNewRow()}
             href=""
-            className="flex-1 bbs-solid bc-gray-200 pv-3 ta-c fc-blue bc-blue-h bc-blue-f transition d-b"
+            className="flex-1 bc-gray-200 pv-3 ta-c fc-blue bc-blue-h bc-blue-f transition d-b"
             style={{ textDecoration: 'none' }}
           >
             Add Another Line Item
