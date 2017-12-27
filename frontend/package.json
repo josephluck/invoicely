@@ -8,6 +8,7 @@
     "helix-js": "^2.0.0",
     "prettier": "^1.9.2",
     "react": "^16.2.0",
+    "react-autosize-textarea": "^3.0.0",
     "react-collapse": "^4.0.3",
     "react-dom": "^16.2.0",
     "react-motion": "^0.5.2",
@@ -22,7 +23,8 @@
     "start": "react-scripts-ts start",
     "build": "react-scripts-ts build",
     "test": "react-scripts-ts test --env=jsdom",
-    "eject": "react-scripts-ts eject"
+    "eject": "react-scripts-ts eject",
+    "postinstall": "rm -rf node_modules/react-autosize-textarea/node_modules"
   },
   "devDependencies": {
     "@types/jest": "^21.1.9",

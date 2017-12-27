@@ -4,6 +4,7 @@ function makeCss() {
   return generate(
     {
       borderWidths: {
+        0: '0px',
         small: '1px',
         medium: '2px',
         large: '3px',
@@ -27,6 +28,7 @@ function makeCss() {
         'gray-700': '#616161',
         'gray-800': '#424242',
         'gray-900': '#212121',
+        transparent: 'transparent',
       },
       dimensions: {
         1: '1rem',
@@ -98,6 +100,7 @@ function makeCss() {
         6: '2rem',
         7: '2.5rem',
         8: '3rem',
+        auto: 'auto',
       },
       media: {
         ns: {

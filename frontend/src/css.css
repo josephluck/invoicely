@@ -13,11 +13,19 @@ html, body {
 
 input, textarea, select { outline: none }
 textarea { display: block }
+
 /* 
   Box shadows
 */
 
 .box-card { box-shadow: 0px 5px 10px 5px rgba(172, 172, 172, 0.1) }
+
+/* 
+  Dimensions
+*/
+
+.w-a4 { width: 210mm }
+.h-a4 { height: 297mm }
 
 /* 
   Transitions / Animations

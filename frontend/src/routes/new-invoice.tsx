@@ -3,198 +3,45 @@ import { Helix } from 'helix-js'
 import { GlobalState, GlobalActions } from '../models'
 import Layout, { Title as LayoutTitle } from './layout'
 import Card from '../components/card'
-import TextField from '../components/textfield'
-import Spreadsheet from '../components/spreadsheet'
 import fieldChangeHandler from '../utils/field-change-handler'
+import TextField from '../components/invoice/textfield'
 
 const page: Helix.Page<GlobalState, GlobalActions> = {
   view: (state, prev, actions) => {
     const change = fieldChangeHandler(
       actions.newInvoice.form.setFields,
     )
+    console.log(change)
     return (
       <Layout
         title={<LayoutTitle number="1">New Invoice</LayoutTitle>}
       >
-        <Card className="mb-5" title="Details" defaultOpen={true}>
-          <TextField
-            id="number"
-            label="Invoice Number"
-            onChange={change('number')}
-            value={state.newInvoice.form.fields.number}
-            errors={state.newInvoice.form.errors.number}
-            className="mb-4"
-          />
-          <div className="d-flex mb-4">
-            <TextField
-              id="date-created"
-              label="Date Created"
-              onChange={change('dateCreated')}
-              value={state.newInvoice.form.fields.dateCreated}
-              errors={state.newInvoice.form.errors.dateCreated}
-              type="date"
-              className="flex-1 mr-2"
-            />
-            <TextField
-              id="date-due"
-              label="Date Due"
-              onChange={change('dateDue')}
-              value={state.newInvoice.form.fields.dateDue}
-              errors={state.newInvoice.form.errors.dateDue}
-              type="date"
-              className="flex-1 ml-2"
-            />
-          </div>
-          <TextField
-            id="notes"
-            label="Notes"
-            onChange={change('number')}
-            value={state.newInvoice.form.fields.number}
-            errors={state.newInvoice.form.errors.number}
-            type="textarea"
-          />
-        </Card>
-        <Card
-          className="mb-5"
-          title="Your Address"
-          defaultOpen={true}
-        >
-          <div className="d-flex mb-4">
-            <TextField
-              id="billing-address-line-1"
-              label="Line 1"
-              onChange={change('number')}
-              value={state.newInvoice.form.fields.number}
-              errors={state.newInvoice.form.errors.number}
-              className="flex-1 mr-2"
-            />
-            <TextField
-              id="billing-address-line-2"
-              label="Line 2"
-              onChange={change('number')}
-              value={state.newInvoice.form.fields.number}
-              errors={state.newInvoice.form.errors.number}
-              className="flex-1 ml-2"
-            />
-          </div>
-          <div className="d-flex mb-4">
-            <TextField
-              id="billing-address-line-3"
-              label="Line 3"
-              onChange={change('number')}
-              value={state.newInvoice.form.fields.number}
-              errors={state.newInvoice.form.errors.number}
-              className="flex-1 mr-2"
-            />
-            <TextField
-              id="billing-address-line-4"
-              label="Line 4"
-              onChange={change('number')}
-              value={state.newInvoice.form.fields.number}
-              errors={state.newInvoice.form.errors.number}
-              className="flex-1 ml-2"
-            />
-          </div>
+        <Card className="ml-auto mr-auto w-a4 h-a4">
           <div className="d-flex">
-            <TextField
-              id="billing-address-country"
-              label="Country"
-              onChange={change('number')}
-              value={state.newInvoice.form.fields.number}
-              className="flex-1 mr-2"
+            <img
+              style={{ width: 'auto', height: '50mm' }}
+              src="http://acmeitad.com/wp-content/uploads/2015/02/ACME-Corp-logo-large1.png"
             />
-            <TextField
-              id="billing-address-postcode"
-              label="Postcode"
-              onChange={change('number')}
-              value={state.newInvoice.form.fields.number}
-              errors={state.newInvoice.form.errors.number}
-              className="flex-1 ml-2"
-            />
+            <div className="flex-1 ta-r">
+              <TextField
+                id="company-address"
+                type="textarea"
+                className="mb-3"
+                inputClassName="ta-r"
+                onChange={change('companyAddress')}
+                value={state.newInvoice.form.fields.companyAddress}
+              />
+              <TextField
+                id="billing-address"
+                label="Billed To"
+                type="textarea"
+                className="mb-3"
+                inputClassName="ta-r"
+                onChange={change('billingAddress')}
+                value={state.newInvoice.form.fields.billingAddress}
+              />
+            </div>
           </div>
-        </Card>
-        <Card
-          className="mb-5"
-          title="Recipient Address"
-          defaultOpen={true}
-        >
-          <div className="d-flex mb-4">
-            <TextField
-              id="billing-address-line-1"
-              label="Line 1"
-              onChange={change('number')}
-              value={state.newInvoice.form.fields.number}
-              errors={state.newInvoice.form.errors.number}
-              className="flex-1 mr-2"
-            />
-            <TextField
-              id="billing-address-line-2"
-              label="Line 2"
-              onChange={change('number')}
-              value={state.newInvoice.form.fields.number}
-              errors={state.newInvoice.form.errors.number}
-              className="flex-1 ml-2"
-            />
-          </div>
-          <div className="d-flex mb-4">
-            <TextField
-              id="billing-address-line-3"
-              label="Line 3"
-              onChange={change('number')}
-              value={state.newInvoice.form.fields.number}
-              errors={state.newInvoice.form.errors.number}
-              className="flex-1 mr-2"
-            />
-            <TextField
-              id="billing-address-line-4"
-              label="Line 4"
-              onChange={change('number')}
-              value={state.newInvoice.form.fields.number}
-              errors={state.newInvoice.form.errors.number}
-              className="flex-1 ml-2"
-            />
-          </div>
-          <div className="d-flex">
-            <TextField
-              id="billing-address-country"
-              label="Country"
-              onChange={change('number')}
-              value={state.newInvoice.form.fields.number}
-              errors={state.newInvoice.form.errors.number}
-              className="flex-1 mr-2"
-            />
-            <TextField
-              id="billing-address-postcode"
-              label="Postcode"
-              onChange={change('number')}
-              value={state.newInvoice.form.fields.number}
-              errors={state.newInvoice.form.errors.number}
-              className="flex-1 ml-2"
-            />
-          </div>
-        </Card>
-        <Card title="Line Items" defaultOpen={true}>
-          <Spreadsheet
-            columns={[
-              {
-                description: 'Description',
-                key: 'description',
-                type: 'string',
-              },
-              {
-                description: 'Quantity',
-                key: 'quantity',
-                type: 'number',
-              },
-              {
-                description: 'Price',
-                key: 'price',
-                type: 'number',
-              },
-            ]}
-            rows={state.newInvoice.lineItems}
-            onChange={actions.newInvoice.setLineItems}
-          />
         </Card>
       </Layout>
     )

@@ -70,7 +70,7 @@ class Spreadsheet extends React.Component<Props, State> {
   render() {
     const rows = unzipRows(this.props.columns, this.props.rows)
     return (
-      <div>
+      <div className="spreadsheet">
         <div className="d-flex">
           {this.props.columns.map((column, columnIndex) => {
             return (

@@ -7,6 +7,8 @@ interface Fields {
   number: string
   dateCreated: string
   dateDue: string
+  billingAddress: string
+  companyAddress: string
 }
 
 interface LocalState {
@@ -59,12 +61,17 @@ export const model: Helix.Model<LocalState, Reducers, Effects> = {
       constraints: fields => {
         return {
           number: { presence: true },
+          billingAddress: { presence: true },
+          companyAddress: { presence: true },
           dateCreated: { presence: true },
           dateDue: { presence: true },
         }
       },
       defaultForm: () => ({
         number: '',
+        billingAddress: 'Acme Corp\n13\nThe Street\nThe Town\n19920',
+        companyAddress:
+          'Apple Inc\nSillicon Roundabout\nAmerica\n17380',
         dateCreated: dates.format(new Date(), 'YYYY-MM-DD'),
         dateDue: dates.format(
           dates.addMonths(new Date(), 1),
