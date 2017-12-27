@@ -11,8 +11,14 @@ interface Fields {
   companyAddress: string
 }
 
+export interface LineItem extends Row {
+  description: string
+  quantity: number
+  price: number
+}
+
 interface LocalState {
-  lineItems: Row[]
+  lineItems: LineItem[]
 }
 
 export interface State extends LocalState {
@@ -20,7 +26,7 @@ export interface State extends LocalState {
 }
 
 interface Reducers {
-  setLineItems: Helix.Reducer<State, Row[]>
+  setLineItems: Helix.Reducer<State, LineItem[]>
 }
 
 interface Effects {}
@@ -36,7 +42,7 @@ function emptyState(): LocalState {
     lineItems: [
       {
         description: 'Panda Egg Cup',
-        quantity: 1,
+        quantity: 2,
         price: 12.5,
       },
       { description: 'Quail Eggs', quantity: 1, price: 11 },

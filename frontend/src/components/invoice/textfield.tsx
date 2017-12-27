@@ -104,7 +104,7 @@ export class TextField extends Component<Props, State> {
       name: id,
       className: `
         lh-4 w-100 ba input-reset transition
-        ${disabled ? 'fc-gray-600' : 'bg-white bc-blue-f'}
+        ${disabled ? 'bg-white' : 'bg-white bc-blue-f'}
         ${errors.length ? 'bc-red' : 'bc-transparent'}
         ${inputClassName}
       `,

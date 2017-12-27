@@ -5,7 +5,10 @@ import Layout, { Title as LayoutTitle } from './layout'
 import Card from '../components/card'
 import fieldChangeHandler from '../utils/field-change-handler'
 import TextField from '../components/invoice/textfield'
-import Spreadsheet from '../components/spreadsheet'
+import SpreadsheetConstructor from '../components/spreadsheet'
+import { LineItem } from '../models/new-invoice'
+
+class Spreadsheet extends SpreadsheetConstructor<LineItem> {}
 
 const page: Helix.Page<GlobalState, GlobalActions> = {
   view: (state, prev, actions) => {
@@ -67,11 +70,18 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                   defaultValue: 1,
                 },
                 {
-                  description: 'Price',
+                  description: 'Unit Price',
                   key: 'price',
                   type: 'number',
                   textAlign: 'right',
                   defaultValue: 0,
+                },
+                {
+                  description: 'Sub Total',
+                  textAlign: 'right',
+                  calculation(row) {
+                    return row.price * row.quantity
+                  },
                 },
               ]}
               onChange={actions.newInvoice.setLineItems}

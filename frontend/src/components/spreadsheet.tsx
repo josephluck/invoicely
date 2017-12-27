@@ -1,79 +1,93 @@
 import * as React from 'react'
 import Label from './label'
-import Textfield from './invoice/textfield'
+import Textfield, { TextField } from './invoice/textfield'
 import {
   SortableContainer,
   SortableElement,
   arrayMove,
 } from 'react-sortable-hoc'
 
-interface Column {
+interface Column<R extends Row = any> {
   description: string
-  key: string // Matches the key of the row
-  type: CellInputType
-  defaultValue: ValidValue
-  textAlign?: 'left' | 'center' | 'right'
+  key?: keyof R // Matches the key of the row
+  type?: CellInputType
+  defaultValue?: ValidValue
+  textAlign?: CellTextAlign
+  calculation?: (row: R) => number
 }
 
 type ValidValue = string | number | boolean
-type CellInputType = 'string' | 'number' | 'boolean'
+type CellInputType = 'string' | 'number' | 'boolean' | 'calculation'
+type CellTextAlign = 'left' | 'center' | 'right'
 export type Row = Record<string, ValidValue>
 
-interface SpreadsheetCell {
+interface SpreadsheetCell<R extends Row> {
   value: ValidValue
   type: CellInputType
-  key: string
-  textAlign: 'left' | 'center' | 'right'
+  key: keyof R
+  textAlign: CellTextAlign
 }
 
-function unzipRows(
-  columns: Column[],
-  rows: Row[],
-): SpreadsheetCell[][] {
+function unzipRows<R extends Row>(
+  columns: Column<R>[],
+  rows: R[],
+): SpreadsheetCell<R>[][] {
   return rows.map(row => {
     return columns.map(column => {
-      return {
-        value: row[column.key],
-        type: column.type,
-        key: column.key,
-        textAlign: column.textAlign || 'left',
+      const key = column.key! as any
+      if (column.calculation) {
+        return {
+          value: column.calculation(row),
+          type: 'calculation' as CellInputType,
+          key: 'calculation' as any,
+          textAlign: 'right' as CellTextAlign,
+        }
+      } else {
+        return {
+          value: row[key],
+          type: column.type || 'string',
+          key: column.key!,
+          textAlign: column.textAlign || 'left',
+        }
       }
     })
   })
 }
 
-function updateCell(
-  columns: Column[],
-  rows: Row[],
+function updateCell<R extends Row>(
+  columns: Column<R>[],
+  rows: R[],
   rowIndex: number,
   columnIndex: number,
   value: ValidValue,
-): Row[] {
+): R[] {
   const key = columns[columnIndex].key
   return rows.map((row, rowI) => {
-    return rowIndex === rowI ? { ...row, [key]: value } : row
+    return rowIndex === rowI
+      ? { ...(row as any), [key!]: value }
+      : row
   })
 }
 
-function makeNewRow(columns: Column[]): Row {
+function makeNewRow<R extends Row>(columns: Column<R>[]) {
   return columns.reduce((prev, column) => {
     return {
       ...prev,
-      [column.key]: column.defaultValue,
+      [column.key!]: column.defaultValue,
     }
-  }, {})
+  }, {}) as R
 }
 
-interface Props {
-  columns: Column[]
-  rows: Row[]
-  onChange: (rows: Row[]) => any
+interface Props<R extends Row> {
+  columns: Column<R>[]
+  rows: R[]
+  onChange: (rows: R[]) => any
 }
 
 interface State {}
 
-interface SortableItemProps {
-  row: SpreadsheetCell[]
+interface SortableItemProps<R extends Row> {
+  row: SpreadsheetCell<R>[]
   rowIndex: number
   showRemoveRow: boolean
   onCellChange: (
@@ -85,23 +99,46 @@ interface SortableItemProps {
 }
 
 const SortableItem = SortableElement(
-  ({ value }: { value: SortableItemProps }) => {
+  ({ value }: { value: SortableItemProps<any> }) => {
     return (
       <div className="d-flex align-items-center">
         <a className="ion-more pt-1 rotate-90 ta-c fc-blue d-b mr-1" />
         {value.row.map((cell, cellIndex) => {
-          return cell.type === 'string' || cell.type === 'number' ? (
-            <Textfield
-              key={`spreadsheet-input-${value.rowIndex}-${cellIndex}`}
-              id={`spreadsheet-input-${value.rowIndex}-${cellIndex}`}
-              inputStyle={{ textAlign: cell.textAlign }}
-              value={cell.value.toString()}
-              className="flex-1 pb-1 mt-1 bbs-solid bc-gray-200"
-              onChange={val =>
-                value.onCellChange(value.rowIndex, cellIndex, val)
-              }
-            />
-          ) : null
+          if (cell.type === 'string' || cell.type === 'number') {
+            return (
+              <Textfield
+                key={`spreadsheet-input-${
+                  value.rowIndex
+                }-${cellIndex}`}
+                id={`spreadsheet-input-${
+                  value.rowIndex
+                }-${cellIndex}`}
+                inputStyle={{ textAlign: cell.textAlign }}
+                value={cell.value.toString()}
+                className="flex-1 pb-1 mt-1 bbs-solid bc-gray-200"
+                onChange={val =>
+                  value.onCellChange(value.rowIndex, cellIndex, val)
+                }
+              />
+            )
+          } else if (cell.type === 'calculation') {
+            return (
+              <TextField
+                id={`spreadsheet-input-${
+                  value.rowIndex
+                }-${cellIndex}`}
+                key={`spreadsheet-input-${
+                  value.rowIndex
+                }-${cellIndex}`}
+                inputStyle={{ textAlign: cell.textAlign }}
+                className="flex-1 pb-1 mt-1 bbs-solid bc-gray-200 ta-r lh-4 ba-0"
+                value={cell.value.toString()}
+                disabled
+              />
+            )
+          } else {
+            return null
+          }
         })}
         <a
           href={!value.showRemoveRow ? undefined : ''}
@@ -115,8 +152,8 @@ const SortableItem = SortableElement(
   },
 )
 
-interface SortableListProps {
-  items: SpreadsheetCell[][]
+interface SortableListProps<R extends Row> {
+  items: SpreadsheetCell<R>[][]
   showRemoveRow: boolean
   onCellChange: (
     rowIndex: number,
@@ -132,7 +169,7 @@ const SortableList = SortableContainer(
     showRemoveRow,
     onCellChange,
     removeRow,
-  }: SortableListProps) => {
+  }: SortableListProps<any>) => {
     return (
       <div>
         {items.map((row, rowIndex) => {
@@ -155,7 +192,10 @@ const SortableList = SortableContainer(
   },
 )
 
-class Spreadsheet extends React.Component<Props, State> {
+class Spreadsheet<R extends Row> extends React.Component<
+  Props<R>,
+  State
+> {
   constructor(props: any) {
     super(props)
     this.state = {}
@@ -241,6 +281,8 @@ class Spreadsheet extends React.Component<Props, State> {
           showRemoveRow={rows.length > 1}
           onCellChange={this.onCellChange}
           removeRow={this.removeRow}
+          lockAxis="y"
+          lockToContainerEdges
         />
         <div className="d-flex">
           <a
