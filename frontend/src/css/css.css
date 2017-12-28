@@ -1,5 +1,5 @@
 html, body {
-  font-family: 'Work Sans', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 14px;
 }
 
@@ -9,8 +9,9 @@ html, body {
 
 * { box-sizing: border-box; }
 
-input, textarea, select { outline: none; -webkit-appearance: none; font-size: inherit; font-family: inherit; }
+input, textarea, select { outline: none; font-size: inherit; font-family: inherit; }
 textarea { display: block }
+input[type="date"] { -webkit-appearance: none }
 
 /* 
   Box shadows

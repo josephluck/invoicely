@@ -28,9 +28,9 @@ export default function Layout({
 }: LayoutProps) {
   return (
     <div
-      className={`pos-fixed w-100 h-100 of-auto bg-gray-100 ${className}`}
+      className={`pos-fixed w-100 h-100 of-auto bg-gray-100 d-flex flex-direction-column ${className}`}
     >
-      <div className="w-100 d-flex mb-5 bg-white pa-5 bb bbs-solid bc-gray-200">
+      <div className="w-100 d-flex bg-white pa-5 bb bbs-solid bc-gray-200 flex-0">
         <div className="d-flex align-items-center fs-large fc-blue">
           <i className="ion-navicon-round" />
         </div>
@@ -39,7 +39,7 @@ export default function Layout({
           {/* <i className="ion-person" /> */}
         </div>
       </div>
-      <div className="ph-5 pb-5">{children}</div>
+      <div className="d-flex flex-1 of-auto">{children}</div>
     </div>
   )
 }

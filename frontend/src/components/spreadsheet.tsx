@@ -7,7 +7,7 @@ import {
   arrayMove,
 } from 'react-sortable-hoc'
 
-interface Column<R extends Row = any> {
+export interface Column<R extends Row = any> {
   description: string
   key?: keyof R // Matches the key of the row
   type?: CellInputType
@@ -131,7 +131,7 @@ const SortableItem = SortableElement(
                   value.rowIndex
                 }-${cellIndex}`}
                 inputStyle={{ textAlign: cell.textAlign }}
-                className="flex-1 pb-1 mt-1 bbs-solid bc-gray-200 ta-r lh-4 ba-0"
+                className="flex-1 pb-1 mt-1 bbs-solid bc-gray-200 lh-4 ba-0"
                 value={cell.value.toString()}
                 disabled
               />
