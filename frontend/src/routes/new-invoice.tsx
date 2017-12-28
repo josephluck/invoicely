@@ -21,33 +21,101 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
       <Layout
         title={<LayoutTitle number="1">New Invoice</LayoutTitle>}
       >
-        <div className="h-100 bg-white w-6">
-          <MenuSection title="Line Item Settings">
-            <Checkbox
-              id="include-quantity"
-              checked={state.newInvoice.form.fields.includeQuantity}
-              onChange={visible =>
-                actions.newInvoice.toggleLineItemColumnVisiblity({
-                  name: 'quantity',
-                  visible,
-                })
-              }
-              label="Include Quantity"
-              className="mb-4"
+        <div className="h-100 bg-white transition d-flex flex-direction-column">
+          <div
+            className={`flex-1 transition of-hidden ${
+              state.newInvoice.menuVisible ? 'w-5' : 'w-0'
+            }`}
+          >
+            <MenuSection title="Line Item Settings">
+              <Checkbox
+                id="include-quantity"
+                checked={state.newInvoice.form.fields.includeQuantity}
+                onChange={visible =>
+                  actions.newInvoice.toggleLineItemColumnVisiblity({
+                    name: 'quantity',
+                    visible,
+                  })
+                }
+                label="Include Quantity"
+                className="mb-4"
+              />
+              <Checkbox
+                id="include-sub-total"
+                checked={state.newInvoice.form.fields.includeSubTotal}
+                onChange={visible =>
+                  actions.newInvoice.toggleLineItemColumnVisiblity({
+                    name: 'sub-total',
+                    visible,
+                  })
+                }
+                label="Include Sub Total"
+                className="mb-4"
+              />
+            </MenuSection>
+            <MenuSection title="Line Item Settings">
+              <Checkbox
+                id="include-quantity"
+                checked={state.newInvoice.form.fields.includeQuantity}
+                onChange={visible =>
+                  actions.newInvoice.toggleLineItemColumnVisiblity({
+                    name: 'quantity',
+                    visible,
+                  })
+                }
+                label="Include Quantity"
+                className="mb-4"
+              />
+              <Checkbox
+                id="include-sub-total"
+                checked={state.newInvoice.form.fields.includeSubTotal}
+                onChange={visible =>
+                  actions.newInvoice.toggleLineItemColumnVisiblity({
+                    name: 'sub-total',
+                    visible,
+                  })
+                }
+                label="Include Sub Total"
+                className="mb-4"
+              />
+            </MenuSection>
+            <MenuSection title="Line Item Settings">
+              <Checkbox
+                id="include-quantity"
+                checked={state.newInvoice.form.fields.includeQuantity}
+                onChange={visible =>
+                  actions.newInvoice.toggleLineItemColumnVisiblity({
+                    name: 'quantity',
+                    visible,
+                  })
+                }
+                label="Include Quantity"
+                className="mb-4"
+              />
+              <Checkbox
+                id="include-sub-total"
+                checked={state.newInvoice.form.fields.includeSubTotal}
+                onChange={visible =>
+                  actions.newInvoice.toggleLineItemColumnVisiblity({
+                    name: 'sub-total',
+                    visible,
+                  })
+                }
+                label="Include Sub Total"
+                className="mb-4"
+              />
+            </MenuSection>
+          </div>
+          <div className="pa-5 ta-r">
+            <a
+              className={`ion-arrow-right-c fc-blue d-ib transition ${
+                state.newInvoice.menuVisible
+                  ? 'rotate-180'
+                  : 'rotate-0'
+              }`}
+              onClick={() => actions.newInvoice.toggleMenuVisiblity()}
             />
-            <Checkbox
-              id="include-sub-total"
-              checked={state.newInvoice.form.fields.includeSubTotal}
-              onChange={visible =>
-                actions.newInvoice.toggleLineItemColumnVisiblity({
-                  name: 'sub-total',
-                  visible,
-                })
-              }
-              label="Include Sub Total"
-              className="mb-4"
-            />
-          </MenuSection>
+          </div>
         </div>
         <div className="pa-5 h-100 of-auto">
           <Card

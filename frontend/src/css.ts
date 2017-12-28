@@ -31,6 +31,7 @@ function makeCss() {
         transparent: 'transparent',
       },
       dimensions: {
+        0: '0rem',
         1: '1rem',
         2: '2rem',
         3: '4rem',

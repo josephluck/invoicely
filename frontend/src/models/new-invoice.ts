@@ -23,6 +23,7 @@ export interface LineItem extends Row {
 interface LocalState {
   lineItems: LineItem[]
   lineItemColumns: Column<LineItem>[]
+  menuVisible: boolean
 }
 
 export interface State extends LocalState {
@@ -32,6 +33,7 @@ export interface State extends LocalState {
 interface Reducers {
   setLineItems: Helix.Reducer<State, LineItem[]>
   setLineItemColumns: Helix.Reducer<State, Column<LineItem>[]>
+  toggleMenuVisiblity: Helix.Reducer0<State>
 }
 
 interface Effects {
@@ -100,6 +102,7 @@ function emptyState(): LocalState {
       columns.price,
       columns.subTotal,
     ],
+    menuVisible: true,
   }
 }
 
@@ -115,6 +118,9 @@ export const model: Helix.Model<LocalState, Reducers, Effects> = {
     },
     setLineItemColumns(state, lineItemColumns) {
       return { lineItemColumns }
+    },
+    toggleMenuVisiblity(state) {
+      return { menuVisible: !state.menuVisible }
     },
   },
   effects: {
