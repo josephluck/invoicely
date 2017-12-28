@@ -9,7 +9,7 @@ html, body {
 
 * { box-sizing: border-box; }
 
-input, textarea, select { outline: none; font-size: inherit; font-family: inherit; }
+input, textarea, select { outline: none; font-size: inherit; font-family: inherit; padding: 0px }
 textarea { display: block }
 input[type="date"] { -webkit-appearance: none }
 

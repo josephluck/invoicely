@@ -102,7 +102,7 @@ const SortableItem = SortableElement(
   ({ value }: { value: SortableItemProps<any> }) => {
     return (
       <div className="d-flex align-items-center">
-        <a className="ion-more pt-1 rotate-90 ta-c fc-blue d-b mr-1" />
+        <a className="ion-more pt-2 rotate-90 ta-c fc-blue d-b mr-1" />
         {value.row.map((cell, cellIndex) => {
           if (cell.type === 'string' || cell.type === 'number') {
             return (
@@ -115,7 +115,7 @@ const SortableItem = SortableElement(
                 }-${cellIndex}`}
                 inputStyle={{ textAlign: cell.textAlign }}
                 value={cell.value.toString()}
-                className="flex-1 pb-1 mt-1 bbs-solid bc-gray-200"
+                className="flex-1 pb-2 mt-2 bbs-solid bc-gray-200"
                 onChange={val =>
                   value.onCellChange(value.rowIndex, cellIndex, val)
                 }
@@ -131,7 +131,7 @@ const SortableItem = SortableElement(
                   value.rowIndex
                 }-${cellIndex}`}
                 inputStyle={{ textAlign: cell.textAlign }}
-                className="flex-1 pb-1 mt-1 bbs-solid bc-gray-200 lh-4 ba-0"
+                className="flex-1 pb-2 mt-2 bbs-solid bc-gray-200 lh-4 ba-0"
                 value={cell.value.toString()}
                 disabled
               />
@@ -143,7 +143,7 @@ const SortableItem = SortableElement(
         <a
           href={!value.showRemoveRow ? undefined : ''}
           onClick={() => value.removeRow(value.rowIndex)}
-          className={`ion-close-round pb-1 mt-1 ta-c transition d-b ml-3 ${
+          className={`ion-close-round pb-2 mt-2 ta-c transition d-b ml-3 ${
             !value.showRemoveRow ? 'fc-gray-300' : 'fc-blue'
           }`}
         />
@@ -262,7 +262,7 @@ class Spreadsheet<R extends Row> extends React.Component<
           {this.props.columns.map((column, columnIndex) => {
             return (
               <div
-                className="flex-1 bw-medium bbs-solid bc-gray-300 pb-2 mb-1"
+                className="flex-1 bbs-solid bc-gray-300 pb-2 mb-1"
                 key={columnIndex}
                 style={{ textAlign: column.textAlign || 'left' }}
               >

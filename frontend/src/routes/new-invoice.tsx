@@ -5,6 +5,7 @@ import Layout, { Title as LayoutTitle } from './layout'
 import Card from '../components/card'
 import fieldChangeHandler from '../utils/field-change-handler'
 import TextField from '../components/invoice/textfield'
+import DatePicker from '../components/invoice/datepicker'
 import SpreadsheetConstructor from '../components/spreadsheet'
 import MenuSection from '../components/menu-section'
 import { LineItem } from '../models/new-invoice'
@@ -117,7 +118,7 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
             />
           </div>
         </div>
-        <div className="pa-5 h-100 of-auto">
+        <div className="pa-5 h-100 flex-1 of-auto">
           <Card
             className={`ml-auto mr-auto h-a4 ${false ? 'w-a4' : ''}`}
           >
@@ -128,31 +129,54 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                   src="http://householdairfresheners.com/wp-content/uploads/2017/02/Best-Squarespace-Logo-Design-63-For-logo-design-online-with-Squarespace-Logo-Design-728x278.jpg"
                 />
               </div>
-              <div className="ml-3 h-100 w-50 d-flex">
-                <div className="ml-2 ta-r flex-1">
-                  <TextField
-                    id="company-address"
-                    label="Company"
-                    type="textarea"
-                    inputClassName="ta-r"
-                    onChange={change('companyAddress')}
-                    value={
-                      state.newInvoice.form.fields.companyAddress
-                    }
-                  />
-                </div>
-                <div className="ml-2 ta-r flex-1">
-                  <TextField
-                    id="billing-address"
-                    label="Billed To"
-                    type="textarea"
-                    inputClassName="ta-r"
-                    onChange={change('billingAddress')}
-                    value={
-                      state.newInvoice.form.fields.billingAddress
-                    }
-                  />
-                </div>
+              <div className="ml-3 h-100 w-50 ta-r">
+                <TextField
+                  id="invoice-number"
+                  label="Invoice Number"
+                  type="text"
+                  className="w-100 mb-2"
+                  inputClassName="ta-r"
+                  onChange={change('invoiceNumber')}
+                  value={state.newInvoice.form.fields.invoiceNumber}
+                />
+                <DatePicker
+                  id="date-created"
+                  label="Date Raised"
+                  type="text"
+                  className="w-100 mb-2"
+                  inputClassName="ta-r"
+                  onChange={change('dateCreated')}
+                  value={state.newInvoice.form.fields.dateCreated}
+                />
+              </div>
+            </div>
+            <div className="d-flex mb-9 pb-6 bb bbs-solid bc-gray-200">
+              <div className="ml-2 flex-1">
+                <TextField
+                  id="billing-address"
+                  label="To"
+                  type="textarea"
+                  onChange={change('billingAddress')}
+                  value={state.newInvoice.form.fields.billingAddress}
+                />
+              </div>
+              <div className="ml-2 flex-1">
+                <TextField
+                  id="company-address"
+                  label="From"
+                  type="textarea"
+                  onChange={change('companyAddress')}
+                  value={state.newInvoice.form.fields.companyAddress}
+                />
+              </div>
+              <div className="ml-2 flex-2">
+                <TextField
+                  id="notes"
+                  label="Notes"
+                  type="textarea"
+                  onChange={change('notes')}
+                  value={state.newInvoice.form.fields.notes}
+                />
               </div>
             </div>
             <div>

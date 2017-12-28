@@ -105,6 +105,9 @@ function makeCss() {
         6: '2rem',
         7: '2.5rem',
         8: '3rem',
+        9: '4rem',
+        10: '5rem',
+        11: '6rem',
         auto: 'auto',
       },
       media: {

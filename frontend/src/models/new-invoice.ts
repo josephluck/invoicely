@@ -7,11 +7,11 @@ import { GlobalState, GlobalActions } from './index'
 interface Fields {
   invoiceNumber: string
   dateCreated: string
-  dateDue: string
   billingAddress: string
   companyAddress: string
   includeQuantity: boolean
   includeSubTotal: boolean
+  notes: string
 }
 
 export interface LineItem extends Row {
@@ -178,24 +178,22 @@ export const model: Helix.Model<LocalState, Reducers, Effects> = {
         return {
           includeQuantity: undefined,
           includeSubTotal: undefined,
+          notes: undefined,
           invoiceNumber: { presence: true },
           billingAddress: { presence: true },
           companyAddress: { presence: true },
           dateCreated: { presence: true },
-          dateDue: { presence: true },
         }
       },
       defaultForm: () => ({
         includeQuantity: true,
         includeSubTotal: true,
+        notes:
+          'The Acme Corporation is a fictional corporation that features prominently in the Road Runner/Wile E.',
         invoiceNumber: '1001',
         billingAddress: 'Acme Corp\n13 The Street\nThe Town\n19920',
         companyAddress: 'Apple Inc\nSilicon Roundabout\n17380',
         dateCreated: dates.format(new Date(), 'YYYY-MM-DD'),
-        dateDue: dates.format(
-          dates.addMonths(new Date(), 1),
-          'YYYY-MM-DD',
-        ),
       }),
       onValidationError: () => null,
     }),
