@@ -15,7 +15,7 @@ export default function label({
     <label
       htmlFor={id}
       className={`
-        fs-small fc-gray-600 ${className}
+        fs-small fw-bold fc-gray-700 ${className}
       `}
     >
       {children}

@@ -9,9 +9,13 @@ interface Fields {
   dateCreated: string
   billingAddress: string
   companyAddress: string
+  notes: string
+}
+
+interface TemplateSettingsFields {
+  includeLabels: boolean
   includeQuantity: boolean
   includeSubTotal: boolean
-  notes: string
 }
 
 export interface LineItem extends Row {
@@ -23,24 +27,25 @@ export interface LineItem extends Row {
 interface LocalState {
   lineItems: LineItem[]
   lineItemColumns: Column<LineItem>[]
-  menuVisible: boolean
+  previewMode: boolean
 }
 
 export interface State extends LocalState {
   form: Form.State<Fields>
+  templateSettings: Form.State<TemplateSettingsFields>
 }
 
 interface Reducers {
   setLineItems: Helix.Reducer<State, LineItem[]>
   setLineItemColumns: Helix.Reducer<State, Column<LineItem>[]>
-  toggleMenuVisiblity: Helix.Reducer0<State>
+  togglePreviewMode: Helix.Reducer0<State>
 }
 
 interface Effects {
   toggleLineItemColumnVisiblity: Helix.Effect<
     GlobalState,
     GlobalActions,
-    { name: 'quantity' | 'sub-total'; visible: boolean }
+    { name: 'quantity' | 'subTotal'; visible: boolean }
   >
 }
 
@@ -48,6 +53,24 @@ type LocalActions = Helix.Actions<Reducers, Effects>
 
 export interface Actions extends LocalActions {
   form: Form.Actions<Fields>
+  templateSettings: Form.Actions<TemplateSettingsFields>
+}
+
+export function formatAsCurrency(
+  value: any = '',
+  icon: string = '£',
+): string {
+  const num = parseFloat(value.toString().replace(/[^\d.-]/g, ''))
+  const currency = num
+    .toFixed(2)
+    .replace(/(\d)(?=(\d{3})+\.)/g, '$1,')
+  return `${icon}${currency}`
+}
+
+export function calculateInvoiceTotal(rows: LineItem[]) {
+  return rows.reduce((prev, curr) => {
+    return prev + curr.quantity * curr.price
+  }, 0)
 }
 
 const columns: Record<string, Column<LineItem>> = {
@@ -56,6 +79,7 @@ const columns: Record<string, Column<LineItem>> = {
     key: 'description',
     type: 'string',
     defaultValue: '',
+    visible: true,
   },
   quantity: {
     description: 'Quantity',
@@ -63,21 +87,26 @@ const columns: Record<string, Column<LineItem>> = {
     type: 'number',
     textAlign: 'right',
     defaultValue: 1,
+    visible: true,
   },
   price: {
-    description: 'Unit Price',
+    description: 'Price',
     key: 'price',
     type: 'number',
     textAlign: 'right',
     defaultValue: 0,
+    visible: true,
+    displayFormat: formatAsCurrency,
   },
   subTotal: {
-    description: 'Sub Total',
+    description: 'Total',
     key: 'subTotal',
     textAlign: 'right',
     calculation(row) {
       return row.price * row.quantity
     },
+    visible: true,
+    displayFormat: formatAsCurrency,
   },
 }
 
@@ -85,15 +114,15 @@ function emptyState(): LocalState {
   return {
     lineItems: [
       {
-        description: 'Panda Egg Cup',
-        quantity: 2,
-        price: 12.5,
-      },
-      { description: 'Quail Eggs', quantity: 1, price: 11 },
-      {
-        description: 'Sourdough Bread',
+        description: 'User Research',
         quantity: 1,
-        price: 13.75,
+        price: 300,
+      },
+      { description: 'Wireframes', quantity: 1, price: 900 },
+      {
+        description: 'Website Build',
+        quantity: 1,
+        price: 1200,
       },
     ],
     lineItemColumns: [
@@ -102,12 +131,8 @@ function emptyState(): LocalState {
       columns.price,
       columns.subTotal,
     ],
-    menuVisible: true,
+    previewMode: false,
   }
-}
-
-function insert<A>(arr: A[], index: number, newItem: A): A[] {
-  return [...arr.slice(0, index), newItem, ...arr.slice(index)]
 }
 
 export const model: Helix.Model<LocalState, Reducers, Effects> = {
@@ -119,14 +144,14 @@ export const model: Helix.Model<LocalState, Reducers, Effects> = {
     setLineItemColumns(state, lineItemColumns) {
       return { lineItemColumns }
     },
-    toggleMenuVisiblity(state) {
-      return { menuVisible: !state.menuVisible }
+    togglePreviewMode(state) {
+      return { previewMode: !state.previewMode }
     },
   },
   effects: {
     toggleLineItemColumnVisiblity(state, actions, { name, visible }) {
       if (name === 'quantity') {
-        actions.newInvoice.form.setFields({
+        actions.newInvoice.templateSettings.setFields({
           includeQuantity: visible,
         })
         if (visible === false) {
@@ -138,46 +163,46 @@ export const model: Helix.Model<LocalState, Reducers, Effects> = {
               }
             }),
           )
-          actions.newInvoice.setLineItemColumns(
-            state.newInvoice.lineItemColumns.filter(column => {
-              return column.key !== 'quantity'
-            }),
-          )
-        } else {
-          const newColumns = insert(
-            state.newInvoice.lineItemColumns,
-            1,
-            columns.quantity,
-          )
-          actions.newInvoice.setLineItemColumns(newColumns)
         }
-      } else if (name === 'sub-total') {
-        actions.newInvoice.form.setFields({
+      } else if (name === 'subTotal') {
+        actions.newInvoice.templateSettings.setFields({
           includeSubTotal: visible,
         })
-        if (visible === false) {
-          actions.newInvoice.setLineItemColumns(
-            state.newInvoice.lineItemColumns.filter(column => {
-              return column.key !== 'subTotal'
-            }),
-          )
-        } else {
-          const newColumns = insert(
-            state.newInvoice.lineItemColumns,
-            3,
-            columns.subTotal,
-          )
-          actions.newInvoice.setLineItemColumns(newColumns)
-        }
       }
+      const newColumns = state.newInvoice.lineItemColumns.map(
+        column => {
+          if (column.key === name) {
+            return {
+              ...column,
+              visible: !column.visible,
+            }
+          } else {
+            return column
+          }
+        },
+      )
+      actions.newInvoice.setLineItemColumns(newColumns)
     },
   },
   models: {
+    templateSettings: Form.model<TemplateSettingsFields>({
+      constraints: fields => {
+        return {
+          includeLabels: undefined,
+          includeQuantity: undefined,
+          includeSubTotal: undefined,
+        }
+      },
+      defaultForm: () => ({
+        includeLabels: true,
+        includeQuantity: true,
+        includeSubTotal: true,
+      }),
+      onValidationError: () => null,
+    }),
     form: Form.model<Fields>({
       constraints: fields => {
         return {
-          includeQuantity: undefined,
-          includeSubTotal: undefined,
           notes: undefined,
           invoiceNumber: { presence: true },
           billingAddress: { presence: true },
@@ -186,13 +211,11 @@ export const model: Helix.Model<LocalState, Reducers, Effects> = {
         }
       },
       defaultForm: () => ({
-        includeQuantity: true,
-        includeSubTotal: true,
         notes:
-          'The Acme Corporation is a fictional corporation that features prominently in the Road Runner/Wile E.',
+          'Thank you for choosing Awake. Hopefully we can build you something beautiful again soon.',
         invoiceNumber: '1001',
-        billingAddress: 'Acme Corp\n13 The Street\nThe Town\n19920',
-        companyAddress: 'Apple Inc\nSilicon Roundabout\n17380',
+        billingAddress: 'Techspace\n32 Leman Street\nLondon\nE2 3ND',
+        companyAddress: 'Awake\nShoreditch\nLondon\nE1 2LB',
         dateCreated: dates.format(new Date(), 'YYYY-MM-DD'),
       }),
       onValidationError: () => null,

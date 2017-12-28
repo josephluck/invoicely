@@ -49,8 +49,8 @@ function DatePickerCustom({
           minDate={min ? moment(min) : undefined}
           maxDate={max ? moment(max) : undefined}
           className={`
-            lh-4 w-100 ba input-reset transition
-            ${disabled ? 'fc-gray-600' : 'bg-white bc-blue-f'}
+            lh-4 w-100 ba input-reset bg-white transition fc-black
+            ${disabled ? '' : 'bc-blue-f'}
             ${errors.length ? 'bc-red' : 'bc-transparent'}
             ${inputClassName}
           `}

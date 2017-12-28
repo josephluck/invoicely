@@ -25,32 +25,35 @@ export interface Props {
   value?: any
   onInput?: (value: any) => any
   onChange?: (value: any) => any
-  onblur?: (value: any) => any
-  onfocus?: (value: any) => any
+  onBlur?: (value: any) => any
+  onFocus?: (value: any) => any
   disabled?: boolean
   autoFocus?: boolean
   min?: string
   max?: string
   inputClassName?: string
   inputStyle?: any
+  displayFormat?: (value: any) => string
 }
 
 export interface State {
   value: any
+  focussed: boolean
 }
 
 export class TextField extends Component<Props, State> {
   private input: HTMLInputElement
-
   constructor(props: Props) {
     super(props)
     this.state = {
       value: props.value,
+      focussed: false,
     }
     this.onChange = this.onChange.bind(this)
     this.emitChange = this.emitChange.bind(this)
+    this.onFocus = this.onFocus.bind(this)
+    this.onBlur = this.onBlur.bind(this)
   }
-
   componentWillReceiveProps(props: Props) {
     const hasFocus = document.activeElement === this.input
     if (this.state.value !== props.value && !hasFocus) {
@@ -59,7 +62,22 @@ export class TextField extends Component<Props, State> {
       })
     }
   }
-
+  onFocus(e: any) {
+    this.setState({
+      focussed: true,
+    })
+    if (this.props.onFocus) {
+      this.props.onFocus(e.target.value)
+    }
+  }
+  onBlur(e: any) {
+    this.setState({
+      focussed: false,
+    })
+    if (this.props.onBlur) {
+      this.props.onBlur(e.target.value)
+    }
+  }
   onChange(e: any) {
     const value = (e.target as any).value
     this.setState({
@@ -70,13 +88,11 @@ export class TextField extends Component<Props, State> {
     }
     this.emitChange(e)
   }
-
   emitChange(e: any) {
     if (this.props.onChange) {
       this.props.onChange(e.target.value)
     }
   }
-
   render() {
     const {
       type = 'text',
@@ -85,7 +101,6 @@ export class TextField extends Component<Props, State> {
       errors = [],
       placeholder = '',
       className = '',
-      onfocus = (value: any) => value,
       help = '',
       disabled = false,
       autoFocus = false,
@@ -93,6 +108,7 @@ export class TextField extends Component<Props, State> {
       max,
       inputClassName = '',
       inputStyle = {},
+      displayFormat = (v: any) => v,
     } = this.props
     const inputProps = {
       ref: (el: any) => {
@@ -103,22 +119,20 @@ export class TextField extends Component<Props, State> {
       onChange: this.onChange,
       name: id,
       className: `
-        lh-4 w-100 ba input-reset transition
-        ${disabled ? 'bg-white' : 'bg-white bc-blue-f'}
+        lh-4 w-100 ba input-reset transition fc-black bg-transparent
+        ${disabled ? '' : 'bc-blue-f'}
         ${errors.length ? 'bc-red' : 'bc-transparent'}
         ${inputClassName}
       `,
       autoFocus,
       type,
       placeholder,
-      value: this.state.value as any,
+      value: this.state.focussed
+        ? (this.state.value as any)
+        : displayFormat(this.state.value as any),
       id,
-      onFocus: onfocus,
-      onBlur: (e: any) => {
-        if (this.props.onblur) {
-          this.props.onblur(e.target.value)
-        }
-      },
+      onFocus: this.onFocus,
+      onBlur: this.onBlur,
       disabled,
       min,
       max,

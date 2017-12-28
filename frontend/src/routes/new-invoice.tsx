@@ -7,8 +7,11 @@ import fieldChangeHandler from '../utils/field-change-handler'
 import TextField from '../components/invoice/textfield'
 import DatePicker from '../components/invoice/datepicker'
 import SpreadsheetConstructor from '../components/spreadsheet'
-import MenuSection from '../components/menu-section'
-import { LineItem } from '../models/new-invoice'
+import {
+  LineItem,
+  calculateInvoiceTotal,
+  formatAsCurrency,
+} from '../models/new-invoice'
 import Checkbox from '../components/checkbox'
 
 class Spreadsheet extends SpreadsheetConstructor<LineItem> {}
@@ -18,20 +21,28 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
     const change = fieldChangeHandler(
       actions.newInvoice.form.setFields,
     )
+    const total = calculateInvoiceTotal(state.newInvoice.lineItems)
     return (
       <Layout
         title={<LayoutTitle number="1">New Invoice</LayoutTitle>}
       >
         <div className="h-100 bg-white transition d-flex flex-direction-column">
-          <div
-            className={`flex-1 transition of-hidden ${
-              state.newInvoice.menuVisible ? 'w-5' : 'w-0'
-            }`}
-          >
-            <MenuSection title="Line Item Settings">
+          <div className="flex-1">
+            <div className="pa-5 bb bbs-solid bc-gray-200">
+              <Checkbox
+                id="preview-mode"
+                checked={state.newInvoice.previewMode}
+                onChange={actions.newInvoice.togglePreviewMode}
+                label="Preview"
+              />
+            </div>
+            <div className="pa-5 bb bbs-solid bc-gray-200">
               <Checkbox
                 id="include-quantity"
-                checked={state.newInvoice.form.fields.includeQuantity}
+                checked={
+                  state.newInvoice.templateSettings.fields
+                    .includeQuantity
+                }
                 onChange={visible =>
                   actions.newInvoice.toggleLineItemColumnVisiblity({
                     name: 'quantity',
@@ -43,114 +54,81 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
               />
               <Checkbox
                 id="include-sub-total"
-                checked={state.newInvoice.form.fields.includeSubTotal}
+                checked={
+                  state.newInvoice.templateSettings.fields
+                    .includeSubTotal
+                }
                 onChange={visible =>
                   actions.newInvoice.toggleLineItemColumnVisiblity({
-                    name: 'sub-total',
+                    name: 'subTotal',
                     visible,
                   })
                 }
-                label="Include Sub Total"
-                className="mb-4"
-              />
-            </MenuSection>
-            <MenuSection title="Line Item Settings">
-              <Checkbox
-                id="include-quantity"
-                checked={state.newInvoice.form.fields.includeQuantity}
-                onChange={visible =>
-                  actions.newInvoice.toggleLineItemColumnVisiblity({
-                    name: 'quantity',
-                    visible,
-                  })
-                }
-                label="Include Quantity"
+                label="Include Total"
                 className="mb-4"
               />
               <Checkbox
-                id="include-sub-total"
-                checked={state.newInvoice.form.fields.includeSubTotal}
-                onChange={visible =>
-                  actions.newInvoice.toggleLineItemColumnVisiblity({
-                    name: 'sub-total',
-                    visible,
+                id="include-labels"
+                checked={
+                  state.newInvoice.templateSettings.fields
+                    .includeLabels
+                }
+                onChange={includeLabels =>
+                  actions.newInvoice.templateSettings.setFields({
+                    includeLabels,
                   })
                 }
-                label="Include Sub Total"
-                className="mb-4"
+                label="Show Labels"
               />
-            </MenuSection>
-            <MenuSection title="Line Item Settings">
-              <Checkbox
-                id="include-quantity"
-                checked={state.newInvoice.form.fields.includeQuantity}
-                onChange={visible =>
-                  actions.newInvoice.toggleLineItemColumnVisiblity({
-                    name: 'quantity',
-                    visible,
-                  })
-                }
-                label="Include Quantity"
-                className="mb-4"
-              />
-              <Checkbox
-                id="include-sub-total"
-                checked={state.newInvoice.form.fields.includeSubTotal}
-                onChange={visible =>
-                  actions.newInvoice.toggleLineItemColumnVisiblity({
-                    name: 'sub-total',
-                    visible,
-                  })
-                }
-                label="Include Sub Total"
-                className="mb-4"
-              />
-            </MenuSection>
+            </div>
           </div>
-          <div className="pa-5 ta-r">
-            <a
-              className={`ion-arrow-right-c fc-blue d-ib transition ${
-                state.newInvoice.menuVisible
-                  ? 'rotate-180'
-                  : 'rotate-0'
-              }`}
-              onClick={() => actions.newInvoice.toggleMenuVisiblity()}
-            />
-          </div>
+          <div className="pa-5" />
         </div>
         <div className="pa-5 h-100 flex-1 of-auto">
           <Card
-            className={`ml-auto mr-auto h-a4 ${false ? 'w-a4' : ''}`}
+            className={`ml-auto mr-auto h-a4 pa-5 ${
+              false ? 'w-a4' : ''
+            }`}
           >
-            <div className="d-flex align-items-center bb bbs-solid bc-gray-200 pb-3 mb-6">
+            <div className="d-flex align-items-center bb bbs-solid bc-gray-200 pb-6 mb-6">
               <div className="flex-1">
                 <img
-                  style={{ width: '100%', height: 'auto' }}
-                  src="http://householdairfresheners.com/wp-content/uploads/2017/02/Best-Squarespace-Logo-Design-63-For-logo-design-online-with-Squarespace-Logo-Design-728x278.jpg"
+                  style={{ width: 'auto', height: '30mm' }}
+                  src="https://static1.squarespace.com/static/ta/56c62d0df699bb9171a122bc/147/assets/logo-black.png"
                 />
               </div>
               <div className="ml-3 h-100 w-50 ta-r">
                 <TextField
-                  id="invoice-number"
-                  label="Invoice Number"
-                  type="text"
-                  className="w-100 mb-2"
+                  id="company-address"
+                  type="textarea"
+                  onChange={change('companyAddress')}
                   inputClassName="ta-r"
-                  onChange={change('invoiceNumber')}
-                  value={state.newInvoice.form.fields.invoiceNumber}
-                />
-                <DatePicker
-                  id="date-created"
-                  label="Date Raised"
-                  type="text"
-                  className="w-100 mb-2"
-                  inputClassName="ta-r"
-                  onChange={change('dateCreated')}
-                  value={state.newInvoice.form.fields.dateCreated}
+                  value={state.newInvoice.form.fields.companyAddress}
+                  disabled={state.newInvoice.previewMode}
                 />
               </div>
             </div>
-            <div className="d-flex mb-9 pb-6 bb bbs-solid bc-gray-200">
+            <div className="d-flex mb-8 pb-6">
+              <div className="flex-1">
+                <TextField
+                  id="invoice-number"
+                  label="Invoice"
+                  type="text"
+                  className="w-100 mb-2"
+                  onChange={change('invoiceNumber')}
+                  value={state.newInvoice.form.fields.invoiceNumber}
+                  disabled={state.newInvoice.previewMode}
+                />
+                <DatePicker
+                  id="date-created"
+                  label="Raised"
+                  type="text"
+                  className="w-100 mb-2"
+                  onChange={change('dateCreated')}
+                  value={state.newInvoice.form.fields.dateCreated}
+                  disabled={state.newInvoice.previewMode}
+                />
+              </div>
               <div className="ml-2 flex-1">
                 <TextField
                   id="billing-address"
@@ -158,15 +136,7 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                   type="textarea"
                   onChange={change('billingAddress')}
                   value={state.newInvoice.form.fields.billingAddress}
-                />
-              </div>
-              <div className="ml-2 flex-1">
-                <TextField
-                  id="company-address"
-                  label="From"
-                  type="textarea"
-                  onChange={change('companyAddress')}
-                  value={state.newInvoice.form.fields.companyAddress}
+                  disabled={state.newInvoice.previewMode}
                 />
               </div>
               <div className="ml-2 flex-2">
@@ -176,6 +146,7 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                   type="textarea"
                   onChange={change('notes')}
                   value={state.newInvoice.form.fields.notes}
+                  disabled={state.newInvoice.previewMode}
                 />
               </div>
             </div>
@@ -183,8 +154,17 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
               <Spreadsheet
                 rows={state.newInvoice.lineItems}
                 columns={state.newInvoice.lineItemColumns}
+                showLabels={
+                  state.newInvoice.templateSettings.fields
+                    .includeLabels
+                }
                 onChange={actions.newInvoice.setLineItems}
+                readOnly={state.newInvoice.previewMode}
               />
+              <div className="bts-solid fw-bold bbs-solid bw-small bc-gray-200 pv-4 mt-1 d-flex">
+                <div className="flex-1">Total</div>
+                <div className="ta-r">{formatAsCurrency(total)}</div>
+              </div>
             </div>
           </Card>
         </div>
