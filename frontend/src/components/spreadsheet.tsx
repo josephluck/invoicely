@@ -116,7 +116,7 @@ const SortableItem = SortableElement(
     return (
       <div className="d-flex align-items-center pb-2 mt-2">
         {!value.readOnly ? (
-          <a className="ion-more rotate-90 ta-c fc-blue d-b mr-1" />
+          <a className="ion-more c-row-resize rotate-90 ta-c fc-blue d-b mr-1" />
         ) : null}
         {value.row.map((cell, cellIndex) => {
           if (cell.type === 'string' || cell.type === 'number') {

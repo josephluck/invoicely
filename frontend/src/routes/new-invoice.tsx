@@ -6,10 +6,12 @@ import Card from '../components/card'
 import fieldChangeHandler from '../utils/field-change-handler'
 import TextField from '../components/invoice/textfield'
 import DatePicker from '../components/invoice/datepicker'
+import Select from '../components/select'
 import SpreadsheetConstructor from '../components/spreadsheet'
 import {
   LineItem,
   calculateInvoiceTotal,
+  calculateVat,
   formatAsCurrency,
 } from '../models/new-invoice'
 import Checkbox from '../components/checkbox'
@@ -21,7 +23,14 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
     const change = fieldChangeHandler(
       actions.newInvoice.form.setFields,
     )
-    const total = calculateInvoiceTotal(state.newInvoice.lineItems)
+    const subTotal = calculateInvoiceTotal(state.newInvoice.lineItems)
+    const vat = calculateVat(
+      subTotal,
+      state.newInvoice.form.fields.includeVat
+        ? state.newInvoice.form.fields.vatRate
+        : 0,
+    )
+    const total = subTotal + vat
     return (
       <Layout title={<LayoutTitle>New Invoice</LayoutTitle>}>
         <div className="h-100 d-flex pa-5 flex-direction-column">
@@ -34,7 +43,7 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                 label="Preview"
               />
             </div>
-            <div className="bb bbs-solid bc-gray-200">
+            <div className="pb-5 mb-5 bb bbs-solid bc-gray-300">
               <Checkbox
                 id="include-quantity"
                 checked={
@@ -78,6 +87,29 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                 }
                 label="Column Labels"
               />
+            </div>
+            <div className="pb-5 mb-5 bb bbs-solid bc-gray-300">
+              <Checkbox
+                id="include-vat"
+                checked={state.newInvoice.form.fields.includeVat}
+                onChange={change('includeVat')}
+                label="Include VAT"
+                className="mb-4"
+              />
+              {state.newInvoice.form.fields.includeVat ? (
+                <Select
+                  options={[
+                    { label: '0%', value: 0 },
+                    { label: '5%', value: 5 },
+                    { label: '20%', value: 20 },
+                  ]}
+                  id="vat-rate"
+                  value={state.newInvoice.form.fields.vatRate}
+                  onChange={change('vatRate')}
+                  errors={state.newInvoice.form.errors.vatRate}
+                  inputClassName="bg-white"
+                />
+              ) : null}
             </div>
           </div>
           <div className="pa-5" />
@@ -159,10 +191,20 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                 onChange={actions.newInvoice.setLineItems}
                 readOnly={state.newInvoice.previewMode}
                 totals={
-                  <div className="bts-solid fw-bold bbs-solid bw-small bc-gray-200 pv-4 mt-1 d-flex">
-                    <div className="flex-1">Total</div>
-                    <div className="ta-r">
-                      {formatAsCurrency(total)}
+                  <div className="bts-solid bw-small bc-gray-200 mt-1">
+                    {state.newInvoice.form.fields.includeVat ? (
+                      <div className="d-flex bbs-dashed bw-small bc-gray-200 pv-4">
+                        <div className="flex-1">VAT</div>
+                        <div className="ta-r">
+                          {formatAsCurrency(vat)}
+                        </div>
+                      </div>
+                    ) : null}
+                    <div className="d-flex bbs-solid bw-small bc-gray-200 pv-4">
+                      <div className="fw-bold flex-1">Total</div>
+                      <div className="fw-bold ta-r">
+                        {formatAsCurrency(total)}
+                      </div>
                     </div>
                   </div>
                 }

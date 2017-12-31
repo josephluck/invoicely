@@ -10,6 +10,8 @@ interface Fields {
   billingAddress: string
   companyAddress: string
   notes: string
+  includeVat: boolean
+  vatRate: number
 }
 
 interface TemplateSettingsFields {
@@ -71,6 +73,10 @@ export function calculateInvoiceTotal(rows: LineItem[]) {
   return rows.reduce((prev, curr) => {
     return prev + curr.quantity * curr.price
   }, 0)
+}
+
+export function calculateVat(total: number, rate: number = 0) {
+  return total / 100 * rate
 }
 
 const columns: Record<string, Column<LineItem>> = {
@@ -204,6 +210,8 @@ export const model: Helix.Model<LocalState, Reducers, Effects> = {
       constraints: fields => {
         return {
           notes: undefined,
+          includeVat: undefined,
+          vatRate: fields.includeVat ? { presence: true } : undefined,
           invoiceNumber: { presence: true },
           billingAddress: { presence: true },
           companyAddress: { presence: true },
@@ -217,6 +225,8 @@ export const model: Helix.Model<LocalState, Reducers, Effects> = {
         billingAddress: 'Techspace\n32 Leman Street\nLondon\nE2 3ND',
         companyAddress: 'Awake\nShoreditch\nLondon\nE1 2LB',
         dateCreated: dates.format(new Date(), 'YYYY-MM-DD'),
+        includeVat: true,
+        vatRate: 20,
       }),
       onValidationError: () => null,
     }),

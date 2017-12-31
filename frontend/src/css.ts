@@ -18,7 +18,6 @@ function makeCss() {
         black: '#111111',
         gray: '#BDBDBD',
         silver: '#EEEEEE',
-        white: '#FFFFFF',
         'gray-100': '#F5F5F5',
         'gray-200': '#EEEEEE',
         'gray-300': '#E0E0E0',
@@ -28,6 +27,7 @@ function makeCss() {
         'gray-700': '#616161',
         'gray-800': '#424242',
         'gray-900': '#212121',
+        white: '#FFFFFF',
         transparent: 'transparent',
       },
       dimensions: {
