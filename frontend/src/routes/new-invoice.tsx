@@ -23,12 +23,10 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
     )
     const total = calculateInvoiceTotal(state.newInvoice.lineItems)
     return (
-      <Layout
-        title={<LayoutTitle number="1">New Invoice</LayoutTitle>}
-      >
-        <div className="h-100 bg-white transition d-flex flex-direction-column">
+      <Layout title={<LayoutTitle>New Invoice</LayoutTitle>}>
+        <div className="h-100 d-flex pa-5 flex-direction-column">
           <div className="flex-1">
-            <div className="pa-5 bb bbs-solid bc-gray-200">
+            <div className="pb-5 mb-5 bb bbs-solid bc-gray-300">
               <Checkbox
                 id="preview-mode"
                 checked={state.newInvoice.previewMode}
@@ -36,7 +34,7 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                 label="Preview"
               />
             </div>
-            <div className="pa-5 bb bbs-solid bc-gray-200">
+            <div className="bb bbs-solid bc-gray-200">
               <Checkbox
                 id="include-quantity"
                 checked={
@@ -78,7 +76,7 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                     includeLabels,
                   })
                 }
-                label="Show Labels"
+                label="Column Labels"
               />
             </div>
           </div>
@@ -160,11 +158,15 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                 }
                 onChange={actions.newInvoice.setLineItems}
                 readOnly={state.newInvoice.previewMode}
+                totals={
+                  <div className="bts-solid fw-bold bbs-solid bw-small bc-gray-200 pv-4 mt-1 d-flex">
+                    <div className="flex-1">Total</div>
+                    <div className="ta-r">
+                      {formatAsCurrency(total)}
+                    </div>
+                  </div>
+                }
               />
-              <div className="bts-solid fw-bold bbs-solid bw-small bc-gray-200 pv-4 mt-1 d-flex">
-                <div className="flex-1">Total</div>
-                <div className="ta-r">{formatAsCurrency(total)}</div>
-              </div>
             </div>
           </Card>
         </div>

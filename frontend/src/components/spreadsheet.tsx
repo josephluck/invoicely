@@ -93,6 +93,7 @@ interface Props<R extends Row> {
   onChange: (rows: R[]) => any
   showLabels?: boolean
   readOnly?: boolean
+  totals?: React.ReactNode
 }
 
 interface State {}
@@ -274,7 +275,7 @@ class Spreadsheet<R extends Row> extends React.Component<
   }
   render() {
     const rows = unzipRows(this.props.columns, this.props.rows)
-    const { showLabels = true, readOnly = false } = this.props
+    const { showLabels = true, readOnly = false, totals } = this.props
     return (
       <div className="spreadsheet">
         <div className="d-flex mb-2">
@@ -323,12 +324,9 @@ class Spreadsheet<R extends Row> extends React.Component<
             lockToContainerEdges
           />
         </div>
+        {totals}
         {!readOnly ? (
           <div className="d-flex">
-            <a
-              className="ion-more pt-1 rotate-90 ta-c fc-blue d-b mr-1 o-0"
-              style={{ pointerEvents: 'none' }}
-            />
             <a
               onClick={() => this.addNewRow()}
               href=""
@@ -337,10 +335,6 @@ class Spreadsheet<R extends Row> extends React.Component<
             >
               Add Another Line Item
             </a>
-            <i
-              style={{ pointerEvents: 'none' }}
-              className="ion-close-round d-b o-0 ml-3"
-            />
           </div>
         ) : null}
       </div>
