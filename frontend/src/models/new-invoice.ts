@@ -12,6 +12,8 @@ interface Fields {
   notes: string
   includeVat: boolean
   vatRate: number
+  includeDiscount: boolean
+  discount: number
 }
 
 interface TemplateSettingsFields {
@@ -212,6 +214,10 @@ export const model: Helix.Model<LocalState, Reducers, Effects> = {
           notes: undefined,
           includeVat: undefined,
           vatRate: fields.includeVat ? { presence: true } : undefined,
+          includeDiscount: undefined,
+          discount: fields.includeVat
+            ? { presence: true }
+            : undefined,
           invoiceNumber: { presence: true },
           billingAddress: { presence: true },
           companyAddress: { presence: true },
@@ -227,6 +233,8 @@ export const model: Helix.Model<LocalState, Reducers, Effects> = {
         dateCreated: dates.format(new Date(), 'YYYY-MM-DD'),
         includeVat: true,
         vatRate: 20,
+        includeDiscount: true,
+        discount: 100,
       }),
       onValidationError: () => null,
     }),

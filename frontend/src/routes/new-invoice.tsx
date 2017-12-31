@@ -5,6 +5,7 @@ import Layout, { Title as LayoutTitle } from './layout'
 import Card from '../components/card'
 import fieldChangeHandler from '../utils/field-change-handler'
 import TextField from '../components/invoice/textfield'
+import NormalTextField from '../components/textfield'
 import DatePicker from '../components/invoice/datepicker'
 import Select from '../components/select'
 import SpreadsheetConstructor from '../components/spreadsheet'
@@ -23,7 +24,11 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
     const change = fieldChangeHandler(
       actions.newInvoice.form.setFields,
     )
-    const subTotal = calculateInvoiceTotal(state.newInvoice.lineItems)
+    const discount = state.newInvoice.form.fields.includeDiscount
+      ? state.newInvoice.form.fields.discount || 0
+      : 0
+    const subTotal =
+      calculateInvoiceTotal(state.newInvoice.lineItems) - discount
     const vat = calculateVat(
       subTotal,
       state.newInvoice.form.fields.includeVat
@@ -35,7 +40,7 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
       <Layout title={<LayoutTitle>New Invoice</LayoutTitle>}>
         <div className="h-100 d-flex pa-5 flex-direction-column">
           <div className="flex-1">
-            <div className="pb-5 mb-5 bb bbs-solid bc-gray-300">
+            <div className="pv-5 mb-5 bb bt bbs-solid bts-solid bc-gray-300">
               <Checkbox
                 id="preview-mode"
                 checked={state.newInvoice.previewMode}
@@ -85,7 +90,7 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                     includeLabels,
                   })
                 }
-                label="Column Labels"
+                label="Include Column Labels"
               />
             </div>
             <div className="pb-5 mb-5 bb bbs-solid bc-gray-300">
@@ -94,7 +99,6 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                 checked={state.newInvoice.form.fields.includeVat}
                 onChange={change('includeVat')}
                 label="Include VAT"
-                className="mb-4"
               />
               {state.newInvoice.form.fields.includeVat ? (
                 <Select
@@ -108,6 +112,25 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                   onChange={change('vatRate')}
                   errors={state.newInvoice.form.errors.vatRate}
                   inputClassName="bg-white"
+                  className="mt-4"
+                />
+              ) : null}
+              <Checkbox
+                id="include-discount"
+                checked={state.newInvoice.form.fields.includeDiscount}
+                onChange={change('includeDiscount')}
+                label="Include Discount"
+                className="mt-4"
+              />
+              {state.newInvoice.form.fields.includeDiscount ? (
+                <NormalTextField
+                  id="discount"
+                  value={state.newInvoice.form.fields.discount}
+                  onChange={change('discount')}
+                  displayFormat={formatAsCurrency}
+                  errors={state.newInvoice.form.errors.discount}
+                  inputClassName="bg-white"
+                  className="mt-4"
                 />
               ) : null}
             </div>
@@ -192,6 +215,14 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                 readOnly={state.newInvoice.previewMode}
                 totals={
                   <div className="bts-solid bw-small bc-gray-200 mt-1">
+                    {state.newInvoice.form.fields.includeDiscount ? (
+                      <div className="d-flex bbs-dashed bw-small bc-gray-200 pv-4">
+                        <div className="flex-1">Discount</div>
+                        <div className="ta-r">
+                          - {formatAsCurrency(discount)}
+                        </div>
+                      </div>
+                    ) : null}
                     {state.newInvoice.form.fields.includeVat ? (
                       <div className="d-flex bbs-dashed bw-small bc-gray-200 pv-4">
                         <div className="flex-1">VAT</div>
