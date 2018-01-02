@@ -35,8 +35,8 @@ export default function Layout({
           <i className="ion-navicon-round" />
         </div>
         <div className="flex-1 ta-c">{title}</div>
-        <div className="d-flex align-items-center fs-large">
-          {/* <i className="ion-person" /> */}
+        <div className="d-flex align-items-center fs-large fc-blue">
+          <i className="ion-ios-bell" />
         </div>
       </div>
       <div className="d-flex flex-1 of-auto">{children}</div>

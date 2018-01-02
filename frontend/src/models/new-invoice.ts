@@ -1,17 +1,18 @@
 import { Helix } from 'helix-js'
 import * as dates from 'date-fns'
 import * as Form from './form'
-import { Row, Column } from '../components/spreadsheet'
+import { LineItem } from '../types'
+import { Column } from '../components/spreadsheet'
 import { GlobalState, GlobalActions } from './index'
 
 interface Fields {
-  invoiceNumber: string
+  number: string
   dateCreated: string
   billingAddress: string
   companyAddress: string
   notes: string
-  includeVat: boolean
-  vatRate: number
+  includeTax: boolean
+  taxRate: number
   includeDiscount: boolean
   discount: number
 }
@@ -20,12 +21,6 @@ interface TemplateSettingsFields {
   includeLabels: boolean
   includeQuantity: boolean
   includeSubTotal: boolean
-}
-
-export interface LineItem extends Row {
-  description: string
-  quantity: number
-  price: number
 }
 
 interface LocalState {
@@ -212,13 +207,13 @@ export const model: Helix.Model<LocalState, Reducers, Effects> = {
       constraints: fields => {
         return {
           notes: undefined,
-          includeVat: undefined,
-          vatRate: fields.includeVat ? { presence: true } : undefined,
+          includeTax: undefined,
+          taxRate: fields.includeTax ? { presence: true } : undefined,
           includeDiscount: undefined,
-          discount: fields.includeVat
+          discount: fields.includeTax
             ? { presence: true }
             : undefined,
-          invoiceNumber: { presence: true },
+          number: { presence: true },
           billingAddress: { presence: true },
           companyAddress: { presence: true },
           dateCreated: { presence: true },
@@ -227,12 +222,12 @@ export const model: Helix.Model<LocalState, Reducers, Effects> = {
       defaultForm: () => ({
         notes:
           'Thank you for choosing Awake. Hopefully we can build you something beautiful again soon.',
-        invoiceNumber: '1001',
+        number: '1001',
         billingAddress: 'Techspace\n32 Leman Street\nLondon\nE2 3ND',
         companyAddress: 'Awake\nShoreditch\nLondon\nE1 2LB',
         dateCreated: dates.format(new Date(), 'YYYY-MM-DD'),
-        includeVat: true,
-        vatRate: 20,
+        includeTax: true,
+        taxRate: 20,
         includeDiscount: true,
         discount: 100,
       }),

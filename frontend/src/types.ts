@@ -1,7 +1,7 @@
-interface LineItem {
+export interface LineItem extends Record<string, any> {
   description: string
   quantity: number
-  amount: number
+  price: number
 }
 
 // interface Address {
@@ -13,19 +13,19 @@ interface LineItem {
 //   country: string
 // }
 
-type InvoiceState = 'draft' | 'saved' | 'published' | 'paid'
+export type InvoiceState = 'draft' | 'saved' | 'published' | 'paid'
 
-interface Invoice {
+export interface Invoice {
   id: string
   number: string
-  poNumber?: string
   dateCreated: string
   datePublished?: string
   dateDue?: string
-  terms?: string
   lineItems: LineItem[]
   taxRate: number
-  fromAddress: string
-  toAddress: string
+  discount: number
+  billingAddress: string
+  companyAddress: string
   state: InvoiceState
+  notes: string
 }
