@@ -6,8 +6,11 @@ import Invoice from '../components/invoice'
 const page: Helix.Page<GlobalState, GlobalActions> = {
   view: (state, prev, actions) => {
     return (
-      <div className="w-a4 h-a4">
-        <Invoice invoice={state.invoice.invoice} />
+      <div className="w-100 h-100 bg-gray-100 pa-5">
+        <Invoice
+          invoice={state.invoice.invoice}
+          className="w-a4 h-a4 box-card bra-2"
+        />
       </div>
     )
   },

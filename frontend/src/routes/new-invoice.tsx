@@ -4,6 +4,7 @@ import { GlobalState, GlobalActions } from '../models'
 import { LineItem } from '../types'
 import Layout, { Title as LayoutTitle } from './layout'
 import Card from '../components/card'
+import Invoice from '../components/invoice'
 import fieldChangeHandler from '../utils/field-change-handler'
 import TextField from '../components/invoice/textfield'
 import NormalTextField from '../components/textfield'
@@ -144,111 +145,123 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
           </div>
         </div>
         <div className="pa-5 h-100 flex-1 of-auto">
-          <Card
-            className={`ml-auto mr-auto h-a4 pa-5 ${
-              false ? 'w-a4' : ''
-            }`}
-          >
-            <div className="d-flex align-items-center bb bbs-solid bc-gray-200 pb-6 mb-6">
-              <div className="flex-1">
-                <img
-                  style={{ width: 'auto', height: '30mm' }}
-                  src="https://static1.squarespace.com/static/ta/56c62d0df699bb9171a122bc/147/assets/logo-black.png"
-                />
+          {state.newInvoice.previewMode ? (
+            <Invoice
+              invoice={state.invoice.invoice}
+              className="box-card h-a4 ml-auto mr-auto"
+            />
+          ) : (
+            <Card
+              className={`ml-auto mr-auto h-a4 pa-5 ${
+                false ? 'w-a4' : ''
+              }`}
+            >
+              <div className="d-flex align-items-center bb bbs-solid bc-gray-200 pb-6 mb-6">
+                <div className="flex-1">
+                  <img
+                    style={{ width: 'auto', height: '30mm' }}
+                    src="https://static1.squarespace.com/static/ta/56c62d0df699bb9171a122bc/147/assets/logo-black.png"
+                  />
+                </div>
+                <div className="ml-3 h-100 w-50 ta-r">
+                  <TextField
+                    id="company-address"
+                    type="textarea"
+                    onChange={change('companyAddress')}
+                    inputClassName="ta-r"
+                    value={
+                      state.newInvoice.form.fields.companyAddress
+                    }
+                    disabled={state.newInvoice.previewMode}
+                  />
+                </div>
               </div>
-              <div className="ml-3 h-100 w-50 ta-r">
-                <TextField
-                  id="company-address"
-                  type="textarea"
-                  onChange={change('companyAddress')}
-                  inputClassName="ta-r"
-                  value={state.newInvoice.form.fields.companyAddress}
-                  disabled={state.newInvoice.previewMode}
-                />
+              <div className="d-flex mb-8 pb-6">
+                <div className="flex-1">
+                  <TextField
+                    id="invoice-number"
+                    label="Invoice"
+                    type="text"
+                    className="w-100 mb-2"
+                    onChange={change('number')}
+                    value={state.newInvoice.form.fields.number}
+                    errors={state.newInvoice.form.errors.number}
+                    disabled={state.newInvoice.previewMode}
+                  />
+                  <DatePicker
+                    id="date-created"
+                    label="Raised"
+                    type="text"
+                    className="w-100 mb-2"
+                    onChange={change('dateCreated')}
+                    value={state.newInvoice.form.fields.dateCreated}
+                    disabled={state.newInvoice.previewMode}
+                  />
+                </div>
+                <div className="ml-2 flex-1">
+                  <TextField
+                    id="billing-address"
+                    label="To"
+                    type="textarea"
+                    onChange={change('billingAddress')}
+                    value={
+                      state.newInvoice.form.fields.billingAddress
+                    }
+                    disabled={state.newInvoice.previewMode}
+                  />
+                </div>
+                <div className="ml-2 flex-2">
+                  <TextField
+                    id="notes"
+                    label="Notes"
+                    type="textarea"
+                    onChange={change('notes')}
+                    value={state.newInvoice.form.fields.notes}
+                    disabled={state.newInvoice.previewMode}
+                  />
+                </div>
               </div>
-            </div>
-            <div className="d-flex mb-8 pb-6">
-              <div className="flex-1">
-                <TextField
-                  id="invoice-number"
-                  label="Invoice"
-                  type="text"
-                  className="w-100 mb-2"
-                  onChange={change('number')}
-                  value={state.newInvoice.form.fields.number}
-                  errors={state.newInvoice.form.errors.number}
-                  disabled={state.newInvoice.previewMode}
-                />
-                <DatePicker
-                  id="date-created"
-                  label="Raised"
-                  type="text"
-                  className="w-100 mb-2"
-                  onChange={change('dateCreated')}
-                  value={state.newInvoice.form.fields.dateCreated}
-                  disabled={state.newInvoice.previewMode}
-                />
-              </div>
-              <div className="ml-2 flex-1">
-                <TextField
-                  id="billing-address"
-                  label="To"
-                  type="textarea"
-                  onChange={change('billingAddress')}
-                  value={state.newInvoice.form.fields.billingAddress}
-                  disabled={state.newInvoice.previewMode}
-                />
-              </div>
-              <div className="ml-2 flex-2">
-                <TextField
-                  id="notes"
-                  label="Notes"
-                  type="textarea"
-                  onChange={change('notes')}
-                  value={state.newInvoice.form.fields.notes}
-                  disabled={state.newInvoice.previewMode}
-                />
-              </div>
-            </div>
-            <div>
-              <Spreadsheet
-                rows={state.newInvoice.lineItems}
-                columns={state.newInvoice.lineItemColumns}
-                showLabels={
-                  state.newInvoice.templateSettings.fields
-                    .includeLabels
-                }
-                onChange={actions.newInvoice.setLineItems}
-                readOnly={state.newInvoice.previewMode}
-                totals={
-                  <div className="bts-solid bw-small bc-gray-200 mt-1">
-                    {state.newInvoice.form.fields.includeDiscount ? (
-                      <div className="d-flex bbs-dashed bw-small bc-gray-200 pv-4">
-                        <div className="flex-1">Discount</div>
-                        <div className="ta-r">
-                          - {formatAsCurrency(discount)}
+              <div>
+                <Spreadsheet
+                  rows={state.newInvoice.lineItems}
+                  columns={state.newInvoice.lineItemColumns}
+                  showLabels={
+                    state.newInvoice.templateSettings.fields
+                      .includeLabels
+                  }
+                  onChange={actions.newInvoice.setLineItems}
+                  readOnly={state.newInvoice.previewMode}
+                  totals={
+                    <div className="bts-solid bw-small bc-gray-200 mt-1">
+                      {state.newInvoice.form.fields
+                        .includeDiscount ? (
+                        <div className="d-flex bbs-dashed bw-small bc-gray-200 pv-4">
+                          <div className="flex-1">Discount</div>
+                          <div className="ta-r">
+                            - {formatAsCurrency(discount)}
+                          </div>
                         </div>
-                      </div>
-                    ) : null}
-                    {state.newInvoice.form.fields.includeTax ? (
-                      <div className="d-flex bbs-dashed bw-small bc-gray-200 pv-4">
-                        <div className="flex-1">VAT</div>
-                        <div className="ta-r">
-                          {formatAsCurrency(vat)}
+                      ) : null}
+                      {state.newInvoice.form.fields.includeTax ? (
+                        <div className="d-flex bbs-dashed bw-small bc-gray-200 pv-4">
+                          <div className="flex-1">VAT</div>
+                          <div className="ta-r">
+                            {formatAsCurrency(vat)}
+                          </div>
                         </div>
-                      </div>
-                    ) : null}
-                    <div className="d-flex bbs-solid bw-small bc-gray-200 pv-4">
-                      <div className="fw-bold flex-1">Total</div>
-                      <div className="fw-bold ta-r">
-                        {formatAsCurrency(total)}
+                      ) : null}
+                      <div className="d-flex bbs-solid bw-small bc-gray-200 pv-4">
+                        <div className="fw-bold flex-1">Total</div>
+                        <div className="fw-bold ta-r">
+                          {formatAsCurrency(total)}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                }
-              />
-            </div>
-          </Card>
+                  }
+                />
+              </div>
+            </Card>
+          )}
         </div>
       </Layout>
     )
