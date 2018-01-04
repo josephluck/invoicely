@@ -12,12 +12,9 @@ import DatePicker from '../components/invoice/datepicker'
 import Select from '../components/select'
 import Button from '../components/button'
 import SpreadsheetConstructor from '../components/spreadsheet'
-import {
-  calculateInvoiceTotal,
-  calculateVat,
-  formatAsCurrency,
-} from '../models/new-invoice'
+import { formatAsCurrency } from '../utils/invoice'
 import Checkbox from '../components/checkbox'
+import InvoiceTotals from '../components/invoice-totals'
 
 class Spreadsheet extends SpreadsheetConstructor<LineItem> {}
 
@@ -26,18 +23,6 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
     const change = fieldChangeHandler(
       actions.newInvoice.form.setFields,
     )
-    const discount = state.newInvoice.form.fields.includeDiscount
-      ? state.newInvoice.form.fields.discount || 0
-      : 0
-    const subTotal =
-      calculateInvoiceTotal(state.newInvoice.lineItems) - discount
-    const vat = calculateVat(
-      subTotal,
-      state.newInvoice.form.fields.includeTax
-        ? state.newInvoice.form.fields.taxRate
-        : 0,
-    )
-    const total = subTotal + vat
     return (
       <Layout title={<LayoutTitle>New Invoice</LayoutTitle>}>
         <div className="h-100 d-flex pa-5 flex-direction-column">
@@ -53,10 +38,7 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
             <div className="pb-5 mb-5 bb bbs-solid bc-gray-300">
               <Checkbox
                 id="include-quantity"
-                checked={
-                  state.newInvoice.templateSettings.fields
-                    .includeQuantity
-                }
+                checked={state.newInvoice.form.fields.includeQuantity}
                 onChange={visible =>
                   actions.newInvoice.toggleLineItemColumnVisiblity({
                     name: 'quantity',
@@ -68,10 +50,7 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
               />
               <Checkbox
                 id="include-sub-total"
-                checked={
-                  state.newInvoice.templateSettings.fields
-                    .includeSubTotal
-                }
+                checked={state.newInvoice.form.fields.includeSubTotal}
                 onChange={visible =>
                   actions.newInvoice.toggleLineItemColumnVisiblity({
                     name: 'subTotal',
@@ -83,12 +62,9 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
               />
               <Checkbox
                 id="include-labels"
-                checked={
-                  state.newInvoice.templateSettings.fields
-                    .includeLabels
-                }
+                checked={state.newInvoice.form.fields.includeLabels}
                 onChange={includeLabels =>
-                  actions.newInvoice.templateSettings.setFields({
+                  actions.newInvoice.form.setFields({
                     includeLabels,
                   })
                 }
@@ -226,37 +202,22 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                   rows={state.newInvoice.lineItems}
                   columns={state.newInvoice.lineItemColumns}
                   showLabels={
-                    state.newInvoice.templateSettings.fields
-                      .includeLabels
+                    state.newInvoice.form.fields.includeLabels
                   }
                   onChange={actions.newInvoice.setLineItems}
                   readOnly={state.newInvoice.previewMode}
                   totals={
-                    <div className="bts-solid bw-small bc-gray-200 mt-1">
-                      {state.newInvoice.form.fields
-                        .includeDiscount ? (
-                        <div className="d-flex bbs-dashed bw-small bc-gray-200 pv-4">
-                          <div className="flex-1">Discount</div>
-                          <div className="ta-r">
-                            - {formatAsCurrency(discount)}
-                          </div>
-                        </div>
-                      ) : null}
-                      {state.newInvoice.form.fields.includeTax ? (
-                        <div className="d-flex bbs-dashed bw-small bc-gray-200 pv-4">
-                          <div className="flex-1">VAT</div>
-                          <div className="ta-r">
-                            {formatAsCurrency(vat)}
-                          </div>
-                        </div>
-                      ) : null}
-                      <div className="d-flex bbs-solid bw-small bc-gray-200 pv-4">
-                        <div className="fw-bold flex-1">Total</div>
-                        <div className="fw-bold ta-r">
-                          {formatAsCurrency(total)}
-                        </div>
-                      </div>
-                    </div>
+                    <InvoiceTotals
+                      includeDiscount={
+                        state.newInvoice.form.fields.includeDiscount
+                      }
+                      includeTax={
+                        state.newInvoice.form.fields.includeTax
+                      }
+                      discount={state.newInvoice.form.fields.discount}
+                      lineItems={state.newInvoice.lineItems}
+                      taxRate={state.newInvoice.form.fields.taxRate}
+                    />
                   }
                 />
               </div>

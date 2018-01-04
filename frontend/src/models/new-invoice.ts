@@ -4,6 +4,7 @@ import * as Form from './form'
 import { LineItem } from '../types'
 import { Column } from '../components/spreadsheet'
 import { GlobalState, GlobalActions } from './index'
+import { formatAsCurrency } from '../utils/invoice'
 
 interface Fields {
   number: string
@@ -15,9 +16,6 @@ interface Fields {
   taxRate: number
   includeDiscount: boolean
   discount: number
-}
-
-interface TemplateSettingsFields {
   includeLabels: boolean
   includeQuantity: boolean
   includeSubTotal: boolean
@@ -31,7 +29,6 @@ interface LocalState {
 
 export interface State extends LocalState {
   form: Form.State<Fields>
-  templateSettings: Form.State<TemplateSettingsFields>
 }
 
 interface Reducers {
@@ -52,28 +49,6 @@ type LocalActions = Helix.Actions<Reducers, Effects>
 
 export interface Actions extends LocalActions {
   form: Form.Actions<Fields>
-  templateSettings: Form.Actions<TemplateSettingsFields>
-}
-
-export function formatAsCurrency(
-  value: any = '',
-  icon: string = '£',
-): string {
-  const num = parseFloat(value.toString().replace(/[^\d.-]/g, ''))
-  const currency = num
-    .toFixed(2)
-    .replace(/(\d)(?=(\d{3})+\.)/g, '$1,')
-  return `${icon}${currency}`
-}
-
-export function calculateInvoiceTotal(rows: LineItem[]) {
-  return rows.reduce((prev, curr) => {
-    return prev + curr.quantity * curr.price
-  }, 0)
-}
-
-export function calculateVat(total: number, rate: number = 0) {
-  return total / 100 * rate
 }
 
 const columns: Record<string, Column<LineItem>> = {
@@ -154,7 +129,7 @@ export const model: Helix.Model<LocalState, Reducers, Effects> = {
   effects: {
     toggleLineItemColumnVisiblity(state, actions, { name, visible }) {
       if (name === 'quantity') {
-        actions.newInvoice.templateSettings.setFields({
+        actions.newInvoice.form.setFields({
           includeQuantity: visible,
         })
         if (visible === false) {
@@ -168,7 +143,7 @@ export const model: Helix.Model<LocalState, Reducers, Effects> = {
           )
         }
       } else if (name === 'subTotal') {
-        actions.newInvoice.templateSettings.setFields({
+        actions.newInvoice.form.setFields({
           includeSubTotal: visible,
         })
       }
@@ -188,21 +163,6 @@ export const model: Helix.Model<LocalState, Reducers, Effects> = {
     },
   },
   models: {
-    templateSettings: Form.model<TemplateSettingsFields>({
-      constraints: fields => {
-        return {
-          includeLabels: undefined,
-          includeQuantity: undefined,
-          includeSubTotal: undefined,
-        }
-      },
-      defaultForm: () => ({
-        includeLabels: true,
-        includeQuantity: true,
-        includeSubTotal: true,
-      }),
-      onValidationError: () => null,
-    }),
     form: Form.model<Fields>({
       constraints: fields => {
         return {
@@ -217,6 +177,9 @@ export const model: Helix.Model<LocalState, Reducers, Effects> = {
           billingAddress: { presence: true },
           companyAddress: { presence: true },
           dateCreated: { presence: true },
+          includeLabels: undefined,
+          includeQuantity: undefined,
+          includeSubTotal: undefined,
         }
       },
       defaultForm: () => ({
@@ -230,6 +193,9 @@ export const model: Helix.Model<LocalState, Reducers, Effects> = {
         taxRate: 20,
         includeDiscount: true,
         discount: 100,
+        includeLabels: true,
+        includeQuantity: true,
+        includeSubTotal: true,
       }),
       onValidationError: () => null,
     }),

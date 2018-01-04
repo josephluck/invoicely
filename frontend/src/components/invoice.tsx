@@ -1,11 +1,8 @@
 import * as React from 'react'
 import { Invoice } from '../types'
-import {
-  calculateInvoiceTotal,
-  calculateVat,
-  formatAsCurrency,
-} from '../models/new-invoice'
 import Label from './label'
+import LineItems from './line-items'
+import InvoiceTotals from './invoice-totals'
 
 interface Props {
   invoice: Invoice
@@ -29,10 +26,6 @@ function Block({ children, className = '' }: BlockProps) {
 }
 
 export default function Invoice({ invoice, className = '' }: Props) {
-  const discount = invoice.discount
-  const subTotal = calculateInvoiceTotal(invoice.lineItems) - discount
-  const vat = calculateVat(subTotal, invoice.taxRate)
-  const total = subTotal + vat
   return (
     <div className={`bg-white pa-5 ${className}`}>
       <div className="d-flex align-items-center bb bbs-solid bc-gray-200 pb-6 mb-6">
@@ -70,8 +63,16 @@ export default function Invoice({ invoice, className = '' }: Props) {
           </Block>
         </div>
       </div>
-      {formatAsCurrency(total)}
-      {discount}
+      <div>
+        <LineItems lineItems={invoice.lineItems} />
+        <InvoiceTotals
+          includeDiscount={invoice.includeDiscount}
+          includeTax={invoice.includeTax}
+          discount={invoice.discount}
+          lineItems={invoice.lineItems}
+          taxRate={invoice.taxRate}
+        />
+      </div>
     </div>
   )
 }

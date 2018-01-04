@@ -5,7 +5,6 @@ export default function invoice(): Invoice {
   return {
     id: '123',
     lineItems: [lineItem(), lineItem(), lineItem()],
-    state: 'draft',
     notes:
       'Thank you for choosing Awake. Hopefully we can build you something beautiful again soon.',
     number: '1001',
@@ -14,5 +13,10 @@ export default function invoice(): Invoice {
     dateCreated: '2017/11/05',
     taxRate: 20,
     discount: 100,
+    includeTax: true,
+    includeDiscount: true,
+    includeLabels: true,
+    includeQuantity: true,
+    includeSubTotal: true,
   }
 }
