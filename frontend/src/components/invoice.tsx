@@ -64,7 +64,12 @@ export default function Invoice({ invoice, className = '' }: Props) {
         </div>
       </div>
       <div>
-        <LineItems lineItems={invoice.lineItems} />
+        <LineItems
+          lineItems={invoice.lineItems}
+          includeLabels={invoice.includeLabels}
+          includeQuantity={invoice.includeQuantity}
+          includeSubTotal={invoice.includeSubTotal}
+        />
         <InvoiceTotals
           includeDiscount={invoice.includeDiscount}
           includeTax={invoice.includeTax}

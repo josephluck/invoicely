@@ -1,7 +1,7 @@
 import { Helix } from 'helix-js'
 import * as dates from 'date-fns'
 import * as Form from './form'
-import { LineItem } from '../types'
+import { LineItem, Invoice } from '../types'
 import { Column } from '../components/spreadsheet'
 import { GlobalState, GlobalActions } from './index'
 import { formatAsCurrency } from '../utils/invoice'
@@ -19,6 +19,25 @@ interface Fields {
   includeLabels: boolean
   includeQuantity: boolean
   includeSubTotal: boolean
+}
+
+export function sanitizeInvoice(fields: Fields, lineItems: LineItem[]): Invoice {
+  return {
+    id: '123',
+    number: fields.number,
+    dateCreated: fields.dateCreated,
+    billingAddress: fields.billingAddress,
+    companyAddress: fields.companyAddress,
+    notes: fields.notes,
+    includeTax: fields.includeTax,
+    taxRate: fields.taxRate,
+    includeDiscount: fields.includeDiscount,
+    discount: fields.discount,
+    includeLabels: fields.includeLabels,
+    includeQuantity: fields.includeQuantity,
+    includeSubTotal: fields.includeSubTotal,
+    lineItems,
+  }
 }
 
 interface LocalState {

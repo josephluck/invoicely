@@ -6,11 +6,17 @@ import { formatAsCurrency } from '../utils/invoice'
 interface Props {
   lineItems: LineItem[]
   className?: string
+  includeLabels: boolean
+  includeQuantity: boolean
+  includeSubTotal: boolean
 }
 
 export default function lineItems({
   lineItems,
   className = '',
+  includeSubTotal,
+  includeLabels,
+  includeQuantity,
 }: Props) {
   return (
     <div className={`${className}`}>
@@ -18,15 +24,19 @@ export default function lineItems({
         <div className="flex-1 bw-small bbs-solid bc-gray-200 pb-3">
           <Label>Description</Label>
         </div>
-        <div className="flex-1 bw-small bbs-solid bc-gray-200 pb-3 ta-r">
-          <Label>Quantity</Label>
-        </div>
+        {includeQuantity ? (
+          <div className="flex-1 bw-small bbs-solid bc-gray-200 pb-3 ta-r">
+            <Label>Quantity</Label>
+          </div>
+        ) : null}
         <div className="flex-1 bw-small bbs-solid bc-gray-200 pb-3 ta-r">
           <Label>Price</Label>
         </div>
-        <div className="flex-1 bw-small bbs-solid bc-gray-200 pb-3 ta-r">
-          <Label>Total</Label>
-        </div>
+        {includeSubTotal ? (
+          <div className="flex-1 bw-small bbs-solid bc-gray-200 pb-3 ta-r">
+            <Label>Total</Label>
+          </div>
+        ) : null}
       </div>
       <div>
         {lineItems.map((item, index) => {
@@ -38,15 +48,19 @@ export default function lineItems({
               <div className="flex-1 lh-4 ba bg-transparent bc-transparent">
                 {item.description}
               </div>
-              <div className="flex-1 lh-4 ba bg-transparent bc-transparent ta-r">
-                {item.quantity}
-              </div>
+              {includeQuantity ? (
+                <div className="flex-1 lh-4 ba bg-transparent bc-transparent ta-r">
+                  {item.quantity}
+                </div>
+              ) : null}
               <div className="flex-1 lh-4 ba bg-transparent bc-transparent ta-r">
                 {formatAsCurrency(item.price)}
               </div>
-              <div className="flex-1 lh-4 ba bg-transparent bc-transparent ta-r">
-                {formatAsCurrency(item.quantity * item.price)}
-              </div>
+              {includeSubTotal ? (
+                <div className="flex-1 lh-4 ba bg-transparent bc-transparent ta-r">
+                  {formatAsCurrency(item.quantity * item.price)}
+                </div>
+              ) : null}
             </div>
           )
         })}

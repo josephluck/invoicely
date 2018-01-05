@@ -15,6 +15,7 @@ import SpreadsheetConstructor from '../components/spreadsheet'
 import { formatAsCurrency } from '../utils/invoice'
 import Checkbox from '../components/checkbox'
 import InvoiceTotals from '../components/invoice-totals'
+import { sanitizeInvoice } from '../models/new-invoice'
 
 class Spreadsheet extends SpreadsheetConstructor<LineItem> {}
 
@@ -23,6 +24,7 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
     const change = fieldChangeHandler(
       actions.newInvoice.form.setFields,
     )
+    const invoice = sanitizeInvoice(state.newInvoice.form.fields, state.newInvoice.lineItems)
     return (
       <Layout title={<LayoutTitle>New Invoice</LayoutTitle>}>
         <div className="h-100 d-flex pa-5 flex-direction-column">
@@ -123,7 +125,7 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
         <div className="pa-5 h-100 flex-1 of-auto">
           {state.newInvoice.previewMode ? (
             <Invoice
-              invoice={state.invoice.invoice}
+              invoice={invoice}
               className="box-card h-a4 ml-auto mr-auto"
             />
           ) : (
