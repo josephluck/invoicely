@@ -163,7 +163,9 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                           className="ml-3"
                           size="small"
                           onClick={() =>
-                            actions.sendInvoice.setModalShowing(true)
+                            actions.invoices.startSendInvoice(
+                              invoice.id,
+                            )
                           }
                         >
                           Send

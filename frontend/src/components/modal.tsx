@@ -5,6 +5,8 @@ interface Props {
   className?: string
   onClose: () => any
   showing: boolean
+  header?: React.ReactNode
+  footer?: React.ReactNode
 }
 
 export default function Modal({
@@ -12,6 +14,8 @@ export default function Modal({
   showing,
   onClose,
   className = '',
+  header,
+  footer,
 }: Props) {
   return (
     <div
@@ -20,7 +24,7 @@ export default function Modal({
     >
       <div
         className={`transition pos-fixed h-100 w-100 post-0 posl-0 bg-black ${
-          showing ? 'o-50' : 'o-0'
+          showing ? 'o-50 c-pointer' : 'o-0'
         }`}
         onClick={onClose}
       />
@@ -30,7 +34,21 @@ export default function Modal({
           ${showing ? 'o-100 scale-in' : 'o-0 scale-out'}
         `}
       >
+        {header ? (
+          <div className="pa-5 bb bc-gray-200 d-flex align-items-center">
+            <div className="flex-1">{header}</div>
+            <a
+              className="ion-close fc-blue c-pointer"
+              onClick={onClose}
+            />
+          </div>
+        ) : null}
         {children}
+        {footer ? (
+          <div className="d-flex ph-5 pv-4 bt bc-gray-200">
+            {footer}
+          </div>
+        ) : null}
       </div>
     </div>
   )

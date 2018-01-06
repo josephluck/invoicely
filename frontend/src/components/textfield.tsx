@@ -144,11 +144,15 @@ export class TextField extends Component<Props, State> {
     }
     return (
       <div className={className}>
-        {label ? <Label id={id}>{label}</Label> : null}
+        {label ? (
+          <Label id={id} className="d-ib mb-2">
+            {label}
+          </Label>
+        ) : null}
         <div className="d-flex">
           <div className="pos-relative d-flex w-100">
             {type === 'textarea' ? (
-              <TextArea {...inputProps} />
+              <TextArea rows={4} {...inputProps} />
             ) : (
               <input {...inputProps} />
             )}

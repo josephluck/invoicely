@@ -2,6 +2,8 @@ import * as React from 'react'
 import { GlobalState, GlobalActions } from '../models'
 import Modal from './modal'
 import Button from './button'
+import Title from './title'
+import Textfield from './textfield'
 
 interface Props {
   state: GlobalState
@@ -13,10 +15,9 @@ export default function SendInvoice({ state, actions }: Props) {
     <Modal
       onClose={() => actions.sendInvoice.setModalShowing(false)}
       showing={state.sendInvoice.modalShowing}
-    >
-      <div>
-        <div className="pa-5">Send invoice</div>
-        <div className="d-flex ph-5 pv-4 bt bc-gray-200">
+      header={<Title>Send Invoice</Title>}
+      footer={
+        <div className="d-flex w-100">
           <div className="flex-1" />
           <Button
             size="small"
@@ -29,6 +30,26 @@ export default function SendInvoice({ state, actions }: Props) {
           <Button size="small" className="ml-3">
             Send
           </Button>
+        </div>
+      }
+    >
+      <div className="pa-5">
+        <div className="mb-5 fs-small lh-4 fc-gray-800">
+          To send invoice {state.invoice.invoice.id} by email, fill in
+          the receipients emails address below, add a note if you want
+          to and click send.
+        </div>
+        <div>
+          <Textfield
+            id="send-invoice-email"
+            label="Email Address"
+            className="mb-4"
+          />
+          <Textfield
+            id="send-invoice-email"
+            label="Note (optional)"
+            type="textarea"
+          />
         </div>
       </div>
     </Modal>

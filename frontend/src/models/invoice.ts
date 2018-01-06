@@ -7,7 +7,9 @@ export interface State {
   invoice: Invoice
 }
 
-interface Reducers {}
+interface Reducers {
+  setInvoice: Helix.Reducer<State, Invoice>
+}
 
 interface Effects {}
 
@@ -21,6 +23,8 @@ function emptyState(): State {
 
 export const model: Helix.Model<State, Reducers, Effects> = {
   state: emptyState(),
-  reducers: {},
+  reducers: {
+    setInvoice: (state, invoice) => ({ invoice }),
+  },
   effects: {},
 }

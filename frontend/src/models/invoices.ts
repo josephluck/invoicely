@@ -19,6 +19,7 @@ interface Effects {
     GlobalActions,
     InvoiceStatus | null
   >
+  startSendInvoice: Helix.Effect<GlobalState, GlobalActions, string>
 }
 
 export type Actions = Helix.Actions<Reducers, Effects>
@@ -61,6 +62,15 @@ export const model: Helix.Model<State, Reducers, Effects> = {
             )
           : randomInvoices(),
       )
+    },
+    startSendInvoice(state, actions, invoiceId) {
+      const invoice = state.invoices.invoices.find(
+        i => i.id === invoiceId,
+      )
+      if (invoice) {
+        actions.invoice.setInvoice(invoice)
+        actions.sendInvoice.setModalShowing(true)
+      }
     },
   },
 }
