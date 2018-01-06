@@ -30,7 +30,7 @@ export default function Modal({
       />
       <div
         className={`
-          transition pos-relative flex-1 ml-auto mr-auto maxw-6 bg-white bra-3 box-card ${className}
+          transition pos-relative d-flex flex-direction-column flex-1 ml-auto mr-auto maxw-6 bg-white bra-3 box-card ${className}
           ${showing ? 'o-100 scale-in' : 'o-0 scale-out'}
         `}
       >
@@ -43,7 +43,7 @@ export default function Modal({
             />
           </div>
         ) : null}
-        {children}
+        <div className="flex-1 of-auto maxh-5">{children}</div>
         {footer ? (
           <div className="d-flex ph-5 pv-4 bt bc-gray-200">
             {footer}
