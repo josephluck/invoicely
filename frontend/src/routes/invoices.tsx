@@ -8,6 +8,7 @@ import Tag from '../components/tag'
 import Button from '../components/button'
 import Label from '../components/label'
 import Toggle from '../components/toggle'
+import SendInvoice from '../components/send-invoice'
 import {
   calculateTotal,
   formatAsCurrency,
@@ -25,7 +26,7 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
               <Toggle
                 checked={state.invoices.activeFilter === null}
                 onChange={() => actions.invoices.filter(null)}
-                color="blue"
+                color="teal"
                 className="mr-3"
               >
                 All
@@ -42,7 +43,7 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                 color={getInvoiceStatusColor('draft')}
                 className="mr-3"
               >
-                Draft
+                Not Sent
               </Toggle>
               <Toggle
                 checked={state.invoices.activeFilter === 'sent'}
@@ -73,7 +74,9 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                 Paid
               </Toggle>
             </div>
-            <Button href="invoices/new">New Invoice</Button>
+            <Button href="invoices/new" size="small">
+              New Invoice
+            </Button>
           </div>
           <ExpansionPanel
             cards={state.invoices.invoices.map(invoice => {
@@ -156,7 +159,13 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                         <Button type="secondary" size="small">
                           Download
                         </Button>
-                        <Button className="ml-3" size="small">
+                        <Button
+                          className="ml-3"
+                          size="small"
+                          onClick={() =>
+                            actions.sendInvoice.setModalShowing(true)
+                          }
+                        >
                           Send
                         </Button>
                       </div>
@@ -167,6 +176,7 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
             })}
           />
         </div>
+        <SendInvoice state={state} actions={actions} />
       </Layout>
     )
   },

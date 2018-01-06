@@ -148,7 +148,7 @@ export class ExpansionPanel extends React.Component<Props, State> {
                       {card.header(isExpanded)}
                     </div>
                     <i
-                      className={`fc-gray-600 ion-chevron-down transition ${
+                      className={`c-pointer fc-gray-600 ion-chevron-down transition ${
                         isExpanded ? 'rotate-0' : 'rotate-180'
                       }`}
                     />
