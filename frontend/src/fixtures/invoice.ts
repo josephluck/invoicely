@@ -16,7 +16,7 @@ export function invoiceStatus(): InvoiceStatus {
 
 export default function invoice(): Invoice {
   return {
-    status: 'draft',
+    status: invoiceStatus(),
     id: (1000 + faker.random.number(8999)).toString(),
     lineItems: Array.from({
       length: faker.random.number({ min: 2, max: 10 }),

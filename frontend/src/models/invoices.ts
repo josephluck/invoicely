@@ -20,6 +20,12 @@ function emptyState(): State {
       invoiceFixture(),
       invoiceFixture(),
       invoiceFixture(),
+      invoiceFixture(),
+      invoiceFixture(),
+      invoiceFixture(),
+      invoiceFixture(),
+      invoiceFixture(),
+      invoiceFixture(),
     ],
   }
 }

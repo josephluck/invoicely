@@ -15,6 +15,9 @@ function makeCss() {
         aqua: '#7FDBFF',
         teal: '#39CCCC',
         red: '#FF4136',
+        green: '#2ECC40',
+        yellow: '#FFDC00',
+        orange: '#FF851B',
         black: '#111111',
         gray: '#BDBDBD',
         silver: '#EEEEEE',
@@ -62,6 +65,7 @@ function makeCss() {
         300: '300',
         400: '400',
         500: '500',
+        700: '700',
         bold: 'bold',
       },
       letterSpacings: {

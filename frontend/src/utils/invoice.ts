@@ -36,3 +36,31 @@ export function calculateTotal(invoice: Invoice): number {
   )
   return subTotal + tax
 }
+
+export function humanizeInvoiceStatus(
+  status: Invoice['status'],
+): string {
+  if (status === 'draft') {
+    return 'Not Sent'
+  } else if (status === 'sent') {
+    return 'Sent'
+  } else if (status === 'paid') {
+    return 'Paid'
+  } else {
+    return ''
+  }
+}
+
+export function getInvoiceStatusColor(
+  status: Invoice['status'],
+): string {
+  if (status === 'draft') {
+    return 'red'
+  } else if (status === 'sent') {
+    return 'orange'
+  } else if (status === 'paid') {
+    return 'green'
+  } else {
+    return ''
+  }
+}

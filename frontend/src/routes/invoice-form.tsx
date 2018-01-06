@@ -126,9 +126,9 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
           </div>
           <div>
             <Button className="w-100 mb-3" type="secondary">
-              Save PDF
+              Download
             </Button>
-            <Button className="w-100">Email Invoice</Button>
+            <Button className="w-100">Send</Button>
           </div>
         </div>
         <div className="pa-5 h-100 flex-1 of-auto">

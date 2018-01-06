@@ -7,7 +7,12 @@ import { humanize } from '../utils/dates'
 import Tag from '../components/tag'
 import Button from '../components/button'
 import Label from '../components/label'
-import { calculateTotal, formatAsCurrency } from '../utils/invoice'
+import {
+  calculateTotal,
+  formatAsCurrency,
+  humanizeInvoiceStatus,
+  getInvoiceStatusColor,
+} from '../utils/invoice'
 
 const page: Helix.Page<GlobalState, GlobalActions> = {
   view: (state, prev, actions) => {
@@ -18,38 +23,43 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
             cards={state.invoices.invoices.map(invoice => {
               return {
                 header: (isExpanded: boolean) => (
-                  <div className="pl-5 pv-5 d-flex of-hidden align-items-center">
-                    <div className="flex-1 fs-small d-flex of-hidden align-items-center">
-                      <a
-                        href={`/invoices/${invoice.id}`}
-                        className="flex-1 mr-4 fw-bold"
-                        style={{ whiteSpace: 'nowrap' }}
+                  <div className="pl-5 pv-5 fs-small d-flex of-hidden align-items-center">
+                    <a
+                      href={`/invoices/${invoice.id}`}
+                      className="flex-1 mr-4 fw-bold"
+                      style={{ whiteSpace: 'nowrap' }}
+                    >
+                      {humanize(invoice.dateCreated)}
+                    </a>
+                    <span
+                      className={`flex-1 mr-4 truncate transition ${
+                        isExpanded ? 'o-0' : 'o-100'
+                      }`}
+                    >
+                      {invoice.number}
+                    </span>
+                    <span
+                      className={`flex-2 mr-4 truncate transition ${
+                        isExpanded ? 'o-0' : 'o-100'
+                      }`}
+                    >
+                      {invoice.companyAddress}
+                    </span>
+                    <span
+                      className={`flex-1 mr-5 ta-r fw-bold fc-gray-600 transition ${
+                        isExpanded ? 'o-0' : 'o-100'
+                      }`}
+                    >
+                      {formatAsCurrency(calculateTotal(invoice))}
+                    </span>
+                    <div className="mr-4 flex-1 ta-r">
+                      <Tag
+                        className="d-ib"
+                        color={getInvoiceStatusColor(invoice.status)}
                       >
-                        {humanize(invoice.dateCreated)}
-                      </a>
-                      <span
-                        className={`flex-1 mr-4 truncate transition ${
-                          isExpanded ? 'o-0' : 'o-100'
-                        }`}
-                      >
-                        {invoice.number}
-                      </span>
-                      <span
-                        className={`flex-2 mr-4 truncate transition ${
-                          isExpanded ? 'o-0' : 'o-100'
-                        }`}
-                      >
-                        {invoice.companyAddress}
-                      </span>
-                      <span
-                        className={`flex-1 mr-5 ta-r fw-bold fc-gray-600 transition ${
-                          isExpanded ? 'o-0' : 'o-100'
-                        }`}
-                      >
-                        {formatAsCurrency(calculateTotal(invoice))}
-                      </span>
+                        {humanizeInvoiceStatus(invoice.status)}
+                      </Tag>
                     </div>
-                    <Tag className="mr-4">Draft</Tag>
                   </div>
                 ),
                 content: (
@@ -81,13 +91,17 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                       </div>
                     </div>
                     <div className="ph-5 pv-4 bt bc-gray-200 d-flex">
-                      <div className="flex-1" />
+                      <div className="flex-1">
+                        <Button type="secondary" size="small">
+                          View
+                        </Button>
+                      </div>
                       <div>
                         <Button type="secondary" size="small">
-                          Save PDF
+                          Download
                         </Button>
                         <Button className="ml-3" size="small">
-                          Email
+                          Send
                         </Button>
                       </div>
                     </div>
