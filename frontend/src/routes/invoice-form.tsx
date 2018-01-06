@@ -15,16 +15,19 @@ import SpreadsheetConstructor from '../components/spreadsheet'
 import { formatAsCurrency } from '../utils/invoice'
 import Checkbox from '../components/checkbox'
 import InvoiceTotals from '../components/invoice-totals'
-import { sanitizeInvoice } from '../models/new-invoice'
+import { sanitizeInvoice } from '../models/invoice-form'
 
 class Spreadsheet extends SpreadsheetConstructor<LineItem> {}
 
 const page: Helix.Page<GlobalState, GlobalActions> = {
   view: (state, prev, actions) => {
     const change = fieldChangeHandler(
-      actions.newInvoice.form.setFields,
+      actions.invoiceForm.form.setFields,
     )
-    const invoice = sanitizeInvoice(state.newInvoice.form.fields, state.newInvoice.lineItems)
+    const invoice = sanitizeInvoice(
+      state.invoiceForm.form.fields,
+      state.invoiceForm.lineItems,
+    )
     return (
       <Layout title={<LayoutTitle>New Invoice</LayoutTitle>}>
         <div className="h-100 d-flex pa-5 flex-direction-column">
@@ -32,17 +35,19 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
             <div className="pv-5 mb-5 bb bt bbs-solid bts-solid bc-gray-300">
               <Checkbox
                 id="preview-mode"
-                checked={state.newInvoice.previewMode}
-                onChange={actions.newInvoice.togglePreviewMode}
+                checked={state.invoiceForm.previewMode}
+                onChange={actions.invoiceForm.togglePreviewMode}
                 label="Preview"
               />
             </div>
             <div className="pb-5 mb-5 bb bbs-solid bc-gray-300">
               <Checkbox
                 id="include-quantity"
-                checked={state.newInvoice.form.fields.includeQuantity}
+                checked={
+                  state.invoiceForm.form.fields.includeQuantity
+                }
                 onChange={visible =>
-                  actions.newInvoice.toggleLineItemColumnVisiblity({
+                  actions.invoiceForm.toggleLineItemColumnVisiblity({
                     name: 'quantity',
                     visible,
                   })
@@ -52,9 +57,11 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
               />
               <Checkbox
                 id="include-sub-total"
-                checked={state.newInvoice.form.fields.includeSubTotal}
+                checked={
+                  state.invoiceForm.form.fields.includeSubTotal
+                }
                 onChange={visible =>
-                  actions.newInvoice.toggleLineItemColumnVisiblity({
+                  actions.invoiceForm.toggleLineItemColumnVisiblity({
                     name: 'subTotal',
                     visible,
                   })
@@ -64,9 +71,9 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
               />
               <Checkbox
                 id="include-labels"
-                checked={state.newInvoice.form.fields.includeLabels}
+                checked={state.invoiceForm.form.fields.includeLabels}
                 onChange={includeLabels =>
-                  actions.newInvoice.form.setFields({
+                  actions.invoiceForm.form.setFields({
                     includeLabels,
                   })
                 }
@@ -76,11 +83,11 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
             <div className="pb-5 mb-5 bb bbs-solid bc-gray-300">
               <Checkbox
                 id="include-vat"
-                checked={state.newInvoice.form.fields.includeTax}
+                checked={state.invoiceForm.form.fields.includeTax}
                 onChange={change('includeTax')}
                 label="Include VAT"
               />
-              {state.newInvoice.form.fields.includeTax ? (
+              {state.invoiceForm.form.fields.includeTax ? (
                 <Select
                   options={[
                     { label: '0%', value: 0 },
@@ -88,27 +95,29 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                     { label: '20%', value: 20 },
                   ]}
                   id="vat-rate"
-                  value={state.newInvoice.form.fields.taxRate}
+                  value={state.invoiceForm.form.fields.taxRate}
                   onChange={change('taxRate')}
-                  errors={state.newInvoice.form.errors.taxRate}
+                  errors={state.invoiceForm.form.errors.taxRate}
                   inputClassName="bg-white"
                   className="mt-4"
                 />
               ) : null}
               <Checkbox
                 id="include-discount"
-                checked={state.newInvoice.form.fields.includeDiscount}
+                checked={
+                  state.invoiceForm.form.fields.includeDiscount
+                }
                 onChange={change('includeDiscount')}
                 label="Include Discount"
                 className="mt-4"
               />
-              {state.newInvoice.form.fields.includeDiscount ? (
+              {state.invoiceForm.form.fields.includeDiscount ? (
                 <NormalTextField
                   id="discount"
-                  value={state.newInvoice.form.fields.discount}
+                  value={state.invoiceForm.form.fields.discount}
                   onChange={change('discount')}
                   displayFormat={formatAsCurrency}
-                  errors={state.newInvoice.form.errors.discount}
+                  errors={state.invoiceForm.form.errors.discount}
                   inputClassName="bg-white"
                   className="mt-4"
                 />
@@ -123,7 +132,7 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
           </div>
         </div>
         <div className="pa-5 h-100 flex-1 of-auto">
-          {state.newInvoice.previewMode ? (
+          {state.invoiceForm.previewMode ? (
             <Invoice
               invoice={invoice}
               className="box-card h-a4 ml-auto mr-auto"
@@ -148,9 +157,9 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                     onChange={change('companyAddress')}
                     inputClassName="ta-r"
                     value={
-                      state.newInvoice.form.fields.companyAddress
+                      state.invoiceForm.form.fields.companyAddress
                     }
-                    disabled={state.newInvoice.previewMode}
+                    disabled={state.invoiceForm.previewMode}
                   />
                 </div>
               </div>
@@ -162,9 +171,9 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                     type="text"
                     className="w-100 mb-2"
                     onChange={change('number')}
-                    value={state.newInvoice.form.fields.number}
-                    errors={state.newInvoice.form.errors.number}
-                    disabled={state.newInvoice.previewMode}
+                    value={state.invoiceForm.form.fields.number}
+                    errors={state.invoiceForm.form.errors.number}
+                    disabled={state.invoiceForm.previewMode}
                   />
                   <DatePicker
                     id="date-created"
@@ -172,8 +181,8 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                     type="text"
                     className="w-100 mb-2"
                     onChange={change('dateCreated')}
-                    value={state.newInvoice.form.fields.dateCreated}
-                    disabled={state.newInvoice.previewMode}
+                    value={state.invoiceForm.form.fields.dateCreated}
+                    disabled={state.invoiceForm.previewMode}
                   />
                 </div>
                 <div className="ml-2 flex-1">
@@ -183,9 +192,9 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                     type="textarea"
                     onChange={change('billingAddress')}
                     value={
-                      state.newInvoice.form.fields.billingAddress
+                      state.invoiceForm.form.fields.billingAddress
                     }
-                    disabled={state.newInvoice.previewMode}
+                    disabled={state.invoiceForm.previewMode}
                   />
                 </div>
                 <div className="ml-2 flex-2">
@@ -194,31 +203,33 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                     label="Notes"
                     type="textarea"
                     onChange={change('notes')}
-                    value={state.newInvoice.form.fields.notes}
-                    disabled={state.newInvoice.previewMode}
+                    value={state.invoiceForm.form.fields.notes}
+                    disabled={state.invoiceForm.previewMode}
                   />
                 </div>
               </div>
               <div>
                 <Spreadsheet
-                  rows={state.newInvoice.lineItems}
-                  columns={state.newInvoice.lineItemColumns}
+                  rows={state.invoiceForm.lineItems}
+                  columns={state.invoiceForm.lineItemColumns}
                   showLabels={
-                    state.newInvoice.form.fields.includeLabels
+                    state.invoiceForm.form.fields.includeLabels
                   }
-                  onChange={actions.newInvoice.setLineItems}
-                  readOnly={state.newInvoice.previewMode}
+                  onChange={actions.invoiceForm.setLineItems}
+                  readOnly={state.invoiceForm.previewMode}
                   totals={
                     <InvoiceTotals
                       includeDiscount={
-                        state.newInvoice.form.fields.includeDiscount
+                        state.invoiceForm.form.fields.includeDiscount
                       }
                       includeTax={
-                        state.newInvoice.form.fields.includeTax
+                        state.invoiceForm.form.fields.includeTax
                       }
-                      discount={state.newInvoice.form.fields.discount}
-                      lineItems={state.newInvoice.lineItems}
-                      taxRate={state.newInvoice.form.fields.taxRate}
+                      discount={
+                        state.invoiceForm.form.fields.discount
+                      }
+                      lineItems={state.invoiceForm.lineItems}
+                      taxRate={state.invoiceForm.form.fields.taxRate}
                     />
                   }
                 />

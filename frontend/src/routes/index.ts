@@ -1,9 +1,11 @@
-import newInvoice from './new-invoice'
-import previewInvoice from './preview-invoice'
+import invoiceForm from './invoice-form'
+import invoices from './invoices'
+// import previewInvoice from './preview-invoice'
 
 const routes = {
-  '/invoices/new': newInvoice,
-  '/invoices/:invoiceId/preview': previewInvoice,
+  invoices: invoices,
+  '/invoices/new': invoiceForm,
+  '/invoices/:invoiceId/edit': invoiceForm,
 }
 
 export default routes

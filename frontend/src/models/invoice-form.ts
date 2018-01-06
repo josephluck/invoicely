@@ -21,8 +21,12 @@ interface Fields {
   includeSubTotal: boolean
 }
 
-export function sanitizeInvoice(fields: Fields, lineItems: LineItem[]): Invoice {
+export function sanitizeInvoice(
+  fields: Fields,
+  lineItems: LineItem[],
+): Invoice {
   return {
+    status: 'draft',
     id: '123',
     number: fields.number,
     dateCreated: fields.dateCreated,
@@ -148,12 +152,12 @@ export const model: Helix.Model<LocalState, Reducers, Effects> = {
   effects: {
     toggleLineItemColumnVisiblity(state, actions, { name, visible }) {
       if (name === 'quantity') {
-        actions.newInvoice.form.setFields({
+        actions.invoiceForm.form.setFields({
           includeQuantity: visible,
         })
         if (visible === false) {
-          actions.newInvoice.setLineItems(
-            state.newInvoice.lineItems.map(item => {
+          actions.invoiceForm.setLineItems(
+            state.invoiceForm.lineItems.map(item => {
               return {
                 ...item,
                 quantity: 1,
@@ -162,11 +166,11 @@ export const model: Helix.Model<LocalState, Reducers, Effects> = {
           )
         }
       } else if (name === 'subTotal') {
-        actions.newInvoice.form.setFields({
+        actions.invoiceForm.form.setFields({
           includeSubTotal: visible,
         })
       }
-      const newColumns = state.newInvoice.lineItemColumns.map(
+      const newColumns = state.invoiceForm.lineItemColumns.map(
         column => {
           if (column.key === name) {
             return {
@@ -178,7 +182,7 @@ export const model: Helix.Model<LocalState, Reducers, Effects> = {
           }
         },
       )
-      actions.newInvoice.setLineItemColumns(newColumns)
+      actions.invoiceForm.setLineItemColumns(newColumns)
     },
   },
   models: {

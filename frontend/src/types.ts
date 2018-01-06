@@ -4,13 +4,17 @@ export interface LineItem extends Record<string, any> {
   price: number
 }
 
+export type InvoiceStatus = 'draft' | 'sent' | 'paid'
+
 export interface Invoice {
   id: string
-  number: string
+  status: InvoiceStatus
   dateCreated: string
+  number: string
   billingAddress: string
   companyAddress: string
   notes: string
+  lineItems: LineItem[]
   includeTax: boolean
   taxRate: number
   includeDiscount: boolean
@@ -18,5 +22,4 @@ export interface Invoice {
   includeLabels: boolean
   includeQuantity: boolean
   includeSubTotal: boolean
-  lineItems: LineItem[]
 }

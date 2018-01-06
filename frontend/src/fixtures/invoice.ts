@@ -1,18 +1,35 @@
-import { Invoice } from '../types'
+import { Invoice, InvoiceStatus } from '../types'
 import lineItem from './line-item'
+import * as faker from 'faker'
+
+export function taxRate(): number {
+  return faker.random.arrayElement([5, 15, 20])
+}
+
+export function invoiceStatus(): InvoiceStatus {
+  return faker.random.arrayElement([
+    'draft',
+    'sent',
+    'paid',
+  ]) as InvoiceStatus
+}
 
 export default function invoice(): Invoice {
   return {
-    id: '123',
+    status: 'draft',
+    id: faker.random.number().toString(),
     lineItems: [lineItem(), lineItem(), lineItem()],
-    notes:
-      'Thank you for choosing Awake. Hopefully we can build you something beautiful again soon.',
-    number: '1001',
-    billingAddress: 'Techspace\n32 Leman Street\nLondon\nE2 3ND',
-    companyAddress: 'Awake\nShoreditch\nLondon\nE1 2LB',
-    dateCreated: '2017/11/05',
-    taxRate: 20,
-    discount: 100,
+    notes: faker.lorem.paragraphs(2),
+    number: faker.random.number().toString(),
+    billingAddress: `${faker.address.streetName()}\n${
+      faker.address.city
+    }\n${faker.address.county()}\n${faker.address.zipCode}`,
+    companyAddress: `${faker.address.streetName()}\n${
+      faker.address.city
+    }\n${faker.address.county()}\n${faker.address.zipCode}`,
+    dateCreated: faker.date.past().toString(),
+    taxRate: taxRate(),
+    discount: faker.random.number(),
     includeTax: true,
     includeDiscount: true,
     includeLabels: true,

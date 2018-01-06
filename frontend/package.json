@@ -3,9 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@types/faker": "^4.1.2",
     "@types/react-sortable-hoc": "^0.6.0",
     "crux-css": "^4.0.4",
     "date-fns": "^1.29.0",
+    "faker": "^4.1.0",
     "helix-js": "^2.0.0",
     "moment": "^2.20.1",
     "prettier": "^1.9.2",
