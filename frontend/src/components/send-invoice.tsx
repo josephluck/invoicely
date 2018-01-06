@@ -4,6 +4,7 @@ import Modal from './modal'
 import Button from './button'
 import Title from './title'
 import Textfield from './textfield'
+import fieldChangeHandler from '../utils/field-change-handler'
 
 interface Props {
   state: GlobalState
@@ -11,6 +12,9 @@ interface Props {
 }
 
 export default function SendInvoice({ state, actions }: Props) {
+  const change = fieldChangeHandler(
+    actions.sendInvoice.form.setFields,
+  )
   return (
     <Modal
       onClose={() => actions.sendInvoice.setModalShowing(false)}
@@ -44,11 +48,17 @@ export default function SendInvoice({ state, actions }: Props) {
             id="send-invoice-email"
             label="Email Address"
             className="mb-4"
+            value={state.sendInvoice.form.fields.email}
+            errors={state.sendInvoice.form.errors.email}
+            onChange={change('email')}
           />
           <Textfield
-            id="send-invoice-email"
+            id="send-invoice-notes"
             label="Note (optional)"
             type="textarea"
+            value={state.sendInvoice.form.fields.notes}
+            errors={state.sendInvoice.form.errors.notes}
+            onChange={change('notes')}
           />
         </div>
       </div>

@@ -82,9 +82,9 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
             cards={state.invoices.invoices.map(invoice => {
               return {
                 header: (isExpanded: boolean) => (
-                  <div className="pl-5 pv-5 fs-small d-flex of-hidden align-items-center">
+                  <div className="pl-5 pv-5 d-flex of-hidden align-items-center">
                     <a
-                      href={`/invoices/${invoice.id}`}
+                      href={`/invoices/${invoice.id}/preview`}
                       className="flex-1 mr-4 fw-bold"
                       style={{ whiteSpace: 'nowrap' }}
                     >

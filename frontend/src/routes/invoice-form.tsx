@@ -144,11 +144,7 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
               className="box-card h-a4 ml-auto mr-auto"
             />
           ) : (
-            <Card
-              className={`ml-auto mr-auto h-a4 pa-5 ${
-                false ? 'w-a4' : ''
-              }`}
-            >
+            <Card className="ml-auto mr-auto pa-5">
               <div className="d-flex align-items-center bb bbs-solid bc-gray-200 pb-6 mb-6">
                 <div className="flex-1">
                   <img

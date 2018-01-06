@@ -18,7 +18,7 @@ export default function Toggle({
   return (
     <button
       className={`
-        bra-2 fs-small tt-uppercase ph-3 pv-2 ba transition c-pointer
+        bra-2 fs-small ph-3 pv-2 ba transition c-pointer
         ${
           checked
             ? `fc-white bg-${color} bc-transparent`

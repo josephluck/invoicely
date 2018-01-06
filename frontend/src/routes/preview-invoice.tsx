@@ -9,7 +9,7 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
       <div className="w-100 h-100 bg-gray-100 pa-5">
         <Invoice
           invoice={state.invoice.invoice}
-          className="w-a4 h-a4 box-card bra-2"
+          className="box-card bra-2"
         />
       </div>
     )

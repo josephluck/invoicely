@@ -40,13 +40,13 @@ export type Actions<F extends any> = Helix.Actions<
 interface Opts<F> {
   constraints: FormConstraints<F>
   defaultForm: () => F
-  onValidationError: (errors: Errors<F>) => any
+  onValidationError?: (errors: Errors<F>) => any
 }
 
 export function model<F extends any>({
   constraints,
   defaultForm,
-  onValidationError,
+  onValidationError = () => null,
 }: Opts<F>): Helix.Model<State<F>, Reducers<F>, Effects<F>> {
   const fields = defaultForm()
   const emptyErrors = makeDefaultErrors<F>(constraints(fields))

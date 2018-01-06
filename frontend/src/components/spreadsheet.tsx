@@ -330,7 +330,7 @@ class Spreadsheet<R extends Row> extends React.Component<
             <a
               onClick={() => this.addNewRow()}
               href=""
-              className="flex-1 pv-3 ta-c fc-blue bc-blue-h bc-blue-f transition d-b"
+              className="flex-1 pt-3 ta-c fc-blue bc-blue-h bc-blue-f transition d-b"
               style={{ textDecoration: 'none' }}
             >
               Add Another Line Item

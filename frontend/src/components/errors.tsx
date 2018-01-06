@@ -1,5 +1,4 @@
 import * as React from 'react'
-import Label from './label'
 import * as Collapser from 'react-collapse'
 
 export function Errors({ errors }: { errors: string[] }) {
@@ -7,9 +6,9 @@ export function Errors({ errors }: { errors: string[] }) {
     <Collapser isOpened={true}>
       {errors.filter(err => err.length).map((errorText, index) => {
         return (
-          <Label className="fc-danger mb-1" key={index}>
+          <span className="d-b fs-small fc-red pt-2" key={index}>
             {errorText}
-          </Label>
+          </span>
         )
       })}
     </Collapser>
