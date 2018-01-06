@@ -3,6 +3,7 @@ import * as React from 'react'
 interface Props {
   children: React.ReactNode
   type?: 'primary' | 'secondary'
+  size?: 'small' | 'medium'
   className?: string
   onClick?: () => any
 }
@@ -11,17 +12,24 @@ export default function Button({
   children,
   className = '',
   type = 'primary',
+  size = 'medium',
   onClick = () => null,
 }: Props) {
   return (
     <button
       onClick={onClick}
       className={`
-        bra d-ib bra-2 pv-3 ph-4 ta-c c-pointer
+        bra d-ib bra-2 ta-c c-pointer
+        ${size === 'small' ? 'fs-small pv-2 ph-3' : 'pv-3 ph-4'}
+        ${
+          type === 'secondary'
+            ? 'ba bs-solid bw-bold bg-white bc-blue fc-blue'
+            : ''
+        }
         ${
           type === 'primary'
             ? 'bg-blue fc-white ba bc-transparent'
-            : 'ba bs-solid bw-bold bg-white bc-blue fc-blue'
+            : ''
         }
         ${className}
       `}

@@ -7,7 +7,7 @@ export interface State {
 
 export interface Card {
   content: React.ReactNode
-  header: React.ReactNode
+  header: (isExpanded: boolean) => React.ReactNode
 }
 
 export interface Props {
@@ -145,7 +145,7 @@ export class ExpansionPanel extends React.Component<Props, State> {
                 >
                   <div className="d-flex align-items-center pr-5">
                     <div className="flex-1 mr-3 of-hidden">
-                      {card.header}
+                      {card.header(isExpanded)}
                     </div>
                     <i
                       className={`fc-gray-600 ion-chevron-down transition ${
