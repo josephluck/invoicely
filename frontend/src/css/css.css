@@ -38,7 +38,7 @@ button { outline: none; background: transparent; }
 .rotate-90 { transform: rotate(90deg) }
 .rotate-180 { transform: rotate(180deg) }
 .scale-in { transform: scale(1, 1) }
-.scale-out { transform: scale(0.8, 0.8) }
+.scale-out { transform: scale(0.9, 0.9) }
 
 
 /*

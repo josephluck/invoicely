@@ -20,7 +20,7 @@ export default function Modal({
     >
       <div
         className={`transition pos-fixed h-100 w-100 post-0 posl-0 bg-black ${
-          showing ? 'o-30' : 'o-0'
+          showing ? 'o-50' : 'o-0'
         }`}
         onClick={onClose}
       />
