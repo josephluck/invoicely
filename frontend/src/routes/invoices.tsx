@@ -7,6 +7,7 @@ import { humanize } from '../utils/dates'
 import Tag from '../components/tag'
 import Button from '../components/button'
 import Label from '../components/label'
+import Toggle from '../components/toggle'
 import {
   calculateTotal,
   formatAsCurrency,
@@ -19,8 +20,59 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
     return (
       <Layout title={<LayoutTitle>Invoices</LayoutTitle>}>
         <div className="flex-1 of-auto pa-5">
-          <div className="mb-5 d-flex">
-            <div className="flex-1" />
+          <div className="mb-5 d-flex align-items-center">
+            <div className="flex-1">
+              <Toggle
+                checked={state.invoices.activeFilter === null}
+                onChange={() => actions.invoices.filter(null)}
+                color="blue"
+                className="mr-3"
+              >
+                All
+              </Toggle>
+              <Toggle
+                checked={state.invoices.activeFilter === 'draft'}
+                onChange={checked => {
+                  if (checked) {
+                    actions.invoices.filter('draft')
+                  } else {
+                    actions.invoices.filter(null)
+                  }
+                }}
+                color={getInvoiceStatusColor('draft')}
+                className="mr-3"
+              >
+                Draft
+              </Toggle>
+              <Toggle
+                checked={state.invoices.activeFilter === 'sent'}
+                onChange={checked => {
+                  if (checked) {
+                    actions.invoices.filter('sent')
+                  } else {
+                    actions.invoices.filter(null)
+                  }
+                }}
+                color={getInvoiceStatusColor('sent')}
+                className="mr-3"
+              >
+                Sent
+              </Toggle>
+              <Toggle
+                checked={state.invoices.activeFilter === 'paid'}
+                onChange={checked => {
+                  if (checked) {
+                    actions.invoices.filter('paid')
+                  } else {
+                    actions.invoices.filter(null)
+                  }
+                }}
+                color={getInvoiceStatusColor('paid')}
+                className="mr-3"
+              >
+                Paid
+              </Toggle>
+            </div>
             <Button href="invoices/new">New Invoice</Button>
           </div>
           <ExpansionPanel

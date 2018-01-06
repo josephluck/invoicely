@@ -18,16 +18,16 @@ export default function Button({
   href,
 }: Props) {
   const classes = `
-  bra d-ib bra-2 ta-c c-pointer
-  ${size === 'small' ? 'fs-small pv-2 ph-3' : 'pv-3 ph-4'}
-  ${
-    type === 'secondary'
-      ? 'ba bs-solid bw-bold bg-white bc-blue fc-blue'
-      : ''
-  }
-  ${type === 'primary' ? 'bg-blue fc-white ba bc-transparent' : ''}
-  ${className}
-`
+    bra d-ib ta-c c-pointer bra-2
+    ${size === 'small' ? 'fs-small pv-2 ph-3' : 'pv-3 ph-4'}
+    ${
+      type === 'secondary'
+        ? 'ba bs-solid bw-bold bg-white bc-blue fc-blue'
+        : ''
+    }
+    ${type === 'primary' ? 'bg-blue fc-white ba bc-transparent' : ''}
+    ${className}
+  `
   if (href) {
     return (
       <a href={href} className={classes}>

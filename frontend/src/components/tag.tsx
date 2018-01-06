@@ -14,7 +14,7 @@ export default function Tag({
   return (
     <div
       className={`
-        bra-2 fs-tiny fw-b fw-700 tt-uppercase ph-2 pv-1 ba fc-${color} bc-${color} ${className}
+        bra-2 fs-tiny fw-bold tt-uppercase ph-2 pv-1 ba fc-${color} bc-${color} ${className}
       `}
     >
       {children}
