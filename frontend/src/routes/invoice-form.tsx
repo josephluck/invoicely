@@ -29,7 +29,13 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
       state.invoiceForm.lineItems,
     )
     return (
-      <Layout title={<LayoutTitle>New Invoice</LayoutTitle>}>
+      <Layout
+        title={
+          <LayoutTitle>
+            <a href="/invoices">Invoices</a> / New
+          </LayoutTitle>
+        }
+      >
         <div className="h-100 d-flex pa-5 flex-direction-column">
           <div className="flex-1">
             <div className="pv-5 mb-5 bb bt bbs-solid bts-solid bc-gray-300">

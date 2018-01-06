@@ -19,6 +19,10 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
     return (
       <Layout title={<LayoutTitle>Invoices</LayoutTitle>}>
         <div className="flex-1 of-auto pa-5">
+          <div className="mb-5 d-flex">
+            <div className="flex-1" />
+            <Button href="invoices/new">New Invoice</Button>
+          </div>
           <ExpansionPanel
             cards={state.invoices.invoices.map(invoice => {
               return {

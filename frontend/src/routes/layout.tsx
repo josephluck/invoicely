@@ -1,18 +1,11 @@
 import * as React from 'react'
-import Circle from '../components/circle'
 
 interface TitleProps {
-  number?: string
   children: React.ReactNode
 }
 
-export function Title({ number, children }: TitleProps) {
-  return (
-    <div className="fc-blue fw-bold fs-title">
-      {number ? <Circle className="mr-2">1</Circle> : null}
-      {children}
-    </div>
-  )
+export function Title({ children }: TitleProps) {
+  return <div className="fc-blue fw-bold fs-title">{children}</div>
 }
 
 interface LayoutProps {

@@ -6,6 +6,7 @@ interface Props {
   size?: 'small' | 'medium'
   className?: string
   onClick?: () => any
+  href?: string
 }
 
 export default function Button({
@@ -14,27 +15,30 @@ export default function Button({
   type = 'primary',
   size = 'medium',
   onClick = () => null,
+  href,
 }: Props) {
-  return (
-    <button
-      onClick={onClick}
-      className={`
-        bra d-ib bra-2 ta-c c-pointer
-        ${size === 'small' ? 'fs-small pv-2 ph-3' : 'pv-3 ph-4'}
-        ${
-          type === 'secondary'
-            ? 'ba bs-solid bw-bold bg-white bc-blue fc-blue'
-            : ''
-        }
-        ${
-          type === 'primary'
-            ? 'bg-blue fc-white ba bc-transparent'
-            : ''
-        }
-        ${className}
-      `}
-    >
-      {children}
-    </button>
-  )
+  const classes = `
+  bra d-ib bra-2 ta-c c-pointer
+  ${size === 'small' ? 'fs-small pv-2 ph-3' : 'pv-3 ph-4'}
+  ${
+    type === 'secondary'
+      ? 'ba bs-solid bw-bold bg-white bc-blue fc-blue'
+      : ''
+  }
+  ${type === 'primary' ? 'bg-blue fc-white ba bc-transparent' : ''}
+  ${className}
+`
+  if (href) {
+    return (
+      <a href={href} className={classes}>
+        {children}
+      </a>
+    )
+  } else {
+    return (
+      <button onClick={onClick} className={classes}>
+        {children}
+      </button>
+    )
+  }
 }
