@@ -49,6 +49,7 @@ function makeCss() {
         mono: 'monospace',
       },
       fontSizes: {
+        tiny: '0.6rem',
         small: '0.8rem',
         medium: '1rem',
         title: '1.2rem',

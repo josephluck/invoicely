@@ -17,19 +17,17 @@ export function invoiceStatus(): InvoiceStatus {
 export default function invoice(): Invoice {
   return {
     status: 'draft',
-    id: faker.random.number().toString(),
-    lineItems: [lineItem(), lineItem(), lineItem()],
+    id: (1000 + faker.random.number(8999)).toString(),
+    lineItems: Array.from({
+      length: faker.random.number({ min: 2, max: 10 }),
+    }).map(() => lineItem()),
     notes: faker.lorem.paragraphs(2),
-    number: faker.random.number().toString(),
-    billingAddress: `${faker.address.streetName()}\n${
-      faker.address.city
-    }\n${faker.address.county()}\n${faker.address.zipCode}`,
-    companyAddress: `${faker.address.streetName()}\n${
-      faker.address.city
-    }\n${faker.address.county()}\n${faker.address.zipCode}`,
+    number: faker.random.number({ min: 100, max: 900 }).toString(),
+    billingAddress: `${faker.address.streetName()}\n${faker.address.city()}\n${faker.address.county()}\n${faker.address.zipCode()}`,
+    companyAddress: `${faker.address.streetName()}\n${faker.address.city()}\n${faker.address.county()}\n${faker.address.zipCode()}`,
     dateCreated: faker.date.past().toString(),
     taxRate: taxRate(),
-    discount: faker.random.number(),
+    discount: faker.random.number({ min: 0, max: 50 }),
     includeTax: true,
     includeDiscount: true,
     includeLabels: true,

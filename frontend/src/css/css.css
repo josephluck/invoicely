@@ -36,3 +36,14 @@ input[type="date"] { -webkit-appearance: none }
 .rotate-0 { transform: rotate(0deg) }
 .rotate-90 { transform: rotate(90deg) }
 .rotate-180 { transform: rotate(180deg) }
+
+
+/*
+  Utilities
+*/
+
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

@@ -1,4 +1,4 @@
-import { LineItem } from '../types'
+import { LineItem, Invoice } from '../types'
 
 export function formatAsCurrency(
   value: any = '',
@@ -22,4 +22,17 @@ export function calculateVat(
   rate: number = 0,
 ): number {
   return total / 100 * rate
+}
+
+export function calculateTotal(invoice: Invoice): number {
+  const actualDiscount = invoice.includeDiscount
+    ? invoice.discount || 0
+    : 0
+  const subTotal =
+    calculateInvoiceSubtotal(invoice.lineItems) - actualDiscount
+  const tax = calculateVat(
+    subTotal,
+    invoice.includeTax ? invoice.taxRate : 0,
+  )
+  return subTotal + tax
 }

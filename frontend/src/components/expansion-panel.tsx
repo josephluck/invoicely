@@ -144,7 +144,9 @@ export class ExpansionPanel extends React.Component<Props, State> {
                   }
                 >
                   <div className="d-flex align-items-center pr-5">
-                    <div className="flex-1 mr-3">{card.header}</div>
+                    <div className="flex-1 mr-3 of-hidden">
+                      {card.header}
+                    </div>
                     <i
                       className={`fc-gray-600 ion-chevron-down transition ${
                         isExpanded ? 'rotate-0' : 'rotate-180'
