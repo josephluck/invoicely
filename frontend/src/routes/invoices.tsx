@@ -19,7 +19,11 @@ import {
 const page: Helix.Page<GlobalState, GlobalActions> = {
   view: (state, prev, actions) => {
     return (
-      <Layout title={<LayoutTitle>Invoices</LayoutTitle>}>
+      <Layout
+        title={<LayoutTitle>Invoices</LayoutTitle>}
+        state={state}
+        actions={actions}
+      >
         <div className="flex-1 of-auto pa-5">
           <div className="mb-5 d-flex align-items-center">
             <div className="flex-1">
@@ -82,9 +86,9 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
             cards={state.invoices.invoices.map(invoice => {
               return {
                 header: (isExpanded: boolean) => (
-                  <div className="pl-5 pv-5 d-flex of-hidden align-items-center">
+                  <div className="pl-5 pv-5 d-flex of-hidden align-items-center fs-small">
                     <a
-                      href={`/invoices/${invoice.id}/preview`}
+                      href={`/invoices/${invoice.id}`}
                       className="flex-1 mr-4 fw-bold"
                       style={{ whiteSpace: 'nowrap' }}
                     >
@@ -95,7 +99,7 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                         isExpanded ? 'o-0' : 'o-100'
                       }`}
                     >
-                      {invoice.number}
+                      #{invoice.id}
                     </span>
                     <span
                       className={`flex-2 mr-4 truncate transition ${
@@ -128,9 +132,7 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                         <Label className="d-ib mb-1">
                           Invoice Number
                         </Label>
-                        <div className="mb-4 lh-4">
-                          {invoice.number}
-                        </div>
+                        <div className="mb-4 lh-4">#{invoice.id}</div>
                         <Label className="d-ib mb-1">
                           Date Created
                         </Label>
@@ -151,9 +153,23 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                     </div>
                     <div className="ph-5 pv-4 bt bc-gray-200 d-flex">
                       <div className="flex-1">
-                        <Button type="secondary" size="small">
-                          View
+                        <Button
+                          type="secondary"
+                          size="small"
+                          href={`/invoices/${invoice.id}`}
+                        >
+                          View Invoice
                         </Button>
+                        {invoice.paymentId ? (
+                          <Button
+                            type="secondary"
+                            size="small"
+                            className="ml-3"
+                            href={`/payments/${invoice.paymentId}`}
+                          >
+                            View Payment
+                          </Button>
+                        ) : null}
                       </div>
                       <div>
                         <Button type="secondary" size="small">

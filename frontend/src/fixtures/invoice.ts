@@ -1,6 +1,7 @@
 import { Invoice, InvoiceStatus } from '../types'
 import lineItem from './line-item'
 import * as faker from 'faker'
+import payment from './payment'
 
 export function taxRate(): number {
   return faker.random.arrayElement([5, 15, 20])
@@ -14,15 +15,19 @@ export function invoiceStatus(): InvoiceStatus {
   ]) as InvoiceStatus
 }
 
-export default function invoice(): Invoice {
+export default function invoice(
+  override: Partial<Invoice> = {},
+  includePayment: boolean = true,
+): Invoice {
+  const status = invoiceStatus()
+  const shouldIncludePayment = includePayment && status === 'paid'
   return {
-    status: invoiceStatus(),
+    status,
     id: (1000 + faker.random.number(8999)).toString(),
     lineItems: Array.from({
       length: faker.random.number({ min: 2, max: 10 }),
     }).map(() => lineItem()),
     notes: faker.lorem.paragraphs(2),
-    number: faker.random.number({ min: 100, max: 900 }).toString(),
     billingAddress: `${faker.address.streetName()}\n${faker.address.city()}\n${faker.address.county()}\n${faker.address.zipCode()}`,
     companyAddress: `${faker.address.streetName()}\n${faker.address.city()}\n${faker.address.county()}\n${faker.address.zipCode()}`,
     dateCreated: faker.date.past().toString(),
@@ -33,5 +38,10 @@ export default function invoice(): Invoice {
     includeLabels: true,
     includeQuantity: true,
     includeSubTotal: true,
+    paymentId: shouldIncludePayment
+      ? (1000 + faker.random.number(8999)).toString()
+      : undefined,
+    payment: shouldIncludePayment ? payment() : undefined,
+    ...override,
   }
 }

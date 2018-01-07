@@ -1,22 +1,24 @@
 import { Helix } from 'helix-js'
 
 export interface State {
-  count: number
+  sidebarShowing: boolean
 }
 
 interface Reducers {
-  increment: Helix.Reducer0<State>
+  setSidebarShowing: Helix.Reducer<State, boolean>
 }
 
-interface Effects { }
+interface Effects {}
 
 export type Actions = Helix.Actions<Reducers, Effects>
 
 export const model: Helix.Model<State, Reducers, Effects> = {
   state: {
-    count: 0
+    sidebarShowing: false,
   },
   reducers: {
-    increment: (state) => ({ count: state.count + 1 }),
-  }
+    setSidebarShowing: (state, sidebarShowing) => ({
+      sidebarShowing,
+    }),
+  },
 }

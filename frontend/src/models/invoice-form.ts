@@ -7,7 +7,6 @@ import { GlobalState, GlobalActions } from './index'
 import { formatAsCurrency } from '../utils/invoice'
 
 interface Fields {
-  number: string
   dateCreated: string
   billingAddress: string
   companyAddress: string
@@ -28,7 +27,6 @@ export function sanitizeInvoice(
   return {
     status: 'draft',
     id: '123',
-    number: fields.number,
     dateCreated: fields.dateCreated,
     billingAddress: fields.billingAddress,
     companyAddress: fields.companyAddress,

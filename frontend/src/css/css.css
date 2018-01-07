@@ -39,7 +39,8 @@ button { outline: none; background: transparent; }
 .rotate-180 { transform: rotate(180deg) }
 .scale-in { transform: scale(1, 1) }
 .scale-out { transform: scale(0.9, 0.9) }
-
+.slide-left-out { transform: translateX(-100%) }
+.slide-left-in { transform: translateX(0%) }
 
 /*
   Utilities

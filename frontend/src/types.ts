@@ -10,7 +10,6 @@ export interface Invoice {
   id: string
   status: InvoiceStatus
   dateCreated: string
-  number: string
   billingAddress: string
   companyAddress: string
   notes: string
@@ -22,4 +21,14 @@ export interface Invoice {
   includeLabels: boolean
   includeQuantity: boolean
   includeSubTotal: boolean
+  paymentId?: string
+  payment?: Payment
+}
+
+export interface Payment {
+  id: string
+  dateCreated: string
+  amount: number
+  invoiceId: string
+  invoice: Invoice
 }

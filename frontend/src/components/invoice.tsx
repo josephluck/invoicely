@@ -3,26 +3,11 @@ import { Invoice } from '../types'
 import Label from './label'
 import LineItems from './line-items'
 import InvoiceTotals from './invoice-totals'
+import Block from './block'
 
 interface Props {
   invoice: Invoice
   className?: string
-}
-
-interface BlockProps {
-  children: React.ReactNode
-  className?: string
-}
-
-function Block({ children, className = '' }: BlockProps) {
-  return (
-    <div
-      className={`lh-4 ${className}`}
-      style={{ whiteSpace: 'pre-line' }}
-    >
-      {children}
-    </div>
-  )
 }
 
 export default function Invoice({ invoice, className = '' }: Props) {
@@ -43,7 +28,7 @@ export default function Invoice({ invoice, className = '' }: Props) {
         <div className="flex-1">
           <Label>Invoice</Label>
           <Block className="ba bs-solid bc-transparent mb-2">
-            {invoice.number}
+            {invoice.id}
           </Block>
           <Label>Raised</Label>
           <Block className="ba bs-solid bc-transparent">

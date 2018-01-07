@@ -16,6 +16,7 @@ import { formatAsCurrency } from '../utils/invoice'
 import Checkbox from '../components/checkbox'
 import InvoiceTotals from '../components/invoice-totals'
 import { sanitizeInvoice } from '../models/invoice-form'
+import Block from '../components/block'
 
 class Spreadsheet extends SpreadsheetConstructor<LineItem> {}
 
@@ -30,6 +31,8 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
     )
     return (
       <Layout
+        state={state}
+        actions={actions}
         title={
           <LayoutTitle>
             <a href="/invoices">Invoices</a> / New
@@ -167,16 +170,9 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
               </div>
               <div className="d-flex mb-8 pb-6">
                 <div className="flex-1">
-                  <TextField
-                    id="invoice-number"
-                    label="Invoice"
-                    type="text"
-                    className="w-100 mb-2"
-                    onChange={change('number')}
-                    value={state.invoiceForm.form.fields.number}
-                    errors={state.invoiceForm.form.errors.number}
-                    disabled={state.invoiceForm.previewMode}
-                  />
+                  <Block className="ba bs-solid bc-transparent mb-2">
+                    {invoice.id}
+                  </Block>
                   <DatePicker
                     id="date-created"
                     label="Raised"
