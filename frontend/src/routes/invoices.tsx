@@ -134,11 +134,27 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                         </Label>
                         <div className="mb-4 lh-4">#{invoice.id}</div>
                         <Label className="d-ib mb-1">
-                          Date Created
+                          Date Raised
                         </Label>
-                        <div className="lh-4">
+                        <div
+                          className={`lh-4 ${
+                            invoice.paymentId && invoice.payment
+                              ? 'mb-4'
+                              : ''
+                          }`}
+                        >
                           {humanize(invoice.dateCreated)}
                         </div>
+                        {invoice.paymentId && invoice.payment ? (
+                          <div>
+                            <Label className="d-ib mb-1">
+                              Payment Received
+                            </Label>
+                            <div className="lh-4">
+                              {humanize(invoice.payment.dateCreated)}
+                            </div>
+                          </div>
+                        ) : null}
                       </div>
                       <div className="flex-1 ml-3">
                         <Label className="d-ib mb-1">Total</Label>

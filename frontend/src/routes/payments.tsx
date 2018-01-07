@@ -67,17 +67,25 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                         </Label>
                         <div className="mb-4 lh-4">#{payment.id}</div>
                         <Label className="d-ib mb-1">
-                          Invoice Number
+                          Date Received
                         </Label>
                         <div className="mb-4 lh-4">
-                          #{payment.invoiceId}
+                          {humanize(payment.dateCreated)}
                         </div>
-                        <Label className="d-ib mb-1">Total</Label>
+                        <Label className="d-ib mb-1">
+                          Amount Paid
+                        </Label>
                         <div className="lh-4">
                           {formatAsCurrency(payment.amount)}
                         </div>
                       </div>
                       <div className="flex-1 ml-3">
+                        <Label className="d-ib mb-1">
+                          Invoice Number
+                        </Label>
+                        <div className="mb-4 lh-4">
+                          #{payment.invoiceId}
+                        </div>
                         <Label className="d-ib mb-1">From</Label>
                         <div className="lh-4">
                           {payment.invoice.companyAddress}
