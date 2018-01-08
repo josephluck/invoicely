@@ -4,6 +4,7 @@ import Label from './label'
 import LineItems from './line-items'
 import InvoiceTotals from './invoice-totals'
 import Block from './block'
+import { humanizeDate } from '../utils/dates'
 
 interface Props {
   invoice: Invoice
@@ -12,7 +13,7 @@ interface Props {
 
 export default function Invoice({ invoice, className = '' }: Props) {
   return (
-    <div className={`bg-white pa-5 ${className}`}>
+    <div className={className}>
       <div className="d-flex align-items-center bb bbs-solid bc-gray-200 pb-6 mb-6">
         <div className="flex-1">
           <img
@@ -28,11 +29,11 @@ export default function Invoice({ invoice, className = '' }: Props) {
         <div className="flex-1">
           <Label>Invoice</Label>
           <Block className="ba bs-solid bc-transparent mb-2">
-            {invoice.id}
+            #{invoice.id}
           </Block>
           <Label>Raised</Label>
           <Block className="ba bs-solid bc-transparent">
-            {invoice.dateCreated}
+            {humanizeDate(invoice.dateCreated)}
           </Block>
         </div>
         <div className="flex-1 ml-2">

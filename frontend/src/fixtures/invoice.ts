@@ -2,6 +2,7 @@ import { Invoice, InvoiceStatus } from '../types'
 import lineItem from './line-item'
 import * as faker from 'faker'
 import payment from './payment'
+import email from './email'
 
 export function taxRate(): number {
   return faker.random.arrayElement([5, 15, 20])
@@ -42,6 +43,12 @@ export default function invoice(
       ? (1000 + faker.random.number(8999)).toString()
       : undefined,
     payment: shouldIncludePayment ? payment() : undefined,
+    emails:
+      status !== 'draft'
+        ? Array.from({
+            length: faker.random.number({ min: 2, max: 10 }),
+          }).map(() => email())
+        : [],
     ...override,
   }
 }

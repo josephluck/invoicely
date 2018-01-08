@@ -4,6 +4,19 @@ export interface LineItem extends Record<string, any> {
   price: number
 }
 
+export type EmailType = 'invoice' | 'receipt'
+
+export interface Email {
+  id: string
+  to: string
+  reply: string // cool@compa.ny
+  body: string // Html body
+  dateCreated: string
+  dateOpened?: string
+  type: EmailType
+  typeId: string // Id of associated record
+}
+
 export type InvoiceStatus = 'draft' | 'sent' | 'paid'
 
 export interface Invoice {
@@ -23,6 +36,7 @@ export interface Invoice {
   includeSubTotal: boolean
   paymentId?: string
   payment?: Payment
+  emails: Email[]
 }
 
 export interface Payment {
@@ -31,4 +45,5 @@ export interface Payment {
   amount: number
   invoiceId: string
   invoice: Invoice
+  emails: Email[]
 }

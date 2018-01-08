@@ -3,7 +3,7 @@ import { Helix } from 'helix-js'
 import { GlobalState, GlobalActions } from '../models'
 import Layout, { Title as LayoutTitle } from './layout'
 import ExpansionPanel from '../components/expansion-panel'
-import { humanize } from '../utils/dates'
+import { humanizeDate } from '../utils/dates'
 import Tag from '../components/tag'
 import Button from '../components/button'
 import Label from '../components/label'
@@ -92,7 +92,7 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                       className="flex-1 mr-4 fw-bold"
                       style={{ whiteSpace: 'nowrap' }}
                     >
-                      {humanize(invoice.dateCreated)}
+                      {humanizeDate(invoice.dateCreated)}
                     </a>
                     <span
                       className={`flex-1 mr-4 truncate transition ${
@@ -143,7 +143,7 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                               : ''
                           }`}
                         >
-                          {humanize(invoice.dateCreated)}
+                          {humanizeDate(invoice.dateCreated)}
                         </div>
                         {invoice.paymentId && invoice.payment ? (
                           <div>
@@ -151,7 +151,9 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                               Payment Received
                             </Label>
                             <div className="lh-4">
-                              {humanize(invoice.payment.dateCreated)}
+                              {humanizeDate(
+                                invoice.payment.dateCreated,
+                              )}
                             </div>
                           </div>
                         ) : null}

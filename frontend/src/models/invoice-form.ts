@@ -39,6 +39,7 @@ export function sanitizeInvoice(
     includeQuantity: fields.includeQuantity,
     includeSubTotal: fields.includeSubTotal,
     lineItems,
+    emails: [],
   }
 }
 

@@ -64,3 +64,7 @@ export function getInvoiceStatusColor(
     return ''
   }
 }
+
+export function getLastSentDate(invoice: Invoice): string | null {
+  return invoice.emails.length ? invoice.emails[0].dateCreated : null
+}

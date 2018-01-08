@@ -51,27 +51,27 @@ export default function Layout({
           />
         </div>
         <a
-          className="d-b pa-5 d-flex bb bc-gray-200"
+          className="d-b pa-5 fw-bold bb bc-gray-200"
           href="/invoices"
           onClick={() => actions.app.setSidebarShowing(false)}
         >
           Invoices
         </a>
         <a
-          className="d-b pa-5 d-flex bb bc-gray-200"
+          className="d-b pa-5 fw-bold bb bc-gray-200"
           href="/payments"
           onClick={() => actions.app.setSidebarShowing(false)}
         >
           Payments
         </a>
         <a
-          className="d-b pa-5 d-flex bb bc-gray-200"
+          className="d-b pa-5 fw-bold bb bc-gray-200"
           href="/settings"
           onClick={() => actions.app.setSidebarShowing(false)}
         >
           Settings
         </a>
-        <a className="d-b pa-5 d-flex bb bc-gray-200">Logout</a>
+        <a className="d-b pa-5 fw-bold bb bc-gray-200">Logout</a>
       </Sidebar>
     </div>
   )
