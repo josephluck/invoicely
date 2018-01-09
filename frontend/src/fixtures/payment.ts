@@ -11,7 +11,7 @@ export default function payment(): Payment {
     amount: faker.random.number({ min: 100, max: 5000 }),
     invoice: invoice({ payment: undefined }, false),
     emails: Array.from({
-      length: faker.random.number({ min: 2, max: 10 }),
+      length: faker.random.number({ min: 1, max: 2 }),
     }).map(() => email()),
   }
 }

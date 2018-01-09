@@ -19,7 +19,7 @@ export default function Button({
 }: Props) {
   const classes = `
     bra d-ib ta-c c-pointer bra-2
-    ${size === 'small' ? 'fs-small pv-2 ph-3' : 'pv-3 ph-4'}
+    ${size === 'small' ? 'fs-small pv-2 ph-4' : 'pv-3 ph-5'}
     ${
       type === 'secondary'
         ? 'ba bs-solid bw-bold bg-white bc-blue fc-blue'

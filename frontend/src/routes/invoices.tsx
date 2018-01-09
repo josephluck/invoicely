@@ -6,7 +6,7 @@ import ExpansionPanel from '../components/expansion-panel'
 import { humanizeDate } from '../utils/dates'
 import Tag from '../components/tag'
 import Button from '../components/button'
-import Label from '../components/label'
+import InvoiceDetails from '../components/invoice-details'
 import Toggle from '../components/toggle'
 import SendInvoice from '../components/send-invoice'
 import {
@@ -127,48 +127,10 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                 ),
                 content: (
                   <div>
-                    <div className="pa-5 d-flex">
-                      <div className="flex-1 mr-3">
-                        <Label className="d-ib mb-1">
-                          Invoice Number
-                        </Label>
-                        <div className="mb-4 lh-4">#{invoice.id}</div>
-                        <Label className="d-ib mb-1">
-                          Date Raised
-                        </Label>
-                        <div
-                          className={`lh-4 ${
-                            invoice.paymentId && invoice.payment
-                              ? 'mb-4'
-                              : ''
-                          }`}
-                        >
-                          {humanizeDate(invoice.dateCreated)}
-                        </div>
-                        {invoice.paymentId && invoice.payment ? (
-                          <div>
-                            <Label className="d-ib mb-1">
-                              Payment Received
-                            </Label>
-                            <div className="lh-4">
-                              {humanizeDate(
-                                invoice.payment.dateCreated,
-                              )}
-                            </div>
-                          </div>
-                        ) : null}
-                      </div>
-                      <div className="flex-1 ml-3">
-                        <Label className="d-ib mb-1">Total</Label>
-                        <div className="mb-4 lh-4">
-                          {formatAsCurrency(calculateTotal(invoice))}
-                        </div>
-                        <Label className="d-ib mb-1">To</Label>
-                        <div className="lh-4">
-                          {invoice.companyAddress}
-                        </div>
-                      </div>
-                    </div>
+                    <InvoiceDetails
+                      className="pa-5"
+                      invoice={invoice}
+                    />
                     <div className="ph-5 pv-4 bt bc-gray-200 d-flex">
                       <div className="flex-1">
                         <Button

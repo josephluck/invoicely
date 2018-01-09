@@ -46,7 +46,7 @@ export default function invoice(
     emails:
       status !== 'draft'
         ? Array.from({
-            length: faker.random.number({ min: 2, max: 10 }),
+            length: faker.random.number({ min: 1, max: 3 }),
           }).map(() => email())
         : [],
     ...override,

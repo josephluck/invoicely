@@ -14,7 +14,7 @@ export default function Message({
   return (
     <div
       className={`
-        bra-2 pa-5 ba fw-bold lh-4 fc-${color} bc-${color} bg-white ${className}
+        bra-2 ph-5 pv-3 ba fw-bold lh-4 fc-${color} bc-${color} bg-white ${className}
       `}
     >
       {children}

@@ -17,7 +17,7 @@ export default function Card({
   return (
     <div
       className={`
-        bra-3 bg-white ${header ? '' : 'pa-4'} box-card ${className}
+        bra-3 bg-white box-card ${className}
       `}
     >
       {header ? (
