@@ -2,6 +2,7 @@ import * as React from 'react'
 import { Helix } from 'helix-js'
 import { GlobalState, GlobalActions } from '../models'
 import InvoiceDetails from '../components/invoice-details'
+import PaymentDetails from '../components/payment-details'
 import Layout, { Title as LayoutTitle } from './layout'
 import Card from '../components/card'
 import Title from '../components/title'
@@ -22,6 +23,7 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
         }
         state={state}
         actions={actions}
+        activeTab="invoices"
       >
         <div className="flex-1 of-auto pa-5">
           <div className="mb-5 d-flex">
@@ -48,9 +50,21 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
             <InvoiceDetails invoice={state.invoice.invoice} />
           </Card>
 
+          {state.invoice.invoice.paymentId &&
+          state.invoice.invoice.payment ? (
+            <div>
+              <Title className="mb-3 ml-5">Payment Details</Title>
+              <Card className="mb-5 pa-5">
+                <PaymentDetails
+                  payment={state.invoice.invoice.payment}
+                />
+              </Card>
+            </div>
+          ) : null}
+
           {state.invoice.invoice.emails.length > 0 ? (
             <div>
-              <Title className="mb-3 ml-5">Emails</Title>
+              <Title className="mb-3 ml-5">Emails Sent</Title>
               <EmailList emails={state.invoice.invoice.emails} />
             </div>
           ) : null}

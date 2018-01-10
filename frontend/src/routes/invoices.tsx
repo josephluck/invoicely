@@ -23,6 +23,7 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
         title={<LayoutTitle>Invoices</LayoutTitle>}
         state={state}
         actions={actions}
+        activeTab="invoices"
       >
         <div className="flex-1 of-auto pa-5">
           <div className="mb-5 d-flex align-items-center">
@@ -78,7 +79,7 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                 Paid
               </Toggle>
             </div>
-            <Button href="invoices/new" size="small">
+            <Button href="/invoices/123/edit" size="small">
               New Invoice
             </Button>
           </div>

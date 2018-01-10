@@ -17,6 +17,8 @@ import Checkbox from '../components/checkbox'
 import InvoiceTotals from '../components/invoice-totals'
 import { sanitizeInvoice } from '../models/invoice-form'
 import Block from '../components/block'
+import SendInvoice from '../components/send-invoice'
+import Label from '../components/label'
 
 class Spreadsheet extends SpreadsheetConstructor<LineItem> {}
 
@@ -33,6 +35,7 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
       <Layout
         state={state}
         actions={actions}
+        activeTab="invoices"
         title={
           <LayoutTitle>
             <a href="/invoices">Invoices</a> / New
@@ -134,20 +137,31 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
             </div>
           </div>
           <div>
-            <Button className="w-100 mb-3" type="secondary">
+            <Button
+              className="w-100 mb-3"
+              type="secondary"
+              size="small"
+            >
               Download
             </Button>
-            <Button className="w-100">Send</Button>
+            <Button
+              className="w-100"
+              onClick={() =>
+                actions.sendInvoice.setModalShowing(true)
+              }
+            >
+              Send
+            </Button>
           </div>
         </div>
         <div className="pa-5 h-100 flex-1 of-auto">
           {state.invoiceForm.previewMode ? (
             <Invoice
               invoice={invoice}
-              className="box-card h-a4 ml-auto mr-auto"
+              className="box-card pa-5 bg-white"
             />
           ) : (
-            <Card className="ml-auto mr-auto pa-5">
+            <Card className="pa-5">
               <div className="d-flex align-items-center bb bbs-solid bc-gray-200 pb-6 mb-6">
                 <div className="flex-1">
                   <img
@@ -170,6 +184,7 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
               </div>
               <div className="d-flex mb-8 pb-6">
                 <div className="flex-1">
+                  <Label>Invoice Number</Label>
                   <Block className="ba bs-solid bc-transparent mb-2">
                     {invoice.id}
                   </Block>
@@ -235,6 +250,7 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
             </Card>
           )}
         </div>
+        <SendInvoice state={state} actions={actions} />
       </Layout>
     )
   },

@@ -5,7 +5,7 @@ import Layout, { Title as LayoutTitle } from './layout'
 import ExpansionPanel from '../components/expansion-panel'
 import { humanizeDate } from '../utils/dates'
 import Button from '../components/button'
-import Label from '../components/label'
+import PaymentDetails from '../components/payment-details'
 import { formatAsCurrency } from '../utils/invoice'
 
 const page: Helix.Page<GlobalState, GlobalActions> = {
@@ -15,6 +15,7 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
         title={<LayoutTitle>Payments</LayoutTitle>}
         state={state}
         actions={actions}
+        activeTab="payments"
       >
         <div className="flex-1 of-auto pa-5">
           <div className="mb-5 d-flex align-items-center">
@@ -60,38 +61,10 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                 ),
                 content: (
                   <div>
-                    <div className="pa-5 d-flex">
-                      <div className="flex-1 mr-3">
-                        <Label className="d-ib mb-1">
-                          Payment Number
-                        </Label>
-                        <div className="mb-4 lh-4">#{payment.id}</div>
-                        <Label className="d-ib mb-1">
-                          Date Received
-                        </Label>
-                        <div className="mb-4 lh-4">
-                          {humanizeDate(payment.dateCreated)}
-                        </div>
-                        <Label className="d-ib mb-1">
-                          Amount Paid
-                        </Label>
-                        <div className="lh-4">
-                          {formatAsCurrency(payment.amount)}
-                        </div>
-                      </div>
-                      <div className="flex-1 ml-3">
-                        <Label className="d-ib mb-1">
-                          Invoice Number
-                        </Label>
-                        <div className="mb-4 lh-4">
-                          #{payment.invoiceId}
-                        </div>
-                        <Label className="d-ib mb-1">From</Label>
-                        <div className="lh-4">
-                          {payment.invoice.companyAddress}
-                        </div>
-                      </div>
-                    </div>
+                    <PaymentDetails
+                      payment={payment}
+                      className="pa-5"
+                    />
                     <div className="ph-5 pv-4 bt bc-gray-200 d-flex">
                       <div className="flex-1">
                         <Button

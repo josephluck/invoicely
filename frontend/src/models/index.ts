@@ -15,8 +15,8 @@ type Models = Helix.Models<{
   payments: Helix.ModelApi<Payments.State, Payments.Actions>
 }>
 
-export type GlobalState = Models['state']
-export type GlobalActions = Models['actions']
+export type GlobalState = Helix.HelixState<Models['state']>
+export type GlobalActions = Helix.HelixActions<Models['actions']>
 
 const model: Helix.Model<any, any, any> = {
   state: {},
