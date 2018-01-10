@@ -1,4 +1,4 @@
-import { Invoice, InvoiceStatus } from '../types'
+import { Invoice, InvoiceStatus } from 'types'
 import lineItem from './line-item'
 import * as faker from 'faker'
 import payment from './payment'

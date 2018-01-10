@@ -2,10 +2,10 @@ import * as React from 'react'
 import { Helix } from 'helix-js'
 import { GlobalState, GlobalActions } from '../models'
 import Layout, { Title as LayoutTitle } from './layout'
-import ExpansionPanel from '../components/expansion-panel'
+import ExpansionPanel from 'components/src/expansion-panel'
 import { humanizeDate } from '../utils/dates'
-import Button from '../components/button'
-import PaymentDetails from '../components/payment-details'
+import Button from 'components/src/button'
+import PaymentDetails from 'components/src/payment-details'
 import { formatAsCurrency } from '../utils/invoice'
 
 const page: Helix.Page<GlobalState, GlobalActions> = {

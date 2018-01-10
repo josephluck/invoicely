@@ -1,4 +1,4 @@
-import { Payment } from '../types'
+import { Payment } from 'types'
 import * as faker from 'faker'
 import invoice from './invoice'
 import email from './email'

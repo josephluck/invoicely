@@ -5,30 +5,36 @@
   "dependencies": {
     "@types/faker": "^4.1.2",
     "@types/react-sortable-hoc": "^0.6.0",
+    "components": "1.0.0",
     "crux-css": "^4.0.4",
     "date-fns": "^1.29.0",
     "faker": "^4.1.0",
+    "get-yarn-workspaces": "^1.0.1",
     "helix-js": "^2.0.0",
     "moment": "^2.20.1",
     "prettier": "^1.9.2",
     "react": "^16.2.0",
+    "react-app-rewire-typescript": "^2.0.2",
+    "react-app-rewired": "^1.4.0",
     "react-autosize-textarea": "^3.0.0",
     "react-collapse": "^4.0.3",
     "react-datepicker": "^0.64.0",
     "react-dom": "^16.2.0",
     "react-motion": "^0.5.2",
+    "react-scripts": "^1.0.17",
     "react-scripts-ts": "2.8.0",
     "react-sortable-hoc": "^0.6.8",
     "space-lift": "^0.6.4",
     "tslint": "^5.8.0",
     "tslint-config-prettier": "^1.6.0",
     "twine-log": "^1.0.0",
+    "types": "1.0.0",
     "validate.js": "^0.11.1"
   },
   "scripts": {
-    "start": "react-scripts-ts start",
-    "build": "react-scripts-ts build",
-    "test": "react-scripts-ts test --env=jsdom",
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test --env=jsdom",
     "eject": "react-scripts-ts eject",
     "postinstall": "rm -rf node_modules/react-autosize-textarea/node_modules"
   },
@@ -37,15 +43,5 @@
     "@types/node": "^8.5.2",
     "@types/react": "^16.0.31",
     "@types/react-dom": "^16.0.3"
-  },
-  "prettier": {
-    "printWidth": 70,
-    "parser": "typescript",
-    "semi": false,
-    "tabWidth": 2,
-    "useTabs": false,
-    "singleQuote": true,
-    "trailingComma": "all",
-    "bracketSpacing": true
   }
 }

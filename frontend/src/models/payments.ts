@@ -1,5 +1,5 @@
 import { Helix } from 'helix-js'
-import { Payment } from '../types'
+import { Payment } from 'types'
 import paymentFixture from '../fixtures/payment'
 
 export interface State {

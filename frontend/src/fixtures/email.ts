@@ -1,4 +1,4 @@
-import { Email } from '../types'
+import { Email } from 'types'
 import * as faker from 'faker'
 
 export default function email(): Email {

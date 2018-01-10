@@ -1,5 +1,5 @@
 import { Helix } from 'helix-js'
-import { Invoice, InvoiceStatus } from '../types'
+import { Invoice, InvoiceStatus } from 'types'
 import { GlobalState, GlobalActions } from './index'
 import invoiceFixture from '../fixtures/invoice'
 

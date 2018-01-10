@@ -1,4 +1,4 @@
-import { LineItem } from '../types'
+import { LineItem } from 'types'
 import * as faker from 'faker'
 
 export default function lineItem(): LineItem {

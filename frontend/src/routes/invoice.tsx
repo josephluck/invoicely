@@ -1,14 +1,14 @@
 import * as React from 'react'
 import { Helix } from 'helix-js'
 import { GlobalState, GlobalActions } from '../models'
-import InvoiceDetails from '../components/invoice-details'
-import PaymentDetails from '../components/payment-details'
+import InvoiceDetails from 'components/src/invoice-details'
+import PaymentDetails from 'components/src/payment-details'
 import Layout, { Title as LayoutTitle } from './layout'
-import Card from '../components/card'
-import Title from '../components/title'
-import EmailList from '../components/email-list'
-import Button from '../components/button'
-import InvoiceStatusMessage from '../components/invoice-status-message'
+import Card from 'components/src/card'
+import Title from 'components/src/title'
+import EmailList from 'components/src/email-list'
+import Button from 'components/src/button'
+import InvoiceStatusMessage from 'components/src/invoice-status-message'
 
 const page: Helix.Page<GlobalState, GlobalActions> = {
   view: (state, prev, actions) => {

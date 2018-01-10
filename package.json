@@ -1,0 +1,23 @@
+{
+  "name": "invoicely",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:josephluck/invoicely.git",
+  "author": "Joseph Luck <joseph.luck@sky.com>",
+  "license": "MIT",
+  "private": true,
+  "workspaces": ["frontend", "packages/*"],
+  "prettier": {
+    "printWidth": 70,
+    "parser": "typescript",
+    "semi": false,
+    "tabWidth": 2,
+    "useTabs": false,
+    "singleQuote": true,
+    "trailingComma": "all",
+    "bracketSpacing": true
+  },
+  "scripts": {
+    "postinstall": "rm -rf ./node_modules/react-autosize-textarea/node_modules/@types/react ./node_modules/@types/nightwatch"
+  }
+}

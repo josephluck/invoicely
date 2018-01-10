@@ -1,5 +1,5 @@
 import * as React from 'react'
-import Navigation from '../components/main-nav'
+import Navigation from 'components/src/main-nav'
 import { GlobalState, GlobalActions } from '../models'
 
 interface TitleProps {
@@ -37,7 +37,6 @@ export default function Layout({
           className="flex-1"
           activeTab={activeTab}
         />
-        <i className="fc-gray-600 ion-search" />
       </div>
       <div className="d-flex flex-1 of-auto">{children}</div>
     </div>

@@ -1,8 +1,8 @@
 import { Helix } from 'helix-js'
 import * as dates from 'date-fns'
 import * as Form from './form'
-import { LineItem, Invoice } from '../types'
-import { Column } from '../components/spreadsheet'
+import { LineItem, Invoice } from 'types'
+import { Column } from 'components/src/spreadsheet'
 import { GlobalState, GlobalActions } from './index'
 import { formatAsCurrency } from '../utils/invoice'
 
