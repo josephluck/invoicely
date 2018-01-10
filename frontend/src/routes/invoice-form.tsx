@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Helix } from 'helix-js'
 import { GlobalState, GlobalActions } from '../models'
-// import { LineItem } from 'types'
+import { LineItem } from 'types'
 import Layout, { Title as LayoutTitle } from './layout'
 import Card from 'components/src/card'
 import Invoice from 'components/src/invoice'
@@ -11,16 +11,16 @@ import NormalTextField from 'components/src/textfield'
 import DatePicker from 'components/src/invoice-datepicker'
 import Select from 'components/src/select'
 import Button from 'components/src/button'
-// import SpreadsheetConstructor from 'components/src/spreadsheet'
+import SpreadsheetConstructor from 'components/src/spreadsheet'
 import { formatAsCurrency } from '../utils/invoice'
 import Checkbox from 'components/src/checkbox'
-// import InvoiceTotals from 'components/src/invoice-totals'
+import InvoiceTotals from 'components/src/invoice-totals'
 import { sanitizeInvoice } from '../models/invoice-form'
 import Block from 'components/src/block'
 import SendInvoice from '../components/send-invoice'
 import Label from 'components/src/label'
 
-// class Spreadsheet extends SpreadsheetConstructor<LineItem> {}
+class Spreadsheet extends SpreadsheetConstructor<LineItem> {}
 
 const page: Helix.Page<GlobalState, GlobalActions> = {
   view: (state, prev, actions) => {
@@ -215,7 +215,7 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                 </div>
               </div>
               <div>
-                {/* <Spreadsheet
+                <Spreadsheet
                   rows={state.invoiceForm.lineItems}
                   columns={state.invoiceForm.lineItemColumns}
                   showLabels={
@@ -238,7 +238,7 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                       taxRate={state.invoiceForm.form.fields.taxRate}
                     />
                   }
-                /> */}
+                />
               </div>
             </Card>
           )}

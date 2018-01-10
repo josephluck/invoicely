@@ -9,7 +9,6 @@ function webpack(config, env, from) {
     .oneOf.find(rule => /babel-loader/.test(rule.loader))
 
   if (!Array.isArray(babel.include)) {
-    console.log(babel)
     babel.include = [babel.include]
   }
 
