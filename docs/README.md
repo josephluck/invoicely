@@ -1,5 +1,7 @@
 # Invoicely
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/josephluck/invoicely.svg?token=bc9ed959a0afb30f4f5f17cc4c9ec26bb5e5d5a216862b34301a213166f05d7d&ts=1515632963227)](https://greenkeeper.io/)
+
 Create and send invoices.
 
 ## Free features
