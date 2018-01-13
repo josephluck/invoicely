@@ -1,7 +1,7 @@
 import { Helix } from 'helix-js'
 import { Invoice } from 'types'
 // import { GlobalState, GlobalActions } from './index'
-import invoiceFixture from '../fixtures/invoice'
+import invoiceFixture from 'fixtures/src/invoice'
 
 export interface State {
   invoice: Invoice

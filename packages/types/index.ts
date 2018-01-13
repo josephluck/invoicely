@@ -47,3 +47,10 @@ export interface Payment {
   invoice: Invoice
   emails: Email[]
 }
+
+export interface User {
+  id: string
+  name: string
+  email: string
+  avatar: string
+}

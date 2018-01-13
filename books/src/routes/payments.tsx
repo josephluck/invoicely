@@ -66,31 +66,17 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                       className="pa-5"
                     />
                     <div className="ph-5 pv-4 bt bc-gray-200 d-flex">
-                      <div className="flex-1">
-                        <Button
-                          type="secondary"
-                          size="small"
-                          href={`/payments/${payment.id}`}
-                          className="mr-3"
-                        >
-                          View Payment
-                        </Button>
-                        <Button
-                          type="secondary"
-                          size="small"
-                          href={`/invoices/${payment.invoiceId}`}
-                        >
-                          View Invoice
-                        </Button>
-                      </div>
-                      <div>
-                        <Button type="secondary" size="small">
-                          Download Receipt
-                        </Button>
-                        <Button className="ml-3" size="small">
-                          Send Receipt
-                        </Button>
-                      </div>
+                      <div className="flex-1" />
+                      <Button
+                        type="secondary"
+                        size="small"
+                        href={`/invoices/${payment.invoiceId}`}
+                      >
+                        View Invoice
+                      </Button>
+                      <Button className="ml-3" size="small">
+                        Send Receipt
+                      </Button>
                     </div>
                   </div>
                 ),

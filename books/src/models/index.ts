@@ -5,6 +5,7 @@ import * as Invoice from './invoice'
 import * as Invoices from './invoices'
 import * as SendInvoice from './send-invoice'
 import * as Payments from './payments'
+import * as Authentication from './authentication'
 
 type Models = Helix.Models<{
   app: Helix.ModelApi<App.State, App.Actions>
@@ -13,6 +14,10 @@ type Models = Helix.Models<{
   invoice: Helix.ModelApi<Invoice.State, Invoice.Actions>
   sendInvoice: Helix.ModelApi<SendInvoice.State, SendInvoice.Actions>
   payments: Helix.ModelApi<Payments.State, Payments.Actions>
+  authentication: Helix.ModelApi<
+    Authentication.State,
+    Authentication.Actions
+  >
 }>
 
 export type GlobalState = Helix.HelixState<Models['state']>
@@ -27,6 +32,7 @@ const model: Helix.Model<any, any, any> = {
     invoices: Invoices.model,
     sendInvoice: SendInvoice.model,
     payments: Payments.model,
+    authentication: Authentication.model,
   },
 }
 

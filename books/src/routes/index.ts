@@ -3,6 +3,7 @@ import invoices from './invoices'
 import previewInvoice from './preview-invoice'
 import invoice from './invoice'
 import payments from './payments'
+import login from './login'
 
 const routes = {
   invoices: invoices,
@@ -11,6 +12,7 @@ const routes = {
   '/invoices/:invoiceId/edit': invoiceForm,
   '/invoices/:invoiceId/preview': previewInvoice,
   '/payments': payments,
+  '/login': login,
 }
 
 export default routes

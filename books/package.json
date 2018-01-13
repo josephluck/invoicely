@@ -5,6 +5,7 @@
   "dependencies": {
     "@types/faker": "^4.1.2",
     "@types/react-sortable-hoc": "^0.6.0",
+    "fixtures": "1.0.0",
     "ui": "1.0.0",
     "crux-css": "^4.0.4",
     "date-fns": "^1.29.0",

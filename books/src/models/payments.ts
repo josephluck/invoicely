@@ -1,6 +1,6 @@
 import { Helix } from 'helix-js'
 import { Payment } from 'types'
-import paymentFixture from '../fixtures/payment'
+import paymentFixture from 'fixtures/src/payment'
 
 export interface State {
   payments: Payment[]
