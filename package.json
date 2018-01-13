@@ -6,7 +6,7 @@
   "author": "Joseph Luck <joseph.luck@sky.com>",
   "license": "MIT",
   "private": true,
-  "workspaces": ["frontend", "packages/*"],
+  "workspaces": ["books", "pay", "packages/*"],
   "prettier": {
     "printWidth": 70,
     "parser": "typescript",

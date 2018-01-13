@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Helix } from 'helix-js'
 import { GlobalState, GlobalActions } from '../models'
-import Invoice from 'components/src/invoice'
+import Invoice from 'ui/src/invoice'
 
 const page: Helix.Page<GlobalState, GlobalActions> = {
   view: (state, prev, actions) => {

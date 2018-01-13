@@ -1,9 +1,9 @@
 import * as React from 'react'
 import { Email } from 'types'
-import Button from 'components/src/button'
-import ExpansionPanel from 'components/src/expansion-panel'
-import Tag from 'components/src/tag'
-import Label from 'components/src/label'
+import Button from 'ui/src/button'
+import ExpansionPanel from 'ui/src/expansion-panel'
+import Tag from 'ui/src/tag'
+import Label from 'ui/src/label'
 import { humanizeDate, humanizeTime } from './utils/dates'
 
 interface Props {

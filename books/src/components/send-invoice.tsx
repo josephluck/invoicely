@@ -1,9 +1,9 @@
 import * as React from 'react'
 import { GlobalState, GlobalActions } from '../models'
-import Modal from 'components/src/modal'
-import Button from 'components/src/button'
-import Title from 'components/src/title'
-import Textfield from 'components/src/textfield'
+import Modal from 'ui/src/modal'
+import Button from 'ui/src/button'
+import Title from 'ui/src/title'
+import Textfield from 'ui/src/textfield'
 import fieldChangeHandler from '../utils/field-change-handler'
 
 interface Props {
