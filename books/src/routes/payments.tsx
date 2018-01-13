@@ -9,6 +9,9 @@ import PaymentDetails from 'ui/src/payment-details'
 import { formatAsCurrency } from '../utils/invoice'
 
 const page: Helix.Page<GlobalState, GlobalActions> = {
+  onEnter(state, prev, actions) {
+    actions.authentication.check()
+  },
   view: (state, prev, actions) => {
     return (
       <Layout
@@ -68,7 +71,7 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                     <div className="ph-5 pv-4 bt bc-gray-200 d-flex">
                       <div className="flex-1" />
                       <Button
-                        type="secondary"
+                        style="secondary"
                         size="small"
                         href={`/invoices/${payment.invoiceId}`}
                       >

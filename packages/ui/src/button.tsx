@@ -2,7 +2,8 @@ import * as React from 'react'
 
 interface Props {
   children: React.ReactNode
-  type?: 'primary' | 'secondary'
+  style?: 'primary' | 'secondary'
+  type?: 'button' | 'submit' | 'reset'
   size?: 'small' | 'medium'
   className?: string
   onClick?: () => any
@@ -12,8 +13,9 @@ interface Props {
 export function Button({
   children,
   className = '',
-  type = 'primary',
+  style = 'primary',
   size = 'medium',
+  type = 'button',
   onClick = () => null,
   href,
 }: Props) {
@@ -21,11 +23,11 @@ export function Button({
     bra d-ib ta-c c-pointer bra-2
     ${size === 'small' ? 'fs-small pv-2 ph-4' : 'pv-3 ph-5'}
     ${
-      type === 'secondary'
+      style === 'secondary'
         ? 'ba bs-solid bw-bold bg-white bc-blue fc-blue'
         : ''
     }
-    ${type === 'primary' ? 'bg-blue fc-white ba bc-transparent' : ''}
+    ${style === 'primary' ? 'bg-blue fc-white ba bc-transparent' : ''}
     ${className}
   `
   if (href) {
@@ -36,7 +38,7 @@ export function Button({
     )
   } else {
     return (
-      <button onClick={onClick} className={classes}>
+      <button onClick={onClick} className={classes} type={type}>
         {children}
       </button>
     )

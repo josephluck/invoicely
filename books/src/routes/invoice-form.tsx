@@ -23,6 +23,9 @@ import Label from 'ui/src/label'
 class Spreadsheet extends SpreadsheetConstructor<LineItem> {}
 
 const page: Helix.Page<GlobalState, GlobalActions> = {
+  onEnter(state, prev, actions) {
+    actions.authentication.check()
+  },
   view: (state, prev, actions) => {
     const change = fieldChangeHandler(
       actions.invoiceForm.form.setFields,

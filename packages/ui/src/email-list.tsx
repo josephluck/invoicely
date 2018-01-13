@@ -64,7 +64,7 @@ export function EmailList({ className = '', emails }: Props) {
               </div>
               <div className="ph-5 pv-4 bt bc-gray-200 d-flex">
                 <div className="flex-1">
-                  <Button type="secondary" size="small">
+                  <Button style="secondary" size="small">
                     View Email
                   </Button>
                 </div>

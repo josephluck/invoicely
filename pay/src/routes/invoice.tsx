@@ -32,7 +32,7 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
               className="flex-1"
             />
             {state.invoice.invoice.status === 'draft' ? (
-              <Button className="ml-3" type="secondary">
+              <Button className="ml-3" style="secondary">
                 Edit
               </Button>
             ) : null}

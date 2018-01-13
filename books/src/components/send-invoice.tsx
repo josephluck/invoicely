@@ -25,7 +25,7 @@ export default function SendInvoice({ state, actions }: Props) {
           <div className="flex-1" />
           <Button
             size="small"
-            type="secondary"
+            style="secondary"
             onClick={() => actions.sendInvoice.setModalShowing(false)}
             className="ml-3"
           >

@@ -17,6 +17,9 @@ import {
 } from '../utils/invoice'
 
 const page: Helix.Page<GlobalState, GlobalActions> = {
+  onEnter(state, prev, actions) {
+    actions.authentication.check()
+  },
   view: (state, prev, actions) => {
     return (
       <Layout
@@ -137,7 +140,7 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                       <div>
                         {invoice.status !== 'paid' ? (
                           <Button
-                            type="secondary"
+                            style="secondary"
                             size="small"
                             onClick={() =>
                               actions.invoices.startSendInvoice(
@@ -149,7 +152,6 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                           </Button>
                         ) : null}
                         <Button
-                          type="primary"
                           size="small"
                           className="ml-3"
                           href={`/invoices/${invoice.id}`}

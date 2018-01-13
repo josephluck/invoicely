@@ -5,6 +5,7 @@ import Button from 'ui/src/button'
 import Layout from './layout-entry'
 import Title from 'ui/src/title'
 import Textfield from 'ui/src/textfield'
+import Form from 'ui/src/form'
 import fieldChangeHandler from '../utils/field-change-handler'
 
 const page: Helix.Page<GlobalState, GlobalActions> = {
@@ -15,7 +16,10 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
     return (
       <Layout>
         <div className="flex-1 d-flex align-items-center of-auto pa-5">
-          <div className="bg-white box-card mh-auto w-6 bra-2">
+          <Form
+            onSubmit={actions.authentication.login}
+            className="bg-white box-card mh-auto w-6 bra-2"
+          >
             <div className="pv-4 ph-5 bb bc-gray-200">
               <Title>Login</Title>
             </div>
@@ -44,14 +48,11 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
             <div className="pv-4 ph-5 d-flex align-items-center bt bc-gray-200">
               <div className="flex-1" />
               <a href="">Forgotten Password?</a>
-              <Button
-                className="ml-4"
-                onClick={actions.authentication.login}
-              >
+              <Button className="ml-4" type="submit">
                 Login
               </Button>
             </div>
-          </div>
+          </Form>
         </div>
       </Layout>
     )

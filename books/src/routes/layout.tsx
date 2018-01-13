@@ -45,7 +45,13 @@ export default function Layout({
               <div className="ph-4 pv-3 bb bc-gray-200">
                 My Profile
               </div>
-              <div className="ph-4 pv-3">Logout</div>
+              <a
+                className="ph-4 pv-3 d-b"
+                href=""
+                onClick={actions.authentication.logout}
+              >
+                Logout
+              </a>
             </div>
           }
         >

@@ -4,7 +4,7 @@ import { GlobalState, GlobalActions } from './index'
 // import { GlobalState, GlobalActions } from './index'
 import { User } from 'types'
 import userFixture from 'fixtures/src/user'
-import { Option, Some } from 'space-lift'
+import { Option, Some, None } from 'space-lift'
 
 interface LoginFields {
   username: string
@@ -19,10 +19,15 @@ export interface State extends LocalState {
   loginForm: Form.State<LoginFields>
 }
 
-interface Reducers {}
+interface Reducers {
+  resetState: Helix.Reducer0<State>
+  setUser: Helix.Reducer<State, User>
+}
 
 interface Effects {
+  check: Helix.Effect0<GlobalState, GlobalActions>
   login: Helix.Effect0<GlobalState, GlobalActions>
+  logout: Helix.Effect0<GlobalState, GlobalActions>
 }
 
 type LocalActions = Helix.Actions<Reducers, Effects>
@@ -33,21 +38,43 @@ export interface Actions extends LocalActions {
 
 function emptyState(): LocalState {
   return {
-    user: Some(userFixture()),
+    user: None,
   }
 }
 
 export const model: Helix.Model<LocalState, Reducers, Effects> = {
   state: emptyState(),
-  reducers: {},
+  reducers: {
+    resetState: emptyState,
+    setUser(state, user) {
+      return {
+        user: Some(user),
+      }
+    },
+  },
   effects: {
+    check(state, actions) {
+      return state.authentication.user.fold(() => {
+        actions.location.set(
+          `/login?redirect=${state.location.pathname}`,
+        )
+        return false
+      }, () => true)
+    },
     login(state, actions) {
       actions.authentication.loginForm.validateOnSubmit().fold(
         () => null,
         ({ fields }) => {
-          console.log('Submit the login form with', fields)
+          actions.authentication.setUser(userFixture())
+          actions.location.set(
+            state.location.query.redirect || '/invoices',
+          )
         },
       )
+    },
+    logout(state, actions) {
+      actions.authentication.resetState()
+      actions.location.set('/login')
     },
   },
   models: {
