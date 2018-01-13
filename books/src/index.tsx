@@ -18,3 +18,11 @@ helix<GlobalState, GlobalActions>({
 })
 
 registerServiceWorker()
+
+if ((module as any).hot) {
+  console.log('were hot yo')
+  ;(module as any).hot.accept('./index', () => {
+    console.log('did a thing')
+    // dom.render(node(state, previous, actions), elm) // module or one of its dependencies was just updated
+  })
+}

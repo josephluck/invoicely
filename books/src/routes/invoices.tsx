@@ -133,39 +133,28 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                       invoice={invoice}
                     />
                     <div className="ph-5 pv-4 bt bc-gray-200 d-flex">
-                      <div className="flex-1">
-                        <Button
-                          type="secondary"
-                          size="small"
-                          href={`/invoices/${invoice.id}`}
-                        >
-                          View Invoice
-                        </Button>
-                        {invoice.paymentId ? (
+                      <div className="flex-1" />
+                      <div>
+                        {invoice.status !== 'paid' ? (
                           <Button
                             type="secondary"
                             size="small"
-                            className="ml-3"
-                            href={`/payments/${invoice.paymentId}`}
+                            onClick={() =>
+                              actions.invoices.startSendInvoice(
+                                invoice.id,
+                              )
+                            }
                           >
-                            View Payment
+                            Send
                           </Button>
                         ) : null}
-                      </div>
-                      <div>
-                        <Button type="secondary" size="small">
-                          Download
-                        </Button>
                         <Button
-                          className="ml-3"
+                          type="primary"
                           size="small"
-                          onClick={() =>
-                            actions.invoices.startSendInvoice(
-                              invoice.id,
-                            )
-                          }
+                          className="ml-3"
+                          href={`/invoices/${invoice.id}`}
                         >
-                          Send
+                          View
                         </Button>
                       </div>
                     </div>
