@@ -4,6 +4,8 @@ import invoice from './invoice'
 import payments from './payments'
 import login from './login'
 import register from './register'
+import forgot from './forgot'
+import reset from './reset'
 
 const routes = {
   '/invoices': invoices,
@@ -13,6 +15,8 @@ const routes = {
   '/payments': payments,
   '/login': login,
   '/register': register,
+  '/forgot': forgot,
+  '/reset': reset,
 }
 
 export default routes

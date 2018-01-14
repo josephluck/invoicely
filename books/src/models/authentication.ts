@@ -18,6 +18,15 @@ interface RegisterFields {
   passwordConfirmation: string
 }
 
+interface ForgotFields {
+  email: string
+}
+
+interface ResetFields {
+  password: string
+  passwordConfirmation: string
+}
+
 interface LocalState {
   user: Option<User>
 }
@@ -25,6 +34,8 @@ interface LocalState {
 export interface State extends LocalState {
   loginForm: Form.State<LoginFields>
   registerForm: Form.State<RegisterFields>
+  forgotForm: Form.State<ForgotFields>
+  resetForm: Form.State<ResetFields>
 }
 
 interface Reducers {
@@ -36,6 +47,8 @@ interface Effects {
   check: Helix.Effect0<GlobalState, GlobalActions>
   login: Helix.Effect0<GlobalState, GlobalActions>
   register: Helix.Effect0<GlobalState, GlobalActions>
+  forgot: Helix.Effect0<GlobalState, GlobalActions>
+  reset: Helix.Effect0<GlobalState, GlobalActions>
   logout: Helix.Effect0<GlobalState, GlobalActions>
 }
 
@@ -44,6 +57,8 @@ type LocalActions = Helix.Actions<Reducers, Effects>
 export interface Actions extends LocalActions {
   loginForm: Form.Actions<LoginFields>
   registerForm: Form.Actions<RegisterFields>
+  forgotForm: Form.Actions<ForgotFields>
+  resetForm: Form.Actions<ResetFields>
 }
 
 function emptyState(): LocalState {
@@ -93,6 +108,22 @@ export const model: Helix.Model<LocalState, Reducers, Effects> = {
         },
       )
     },
+    forgot(state, actions) {
+      actions.authentication.forgotForm.validateOnSubmit().fold(
+        () => null,
+        () => {
+          console.log('submit forgot')
+        },
+      )
+    },
+    reset(state, actions) {
+      actions.authentication.resetForm.validateOnSubmit().fold(
+        () => null,
+        () => {
+          console.log('submit reset')
+        },
+      )
+    },
     logout(state, actions) {
       actions.authentication.resetState()
       actions.location.set('/login')
@@ -119,6 +150,24 @@ export const model: Helix.Model<LocalState, Reducers, Effects> = {
       defaultForm: () => ({
         email: '',
         name: '',
+        password: '',
+        passwordConfirmation: '',
+      }),
+    }),
+    forgotForm: Form.model<ForgotFields>({
+      constraints: fields => ({
+        email: { presence: true },
+      }),
+      defaultForm: () => ({
+        email: '',
+      }),
+    }),
+    resetForm: Form.model<ResetFields>({
+      constraints: fields => ({
+        password: { presence: true },
+        passwordConfirmation: { presence: true },
+      }),
+      defaultForm: () => ({
         password: '',
         passwordConfirmation: '',
       }),

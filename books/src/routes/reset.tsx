@@ -11,37 +11,19 @@ import fieldChangeHandler from '../utils/field-change-handler'
 const page: Helix.Page<GlobalState, GlobalActions> = {
   view: (state, prev, actions) => {
     const change = fieldChangeHandler(
-      actions.authentication.registerForm.setFields,
+      actions.authentication.resetForm.setFields,
     )
     return (
       <Layout>
         <div className="flex-1 d-flex align-items-center of-auto pa-5">
           <Form
-            onSubmit={actions.authentication.register}
+            onSubmit={actions.authentication.reset}
             className="bg-white box-card mh-auto w-6 bra-2"
           >
             <div className="pv-4 ph-5 bb bc-gray-200">
-              <Title>Register</Title>
+              <Title>Forgotten Password</Title>
             </div>
             <div className="pa-5">
-              <Textfield
-                id="email"
-                label="Email Address"
-                onChange={change('email')}
-                value={state.authentication.registerForm.fields.email}
-                errors={
-                  state.authentication.registerForm.errors.email
-                }
-                className="mb-5"
-              />
-              <Textfield
-                id="name"
-                label="Your Name"
-                onChange={change('name')}
-                value={state.authentication.registerForm.fields.name}
-                errors={state.authentication.registerForm.errors.name}
-                className="mb-5"
-              />
               <Textfield
                 id="password"
                 label="Password"
@@ -72,9 +54,8 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
             </div>
             <div className="pv-4 ph-5 d-flex align-items-center bt bc-gray-200">
               <div className="flex-1" />
-              <a href="/login">Got an Account?</a>
               <Button className="ml-4" type="submit">
-                Register
+                Reset Password
               </Button>
             </div>
           </Form>
