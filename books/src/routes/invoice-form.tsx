@@ -182,7 +182,7 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                 <div className="flex-1">
                   <Label>Invoice Number</Label>
                   <Block className="ba bs-solid bc-transparent mb-2">
-                    {invoice.id}
+                    #{invoice.id}
                   </Block>
                   <DatePicker
                     id="date-created"

@@ -1,0 +1,19 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "license": "MIT",
+  "scripts": {
+    "start": "ts-node ./src/index.ts"
+  },
+  "dependencies": {
+    "@now-ims/hapi-now-auth": "^1.0.1",
+    "@types/bcrypt": "^1.0.0",
+    "hapi": "^17.2.0",
+    "hapi-auth-basic": "^5.0.0",
+    "reflect-metadata": "^0.1.10",
+    "ts-node": "^4.1.0",
+    "typeorm": "^0.1.11",
+    "typescript": "^2.6.2"
+  }
+}

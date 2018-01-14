@@ -1,10 +1,9 @@
 import { Helix } from 'helix-js'
 import * as Form from './form'
 import { GlobalState, GlobalActions } from './index'
-// import { GlobalState, GlobalActions } from './index'
 import { User } from 'types'
 import userFixture from 'fixtures/src/user'
-import { Option, Some, None } from 'space-lift'
+import { Option, Some } from 'space-lift'
 
 interface LoginFields {
   email: string
@@ -63,7 +62,7 @@ export interface Actions extends LocalActions {
 
 function emptyState(): LocalState {
   return {
-    user: None,
+    user: Some(userFixture()),
   }
 }
 

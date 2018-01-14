@@ -6,7 +6,12 @@
   "author": "Joseph Luck <joseph.luck@sky.com>",
   "license": "MIT",
   "private": true,
-  "workspaces": ["books", "pay", "packages/*"],
+  "workspaces": [
+    "api",
+    "books",
+    "pay",
+    "packages/*"
+  ],
   "prettier": {
     "printWidth": 70,
     "parser": "typescript",
@@ -19,5 +24,6 @@
   },
   "scripts": {
     "postinstall": "rm -rf ./node_modules/react-autosize-textarea/node_modules/@types/react ./node_modules/@types/nightwatch"
-  }
+  },
+  "dependencies": {}
 }
