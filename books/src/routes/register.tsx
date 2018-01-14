@@ -11,25 +11,35 @@ import fieldChangeHandler from '../utils/field-change-handler'
 const page: Helix.Page<GlobalState, GlobalActions> = {
   view: (state, prev, actions) => {
     const change = fieldChangeHandler(
-      actions.authentication.loginForm.setFields,
+      actions.authentication.registerForm.setFields,
     )
     return (
       <Layout>
         <div className="flex-1 d-flex align-items-center of-auto pa-5">
           <Form
-            onSubmit={actions.authentication.login}
+            onSubmit={actions.authentication.register}
             className="bg-white box-card mh-auto w-6 bra-2"
           >
             <div className="pv-4 ph-5 bb bc-gray-200">
-              <Title>Login</Title>
+              <Title>Register</Title>
             </div>
             <div className="pa-5">
               <Textfield
                 id="email"
-                label="Email"
+                label="Email Address"
                 onChange={change('email')}
-                value={state.authentication.loginForm.fields.email}
-                errors={state.authentication.loginForm.errors.email}
+                value={state.authentication.registerForm.fields.email}
+                errors={
+                  state.authentication.registerForm.errors.email
+                }
+                className="mb-5"
+              />
+              <Textfield
+                id="name"
+                label="Your Name"
+                onChange={change('name')}
+                value={state.authentication.registerForm.fields.name}
+                errors={state.authentication.registerForm.errors.name}
                 className="mb-5"
               />
               <Textfield
@@ -37,9 +47,26 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                 label="Password"
                 type="password"
                 onChange={change('password')}
-                value={state.authentication.loginForm.fields.password}
+                value={
+                  state.authentication.registerForm.fields.password
+                }
                 errors={
-                  state.authentication.loginForm.errors.password
+                  state.authentication.registerForm.errors.password
+                }
+                className="mb-5"
+              />
+              <Textfield
+                id="password-confirmation"
+                label="Confirm Password"
+                type="password"
+                onChange={change('passwordConfirmation')}
+                value={
+                  state.authentication.registerForm.fields
+                    .passwordConfirmation
+                }
+                errors={
+                  state.authentication.registerForm.errors
+                    .passwordConfirmation
                 }
               />
             </div>
@@ -47,7 +74,7 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
               <div className="flex-1" />
               <a href="">Forgotten Password?</a>
               <Button className="ml-4" type="submit">
-                Login
+                Register
               </Button>
             </div>
           </Form>

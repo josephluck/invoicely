@@ -7,8 +7,15 @@ import userFixture from 'fixtures/src/user'
 import { Option, Some, None } from 'space-lift'
 
 interface LoginFields {
-  username: string
+  email: string
   password: string
+}
+
+interface RegisterFields {
+  email: string
+  name: string
+  password: string
+  passwordConfirmation: string
 }
 
 interface LocalState {
@@ -17,6 +24,7 @@ interface LocalState {
 
 export interface State extends LocalState {
   loginForm: Form.State<LoginFields>
+  registerForm: Form.State<RegisterFields>
 }
 
 interface Reducers {
@@ -27,6 +35,7 @@ interface Reducers {
 interface Effects {
   check: Helix.Effect0<GlobalState, GlobalActions>
   login: Helix.Effect0<GlobalState, GlobalActions>
+  register: Helix.Effect0<GlobalState, GlobalActions>
   logout: Helix.Effect0<GlobalState, GlobalActions>
 }
 
@@ -34,6 +43,7 @@ type LocalActions = Helix.Actions<Reducers, Effects>
 
 export interface Actions extends LocalActions {
   loginForm: Form.Actions<LoginFields>
+  registerForm: Form.Actions<RegisterFields>
 }
 
 function emptyState(): LocalState {
@@ -72,6 +82,17 @@ export const model: Helix.Model<LocalState, Reducers, Effects> = {
         },
       )
     },
+    register(state, actions) {
+      actions.authentication.registerForm.validateOnSubmit().fold(
+        () => null,
+        ({ fields }) => {
+          actions.authentication.setUser(userFixture())
+          actions.location.set(
+            state.location.query.redirect || '/invoices',
+          )
+        },
+      )
+    },
     logout(state, actions) {
       actions.authentication.resetState()
       actions.location.set('/login')
@@ -80,12 +101,26 @@ export const model: Helix.Model<LocalState, Reducers, Effects> = {
   models: {
     loginForm: Form.model<LoginFields>({
       constraints: fields => ({
-        username: { presence: true },
+        email: { presence: true },
         password: { presence: true },
       }),
       defaultForm: () => ({
-        username: '',
+        email: '',
         password: '',
+      }),
+    }),
+    registerForm: Form.model<RegisterFields>({
+      constraints: fields => ({
+        email: { presence: true },
+        name: { presence: true },
+        password: { presence: true },
+        passwordConfirmation: { presence: true },
+      }),
+      defaultForm: () => ({
+        email: '',
+        name: '',
+        password: '',
+        passwordConfirmation: '',
       }),
     }),
   },
