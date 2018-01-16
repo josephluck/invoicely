@@ -9,8 +9,11 @@
   "dependencies": {
     "@now-ims/hapi-now-auth": "^1.0.1",
     "@types/bcrypt": "^1.0.0",
+    "@types/node": "^9.3.0",
+    "@types/pg": "^7.4.1",
     "hapi": "^17.2.0",
     "hapi-auth-basic": "^5.0.0",
+    "pg": "^7.4.1",
     "reflect-metadata": "^0.1.10",
     "ts-node": "^4.1.0",
     "typeorm": "^0.1.11",
