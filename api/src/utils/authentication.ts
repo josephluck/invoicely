@@ -16,17 +16,17 @@ export default async function(server: any, db: any) {
      * and we will get the JWT as token.token
      */
 
-    const credentials = token.decodedJWT
-
     /**
      * return the decodedJWT to take advantage of hapi's
      * route authentication options
      * https://hapijs.com/api#authentication-options
      */
 
+    // Verify that the token is good
+
     return {
       isValid: true,
-      credentials,
+      credentials: token.decodedJWT,
     }
   }
 
