@@ -6,10 +6,10 @@ export interface Config {
 
 const config: Record<Environments, Config> = {
   local: {
-    apiPort: 2020,
+    apiPort: 2020, // TODO: environment variable
   },
   production: {
-    apiPort: 2020,
+    apiPort: 2020, // TODO: environment variable
   },
 }
 

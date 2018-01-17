@@ -32,7 +32,7 @@ export default async function(server: any, db: any) {
 
   server.auth.strategy('jwt-strategy', 'hapi-now-auth', {
     verifyJWT: true,
-    keychain: ['blah'],
+    keychain: ['blah'], // TODO: environment variable
     validate,
   })
 

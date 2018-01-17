@@ -1,7 +1,5 @@
-import {User} from './user'
+import { User } from './user'
 
-export default function () {
-  return [
-    User,
-  ]
+export default function() {
+  return [User]
 }
