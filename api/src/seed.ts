@@ -16,10 +16,10 @@ export default async function seed(connection: Connection) {
   console.log('Username:', users[0].email, '  Password: 123')
 }
 
-async function makeUser(company: Entities.Company) {
+async function makeUser(company: Entities.CompanyEntity) {
   const firstName = faker.name.firstName()
   const lastName = faker.name.lastName()
-  let user = new Entities.User()
+  let user = new Entities.UserEntity()
   user.name = `${firstName} ${lastName}`
   user.email = `${firstName.toLowerCase()}@${lastName.toLowerCase()}.co`
   user.password = await crypt.hash('123', 10)
@@ -28,7 +28,7 @@ async function makeUser(company: Entities.Company) {
 }
 
 function makeCompany() {
-  let company = new Entities.Company()
+  let company = new Entities.CompanyEntity()
   company.name = faker.company.companyName()
   company.logo = faker.image.animals(200, 100)
   company.address = faker.address.streetAddress(true)

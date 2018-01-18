@@ -1,6 +1,6 @@
 import * as Router from 'koa-router'
 import { Connection } from 'typeorm/connection/Connection'
-import { User } from './entity'
+import { UserEntity } from './entity'
 
 type Next = () => Promise<any>
 
@@ -9,7 +9,7 @@ const relation = {
 }
 
 export function routes(router: Router, db: Connection) {
-  const repo = db.getRepository(User)
+  const repo = db.getRepository(UserEntity)
 
   router.get('/users', async function(
     ctx: Router.IRouterContext,

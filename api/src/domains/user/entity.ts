@@ -4,10 +4,10 @@ import {
   Column,
   ManyToOne,
 } from 'typeorm'
-import { Company } from '../company/entity'
+import { CompanyEntity } from '../company/entity'
 
 @Entity()
-export class User {
+export class UserEntity {
   @PrimaryGeneratedColumn() id: number
 
   @Column() name: string
@@ -19,6 +19,9 @@ export class User {
 
   @Column() password: string
 
-  @ManyToOne(type => Company, company => company.users)
-  company: Company
+  @ManyToOne(type => CompanyEntity, company => company.users)
+  company: CompanyEntity
 }
+
+const temporary = new UserEntity()
+export type User = typeof temporary

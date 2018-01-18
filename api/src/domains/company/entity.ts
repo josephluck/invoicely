@@ -4,10 +4,10 @@ import {
   Column,
   OneToMany,
 } from 'typeorm'
-import { User } from '../user/entity'
+import { UserEntity } from '../user/entity'
 
 @Entity()
-export class Company {
+export class CompanyEntity {
   @PrimaryGeneratedColumn() id: number
 
   @Column() name: string
@@ -16,6 +16,9 @@ export class Company {
 
   @Column() logo: string
 
-  @OneToMany(type => User, user => user.company)
-  users: User[]
+  @OneToMany(type => UserEntity, user => user.company)
+  users: UserEntity[]
 }
+
+const temporary = new CompanyEntity()
+export type Company = typeof temporary
