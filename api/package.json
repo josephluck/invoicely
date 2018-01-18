@@ -4,18 +4,23 @@
   "main": "src/index.ts",
   "license": "MIT",
   "scripts": {
-    "start": "ts-node ./src/index.ts"
+    "start": "npm run start-db && ts-node-dev ./src/index.ts",
+    "start-db": "sudo /etc/init.d/postgresql restart"
   },
   "dependencies": {
-    "@now-ims/hapi-now-auth": "^1.0.1",
     "@types/bcrypt": "^1.0.0",
+    "@types/koa": "^2.0.43",
+    "@types/koa-router": "^7.0.27",
     "@types/node": "^9.3.0",
     "@types/pg": "^7.4.1",
-    "hapi": "^17.2.0",
-    "hapi-auth-basic": "^5.0.0",
+    "axios": "^0.17.1",
+    "bcrypt": "^1.0.3",
+    "koa": "^2.4.1",
+    "koa-router": "^7.3.0",
     "pg": "^7.4.1",
     "reflect-metadata": "^0.1.10",
     "ts-node": "^4.1.0",
+    "ts-node-dev": "^1.0.0-pre.7",
     "typeorm": "^0.1.11",
     "typescript": "^2.6.2"
   }

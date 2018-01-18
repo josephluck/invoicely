@@ -1,7 +1,8 @@
 import { createConnection } from 'typeorm'
-import entities from './entities'
+import entities from './domains/entities'
+import seed from './seed'
 
-export default async function createDatabase() {
+async function connect() {
   return createConnection({
     type: 'postgres',
     host: 'localhost', // TODO: environment variable
@@ -13,4 +14,13 @@ export default async function createDatabase() {
     synchronize: true,
     logging: true,
   })
+}
+
+export default async function createDatabase() {
+  const c = await connect()
+  await c.dropDatabase()
+  await c.close()
+  const connection = await connect()
+  await seed(connection)
+  return connection
 }
