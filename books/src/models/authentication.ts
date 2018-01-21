@@ -1,9 +1,12 @@
 import { Helix } from 'helix-js'
+import { Option, Some, None } from 'space-lift'
+import {
+  GlobalState,
+  GlobalActions,
+  ModelDependencies,
+} from './index'
 import * as Form from './form'
-import { GlobalState, GlobalActions } from './index'
-import { User } from 'types'
-import userFixture from 'fixtures/src/user'
-import { Option, Some } from 'space-lift'
+import { User } from 'api/src/domains/user/entity'
 
 interface LoginFields {
   email: string
@@ -62,114 +65,127 @@ export interface Actions extends LocalActions {
 
 function emptyState(): LocalState {
   return {
-    user: Some(userFixture()),
+    user: None,
   }
 }
 
-export const model: Helix.Model<LocalState, Reducers, Effects> = {
-  state: emptyState(),
-  reducers: {
-    resetState: emptyState,
-    setUser(state, user) {
-      return {
-        user: Some(user),
-      }
+export function model(
+  deps: ModelDependencies,
+): Helix.Model<LocalState, Reducers, Effects> {
+  return {
+    state: emptyState(),
+    reducers: {
+      resetState: emptyState,
+      setUser(state, user) {
+        return {
+          user: Some(user),
+        }
+      },
     },
-  },
-  effects: {
-    check(state, actions) {
-      return state.authentication.user.fold(() => {
-        actions.location.set(
-          `/login?redirect=${state.location.pathname}`,
+    effects: {
+      check(state, actions) {
+        // return state.authentication.user.fold(() => {
+        //   console.log(
+        //     'TODO: Attempt to log in again using a refresh token',
+        //   )
+        //   actions.location.set(
+        //     `/login?redirect=${state.location.pathname}`,
+        //   )
+        //   return false
+        // }, () => true)
+      },
+      login(state, actions) {
+        actions.authentication.loginForm.validateOnSubmit().fold(
+          () => null,
+          async ({ fields }) => {
+            const response = await deps.api.auth.login({
+              email: fields.email,
+              password: fields.password,
+            })
+            deps.localStorage.setItem('auth-token', response.token)
+            deps.api.setToken(response.token)
+            console.log(await deps.api.user.findAll())
+            actions.authentication.setUser(response.user)
+            actions.location.set(
+              state.location.query.redirect || '/invoices',
+            )
+          },
         )
-        return false
-      }, () => true)
+      },
+      register(state, actions) {
+        actions.authentication.registerForm.validateOnSubmit().fold(
+          () => null,
+          ({ fields }) => {
+            actions.location.set(
+              state.location.query.redirect || '/invoices',
+            )
+          },
+        )
+      },
+      forgot(state, actions) {
+        actions.authentication.forgotForm.validateOnSubmit().fold(
+          () => null,
+          () => {
+            console.log('submit forgot')
+          },
+        )
+      },
+      reset(state, actions) {
+        actions.authentication.resetForm.validateOnSubmit().fold(
+          () => null,
+          () => {
+            console.log('submit reset')
+          },
+        )
+      },
+      logout(state, actions) {
+        actions.authentication.resetState()
+        actions.location.set('/login')
+      },
     },
-    login(state, actions) {
-      actions.authentication.loginForm.validateOnSubmit().fold(
-        () => null,
-        ({ fields }) => {
-          actions.authentication.setUser(userFixture())
-          actions.location.set(
-            state.location.query.redirect || '/invoices',
-          )
-        },
-      )
+    models: {
+      loginForm: Form.model<LoginFields>({
+        constraints: fields => ({
+          email: { presence: true },
+          password: { presence: true },
+        }),
+        defaultForm: () => ({
+          email: '',
+          password: '',
+        }),
+      }),
+      registerForm: Form.model<RegisterFields>({
+        constraints: fields => ({
+          email: { presence: true },
+          name: { presence: true },
+          password: { presence: true },
+          passwordConfirmation: { presence: true },
+        }),
+        defaultForm: () => ({
+          email: '',
+          name: '',
+          password: '',
+          passwordConfirmation: '',
+        }),
+      }),
+      forgotForm: Form.model<ForgotFields>({
+        constraints: fields => ({
+          email: { presence: true },
+        }),
+        defaultForm: () => ({
+          email: '',
+        }),
+      }),
+      resetForm: Form.model<ResetFields>({
+        constraints: fields => ({
+          password: { presence: true },
+          passwordConfirmation: { presence: true },
+        }),
+        defaultForm: () => ({
+          password: '',
+          passwordConfirmation: '',
+        }),
+      }),
     },
-    register(state, actions) {
-      actions.authentication.registerForm.validateOnSubmit().fold(
-        () => null,
-        ({ fields }) => {
-          actions.authentication.setUser(userFixture())
-          actions.location.set(
-            state.location.query.redirect || '/invoices',
-          )
-        },
-      )
-    },
-    forgot(state, actions) {
-      actions.authentication.forgotForm.validateOnSubmit().fold(
-        () => null,
-        () => {
-          console.log('submit forgot')
-        },
-      )
-    },
-    reset(state, actions) {
-      actions.authentication.resetForm.validateOnSubmit().fold(
-        () => null,
-        () => {
-          console.log('submit reset')
-        },
-      )
-    },
-    logout(state, actions) {
-      actions.authentication.resetState()
-      actions.location.set('/login')
-    },
-  },
-  models: {
-    loginForm: Form.model<LoginFields>({
-      constraints: fields => ({
-        email: { presence: true },
-        password: { presence: true },
-      }),
-      defaultForm: () => ({
-        email: '',
-        password: '',
-      }),
-    }),
-    registerForm: Form.model<RegisterFields>({
-      constraints: fields => ({
-        email: { presence: true },
-        name: { presence: true },
-        password: { presence: true },
-        passwordConfirmation: { presence: true },
-      }),
-      defaultForm: () => ({
-        email: '',
-        name: '',
-        password: '',
-        passwordConfirmation: '',
-      }),
-    }),
-    forgotForm: Form.model<ForgotFields>({
-      constraints: fields => ({
-        email: { presence: true },
-      }),
-      defaultForm: () => ({
-        email: '',
-      }),
-    }),
-    resetForm: Form.model<ResetFields>({
-      constraints: fields => ({
-        password: { presence: true },
-        passwordConfirmation: { presence: true },
-      }),
-      defaultForm: () => ({
-        password: '',
-        passwordConfirmation: '',
-      }),
-    }),
-  },
+  }
 }

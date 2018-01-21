@@ -6,6 +6,7 @@ import * as Invoices from './invoices'
 import * as SendInvoice from './send-invoice'
 import * as Payments from './payments'
 import * as Authentication from './authentication'
+import api from 'api/src/domains/api'
 
 type Models = Helix.Models<{
   app: Helix.ModelApi<App.State, App.Actions>
@@ -23,16 +24,23 @@ type Models = Helix.Models<{
 export type GlobalState = Helix.HelixState<Models['state']>
 export type GlobalActions = Helix.HelixActions<Models['actions']>
 
+const dependencies = {
+  api: api(window.localStorage.getItem('auth-token') || undefined),
+  localStorage: window.localStorage,
+}
+
+export type ModelDependencies = typeof dependencies
+
 const model: Helix.Model<any, any, any> = {
   state: {},
   models: {
     app: App.model,
     invoiceForm: InvoiceForm.model,
     invoice: Invoice.model,
-    invoices: Invoices.model,
+    invoices: Invoices.model(dependencies),
     sendInvoice: SendInvoice.model,
     payments: Payments.model,
-    authentication: Authentication.model,
+    authentication: Authentication.model(dependencies),
   },
 }
 

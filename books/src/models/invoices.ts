@@ -1,6 +1,10 @@
 import { Helix } from 'helix-js'
 import { Invoice, InvoiceStatus } from 'types'
-import { GlobalState, GlobalActions } from './index'
+import {
+  GlobalState,
+  GlobalActions,
+  ModelDependencies,
+} from './index'
 import invoiceFixture from 'fixtures/src/invoice'
 
 export interface State {
@@ -14,6 +18,7 @@ interface Reducers {
 }
 
 interface Effects {
+  fetch: Helix.Effect0<GlobalState, GlobalActions>
   filter: Helix.Effect<
     GlobalState,
     GlobalActions,
@@ -46,31 +51,38 @@ function emptyState(): State {
   }
 }
 
-export const model: Helix.Model<State, Reducers, Effects> = {
-  state: emptyState(),
-  reducers: {
-    setInvoices: (state, invoices) => ({ invoices }),
-    setActiveFilter: (state, activeFilter) => ({ activeFilter }),
-  },
-  effects: {
-    filter(state, actions, activeFilter) {
-      actions.invoices.setActiveFilter(activeFilter)
-      actions.invoices.setInvoices(
-        activeFilter
-          ? randomInvoices().filter(
-              invoice => invoice.status === activeFilter,
-            )
-          : randomInvoices(),
-      )
+export function model(
+  deps: ModelDependencies,
+): Helix.Model<State, Reducers, Effects> {
+  return {
+    state: emptyState(),
+    reducers: {
+      setInvoices: (state, invoices) => ({ invoices }),
+      setActiveFilter: (state, activeFilter) => ({ activeFilter }),
     },
-    startSendInvoice(state, actions, invoiceId) {
-      const invoice = state.invoices.invoices.find(
-        i => i.id === invoiceId,
-      )
-      if (invoice) {
-        actions.invoice.setInvoice(invoice)
-        actions.sendInvoice.setModalShowing(true)
-      }
+    effects: {
+      async fetch(state, actions) {
+        console.log(await deps.api.user.findAll())
+      },
+      filter(state, actions, activeFilter) {
+        actions.invoices.setActiveFilter(activeFilter)
+        actions.invoices.setInvoices(
+          activeFilter
+            ? randomInvoices().filter(
+                invoice => invoice.status === activeFilter,
+              )
+            : randomInvoices(),
+        )
+      },
+      startSendInvoice(state, actions, invoiceId) {
+        const invoice = state.invoices.invoices.find(
+          i => i.id === invoiceId,
+        )
+        if (invoice) {
+          actions.invoice.setInvoice(invoice)
+          actions.sendInvoice.setModalShowing(true)
+        }
+      },
     },
-  },
+  }
 }

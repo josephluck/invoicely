@@ -4,18 +4,19 @@ import {
   Column,
   ManyToOne,
 } from 'typeorm'
+import { Omit } from 'type-zoo'
 import { CompanyEntity } from '../company/entity'
 
 @Entity()
 export class UserEntity {
-  @PrimaryGeneratedColumn() id: number
+  @PrimaryGeneratedColumn('uuid') id: number
 
   @Column() name: string
 
   @Column() email: string
 
   @Column({ nullable: true })
-  avatar: string
+  avatar?: string
 
   @Column() password: string
 
@@ -24,4 +25,7 @@ export class UserEntity {
 }
 
 const temporary = new UserEntity()
+
 export type User = typeof temporary
+export type CreateUser = Omit<User, 'company' | 'id'>
+export type UpdateUser = Omit<User, 'company' | 'id'>

@@ -44,3 +44,13 @@ sudo -u postgres createdb invoicely
 * Enter `5432` as the Port
 * Enter `postgres` as the User
 * Enter the password you created above as the Password
+
+## Fixes
+
+### ENOSPC error running the API
+
+You'll need to increase the memory allowance of the watcher:
+
+```bash
+echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
+```

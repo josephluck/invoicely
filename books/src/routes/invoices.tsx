@@ -19,6 +19,7 @@ import {
 const page: Helix.Page<GlobalState, GlobalActions> = {
   onEnter(state, prev, actions) {
     actions.authentication.check()
+    actions.invoices.fetch()
   },
   view: (state, prev, actions) => {
     return (

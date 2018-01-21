@@ -22,6 +22,7 @@ async function makeUser(company: Entities.CompanyEntity) {
   let user = new Entities.UserEntity()
   user.name = `${firstName} ${lastName}`
   user.email = `${firstName.toLowerCase()}@${lastName.toLowerCase()}.co`
+  user.avatar = faker.image.avatar()
   user.password = await crypt.hash('123', 10)
   user.company = company
   return user
