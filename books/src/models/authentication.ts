@@ -31,6 +31,7 @@ interface ResetFields {
 
 interface LocalState {
   user: Option<User>
+  token: Option<string>
 }
 
 export interface State extends LocalState {
@@ -63,19 +64,21 @@ export interface Actions extends LocalActions {
   resetForm: Form.Actions<ResetFields>
 }
 
-function emptyState(): LocalState {
+function emptyState(token: string | null): LocalState {
   return {
     user: None,
+    token: Option(token),
   }
 }
 
 export function model(
   deps: ModelDependencies,
+  token: string | null,
 ): Helix.Model<LocalState, Reducers, Effects> {
   return {
-    state: emptyState(),
+    state: emptyState(token),
     reducers: {
-      resetState: emptyState,
+      resetState: () => emptyState(token),
       setUser(state, user) {
         return {
           user: Some(user),
@@ -84,15 +87,20 @@ export function model(
     },
     effects: {
       check(state, actions) {
-        // return state.authentication.user.fold(() => {
-        //   console.log(
-        //     'TODO: Attempt to log in again using a refresh token',
-        //   )
-        //   actions.location.set(
-        //     `/login?redirect=${state.location.pathname}`,
-        //   )
-        //   return false
-        // }, () => true)
+        function redirect() {
+          console.log(
+            'TODO: Attempt to log in again using a refresh token',
+          )
+          actions.location.set(
+            `/login?redirect=${state.location.pathname}`,
+          )
+        }
+        state.authentication.token.fold(redirect, token => {
+          state.authentication.user.fold(async () => {
+            const response = Option(await deps.api.auth.session())
+            response.fold(redirect, actions.authentication.setUser)
+          }, () => true)
+        })
       },
       login(state, actions) {
         actions.authentication.loginForm.validateOnSubmit().fold(

@@ -36,6 +36,21 @@ export function routes(deps: Dependencies) {
       )
     })
 
+    router.get('/session', deps.auth, async function(ctx, next) {
+      const userId = ctx.state.user
+      const user = await deps.db.manager.findOneById(
+        UserEntity,
+        userId,
+        { relations: ['company'] },
+      )
+      if (user) {
+        ctx.body = user
+      } else {
+        ctx.throw(404, 'User')
+      }
+      return next()
+    })
+
     return router
   }
 }

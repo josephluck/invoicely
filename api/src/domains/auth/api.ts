@@ -1,10 +1,14 @@
 import { LoginResponse, LoginRequest } from './entity'
+import { User } from '../user/entity'
 import { AxiosInstance } from 'axios'
 
 export function api(client: AxiosInstance) {
   return {
     login(data: LoginRequest): Promise<LoginResponse> {
       return client.post('/login', data).then(r => r.data)
+    },
+    session(): Promise<User> {
+      return client.get('/session').then(r => r.data)
     },
   }
 }

@@ -7,7 +7,7 @@ export function api(client: AxiosInstance) {
     findAll(): Promise<User[]> {
       return client.get('/users').then(r => r.data)
     },
-    findById(userId: string): Promise<Result<User, Error>> {
+    findById(userId: string): Promise<Result<Error, User>> {
       return client.get(`/users/${userId}`).then(r => r.data)
     },
   }

@@ -40,7 +40,10 @@ const model: Helix.Model<any, any, any> = {
     invoices: Invoices.model(dependencies),
     sendInvoice: SendInvoice.model,
     payments: Payments.model,
-    authentication: Authentication.model(dependencies),
+    authentication: Authentication.model(
+      dependencies,
+      dependencies.localStorage.getItem('auth-token'),
+    ),
   },
 }
 
