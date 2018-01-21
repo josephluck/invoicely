@@ -9,11 +9,13 @@ import config from '../../config'
 import makeRouter from './router'
 import makeDatabase from './db'
 import exceptions from './exceptions'
+import messages from './messages'
 
 export interface Dependencies {
   db: Connection
-  auth: auth
+  auth: auth.Middleware
   jwt: typeof jwt
+  messages: typeof messages
 }
 
 const startServer = async (db: Connection) => {
@@ -21,16 +23,15 @@ const startServer = async (db: Connection) => {
 
   const dependencies: Dependencies = {
     db,
-    auth: (auth as any)({
+    auth: auth({
       secret: 'shh', // TODO: env variable
-      isRevoked() {
-        return Promise.resolve(false)
-      },
     }),
-    jwt: jwt,
+    jwt,
+    messages,
   }
 
   const router = makeRouter(dependencies)
+
   server.use(bodyParser())
   server.use(router.routes())
   server.use(router.allowedMethods())

@@ -3,20 +3,25 @@ import { Dependencies } from '../../.'
 import { UserEntity } from '../user/entity'
 import { Option } from 'space-lift'
 import * as crypt from 'bcrypt'
+import { route, Controller } from '../../router'
 
-export function routes(deps: Dependencies) {
-  return function(router: Router) {
-    const repo = deps.db.getRepository(UserEntity)
+function makeController(deps: Dependencies): Controller {
+  const repo = deps.db.getRepository(UserEntity)
 
-    router.post('/login', async function(ctx, next) {
+  return {
+    async login(ctx) {
       return Option(
         await repo.findOne({
           email: ctx.request.body.email,
         }),
       ).fold(
         () => {
-          ctx.throw(404, 'No user found')
-          return next()
+          deps.messages.throw(
+            ctx,
+            deps.messages.badRequest(
+              'Incorrect username or password',
+            ),
+          )
         },
         async user => {
           const passwordOkay = await crypt.compare(
@@ -28,28 +33,37 @@ export function routes(deps: Dependencies) {
               user,
               token: deps.jwt.sign(user.id.toString(), 'shh'), // TODO: env variable
             }
-            return next()
           } else {
-            ctx.throw(400, 'Incorrect password')
+            deps.messages.throw(
+              ctx,
+              deps.messages.badRequest(
+                'Incorrect username or password',
+              ),
+            )
           }
         },
       )
-    })
-
-    router.get('/session', deps.auth, async function(ctx, next) {
-      const userId = ctx.state.user
-      const user = await deps.db.manager.findOneById(
-        UserEntity,
-        userId,
-        { relations: ['company'] },
-      )
+    },
+    async getSession(ctx, user) {
       if (user) {
         ctx.body = user
       } else {
-        ctx.throw(404, 'User')
+        deps.messages.throw(ctx, deps.messages.notFound('user'))
       }
-      return next()
-    })
+    },
+  }
+}
+
+export function routes(deps: Dependencies) {
+  return function(router: Router) {
+    const controller = makeController(deps)
+
+    router.post('/login', route(deps, controller.login))
+    router.get(
+      '/session',
+      deps.auth,
+      route(deps, controller.getSession),
+    )
 
     return router
   }

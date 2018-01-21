@@ -1,60 +1,73 @@
 import * as Router from 'koa-router'
 import { Dependencies } from '../../'
 import { InvitationEntity } from './entity'
-import { CompanyEntity } from '../company/entity'
-import { Option } from 'space-lift'
+import { route, Controller } from '../../router'
 
 const relation = {
   relations: ['company'],
 }
 
-export function routes(deps: Dependencies) {
-  return function(router: Router) {
-    const repo = deps.db.getRepository(InvitationEntity)
+function makeController(deps: Dependencies): Controller {
+  const repo = deps.db.getRepository(InvitationEntity)
 
-    router.get('/invitations', async function(ctx, next) {
+  return {
+    async getAll(ctx) {
       ctx.body = await repo.find(relation)
-      return next()
-    })
-
-    router.get('/invitations/:invitationId', async function(
-      ctx,
-      next,
-    ) {
+    },
+    async getById(ctx) {
       ctx.body = await repo.findOneById(
         ctx.params.invitationId,
         relation,
       )
-      return next()
-    })
-
-    router.post('/invitations', async function(ctx, next) {
+    },
+    async saveNew(ctx, user) {
       let invite = new InvitationEntity()
-      let companyId = '1234'
-      return Option(
-        await deps.db.manager.findOneById(CompanyEntity, companyId),
-      ).fold(
+      user.fold(
         () => {
-          ctx.throw(404, 'No company for that id')
-          return next()
+          ctx.throw(404, deps.messages.notFound('company'))
         },
-        async company => {
-          invite.company = company
+        async u => {
+          invite.company = u.company
           invite.email = ctx.request.body.email
           invite.name = ctx.request.body.name
           ctx.body = await repo.save(invite)
-          return next()
         },
       )
-    })
-
-    router.delete('/invitations/:invitationId', async function(
-      ctx,
-      next,
-    ) {
+    },
+    async destroy(ctx) {
       await repo.deleteById(ctx.params.invitationId)
-      return next()
-    })
+      ctx.body = deps.messages.successfullyDeleted('invite')
+    },
+  }
+}
+
+export function routes(deps: Dependencies) {
+  return function(router: Router) {
+    const controller = makeController(deps)
+
+    router.get(
+      '/invitations',
+      deps.auth,
+      route(deps, controller.getAll),
+    )
+
+    router.get(
+      '/invitations/:invitationId',
+      deps.auth,
+      route(deps, controller.getById),
+    )
+
+    router.post(
+      '/invitations',
+      deps.auth,
+      route(deps, controller.saveNew),
+    )
+
+    router.delete(
+      '/invitations/:invitationId',
+      deps.auth,
+      route(deps, controller.destroy),
+    )
 
     return router
   }
