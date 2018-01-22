@@ -5,6 +5,13 @@ export interface LoginRequest {
   password: string
 }
 
+export interface SignupRequest {
+  name: string
+  email: string
+  avatar: string
+  password: string
+}
+
 export interface LoginResponse {
   user: User
   token: string

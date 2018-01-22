@@ -24,7 +24,7 @@ function makeController(deps: Dependencies): Controller {
       let invite = new InvitationEntity()
       user.fold(
         () => {
-          ctx.throw(404, deps.messages.notFound('company'))
+          deps.messages.throw(ctx, deps.messages.notFound('user'))
         },
         async u => {
           invite.company = u.company
