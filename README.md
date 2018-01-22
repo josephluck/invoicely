@@ -4,6 +4,10 @@
 
 Few things you'll need
 
+### Sort out environment
+
+This app relies on environment variables being set. Take a peek at `.env.reference`; fill it out and copy it to `.env` make sure you leave `.env.reference` committed verbatim, you don't want your secrets leaked all over github!
+
 ### Install postgres (locally)
 
 ```bash

@@ -1,3 +1,4 @@
+import './env'
 import 'reflect-metadata'
 import * as Koa from 'koa'
 import * as bodyParser from 'koa-bodyparser'
@@ -5,7 +6,6 @@ import * as cors from 'koa2-cors'
 import * as auth from 'koa-jwt'
 import * as jwt from 'jsonwebtoken'
 import { Connection } from 'typeorm/connection/Connection'
-import config from '../../config'
 import makeRouter from './router'
 import makeDatabase from './db'
 import exceptions from './exceptions'
@@ -24,7 +24,7 @@ const startServer = async (db: Connection) => {
   const dependencies: Dependencies = {
     db,
     auth: auth({
-      secret: 'shh', // TODO: env variable
+      secret: process.env.JWT_SECRET!,
     }),
     jwt,
     messages,
@@ -42,7 +42,7 @@ const startServer = async (db: Connection) => {
     }),
   )
 
-  await server.listen(config.local.apiPort)
+  await server.listen(process.env.API_PORT)
   return server
 }
 

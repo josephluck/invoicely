@@ -1,3 +1,4 @@
+import './env'
 import registerServiceWorker from './registerServiceWorker'
 import helix from 'helix-js'
 import log from 'twine-log'

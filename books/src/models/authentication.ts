@@ -148,6 +148,7 @@ export function model(
       },
       logout(state, actions) {
         actions.authentication.resetState()
+        deps.localStorage.removeItem('auth-token')
         actions.location.set('/login')
       },
     },

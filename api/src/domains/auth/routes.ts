@@ -31,7 +31,10 @@ function makeController(deps: Dependencies): Controller {
           if (passwordOkay) {
             ctx.body = {
               user,
-              token: deps.jwt.sign(user.id.toString(), 'shh'), // TODO: env variable
+              token: deps.jwt.sign(
+                user.id.toString(),
+                process.env.JWT_SECRET!,
+              ),
             }
           } else {
             deps.messages.throw(

@@ -4,11 +4,12 @@
   "main": "src/index.ts",
   "license": "MIT",
   "scripts": {
-    "start": "npm run start-db && ts-node-dev ./src/index.ts",
+    "start": "NODE_ENV=development npm run start-db && ts-node-dev ./src/index.ts",
     "start-db": "sudo /etc/init.d/postgresql restart"
   },
   "dependencies": {
     "@types/bcrypt": "^1.0.0",
+    "@types/dotenv": "^4.0.2",
     "@types/jsonwebtoken": "^7.2.5",
     "@types/koa": "^2.0.43",
     "@types/koa-bodyparser": "^3.0.26",
@@ -20,6 +21,7 @@
     "@types/ramda": "^0.25.16",
     "axios": "^0.17.1",
     "bcrypt": "^1.0.3",
+    "dotenv": "^4.0.0",
     "jsonwebtoken": "^8.1.0",
     "koa": "^2.4.1",
     "koa-bodyparser": "^4.2.0",
