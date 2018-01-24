@@ -1,4 +1,5 @@
 import invoiceForm from './invoice-form'
+import users from './users'
 import invoices from './invoices'
 import invoice from './invoice'
 import payments from './payments'
@@ -8,6 +9,7 @@ import forgot from './forgot'
 import reset from './reset'
 
 const routes = {
+  '/users': users,
   '/invoices': invoices,
   '/invoices/new': invoiceForm,
   '/invoices/:invoiceId': invoice,

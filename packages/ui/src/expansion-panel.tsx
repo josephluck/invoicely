@@ -2,7 +2,7 @@ import * as Collapse from 'react-collapse'
 import * as React from 'react'
 
 export interface State {
-  expansionIndex: number | null
+  expandedIndex: number | null
 }
 
 export interface Card {
@@ -13,6 +13,8 @@ export interface Card {
 export interface Props {
   cards: Card[]
   className?: string
+  expandedIndex?: number | null
+  onExpand?: (index: number | null) => any
 }
 
 const getBorderRadii = ({
@@ -22,7 +24,7 @@ const getBorderRadii = ({
   isLast,
   isExactBefore,
 }: Record<string, boolean>) => {
-  if (isExpanded) {
+  if (isExpanded || (isFirst && isLast)) {
     return 'bra-3'
   } else if (isFirst) {
     return isExactBefore ? 'bra-3' : 'btlr-3 btrr-3'
@@ -41,7 +43,10 @@ export class ExpansionPanel extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
     this.state = {
-      expansionIndex: null,
+      expandedIndex:
+        props.expandedIndex !== undefined
+          ? props.expandedIndex
+          : null,
     }
     this.handleKeyUp = this.handleKeyUp.bind(this)
     this.setNextExpansionIndex = this.setNextExpansionIndex.bind(this)
@@ -60,6 +65,15 @@ export class ExpansionPanel extends React.Component<Props, State> {
     document.removeEventListener('keyup', this.handleKeyUp)
   }
 
+  componentWillReceiveProps(props: Props) {
+    if (
+      props.expandedIndex !== undefined &&
+      props.expandedIndex !== this.state.expandedIndex
+    ) {
+      this.setState({ expandedIndex: props.expandedIndex })
+    }
+  }
+
   handleKeyUp(e: KeyboardEvent) {
     if (e.keyCode === 27) {
       // esc
@@ -75,20 +89,20 @@ export class ExpansionPanel extends React.Component<Props, State> {
 
   setNextExpansionIndex() {
     this.setExpansionIndex(
-      this.state.expansionIndex === this.props.cards.length - 1
-        ? this.state.expansionIndex
-        : this.state.expansionIndex !== null
-          ? this.state.expansionIndex + 1
+      this.state.expandedIndex === this.props.cards.length - 1
+        ? this.state.expandedIndex
+        : this.state.expandedIndex !== null
+          ? this.state.expandedIndex + 1
           : null,
     )
   }
 
   setPreviousExpansionIndex() {
     this.setExpansionIndex(
-      this.state.expansionIndex === 0
+      this.state.expandedIndex === 0
         ? 0
-        : this.state.expansionIndex !== null
-          ? this.state.expansionIndex - 1
+        : this.state.expandedIndex !== null
+          ? this.state.expandedIndex - 1
           : 0,
     )
   }
@@ -97,22 +111,24 @@ export class ExpansionPanel extends React.Component<Props, State> {
     this.setExpansionIndex(null)
   }
 
-  setExpansionIndex(index: number | null) {
-    this.setState({
-      expansionIndex: index,
-    })
+  setExpansionIndex(expandedIndex: number | null) {
+    if (this.props.onExpand) {
+      this.props.onExpand(expandedIndex)
+    } else {
+      this.setState({ expandedIndex })
+    }
   }
 
   render() {
-    const { expansionIndex } = this.state
+    const { expandedIndex } = this.state
     return (
       <div className={this.props.className || ''}>
         {this.props.cards.map((card, index) => {
-          const isExpanded = expansionIndex === index
+          const isExpanded = expandedIndex === index
           const isFirst = index === 0
           const isLast = index === this.props.cards.length - 1
-          const isExactBefore = index + 1 === expansionIndex
-          const isExactAfter = index - 1 === expansionIndex
+          const isExactBefore = index + 1 === expandedIndex
+          const isExactAfter = index - 1 === expandedIndex
           const borderRadii = getBorderRadii({
             isExpanded,
             isFirst,
