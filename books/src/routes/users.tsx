@@ -4,11 +4,13 @@ import { GlobalState, GlobalActions } from '../models'
 import Layout, { Title as LayoutTitle } from './layout'
 import ExpansionPanel from 'ui/src/expansion-panel'
 import Button from 'ui/src/button'
+import Title from 'ui/src/title'
+import Label from 'ui/src/label'
 
 const page: Helix.Page<GlobalState, GlobalActions> = {
   onEnter(state, prev, actions) {
     actions.authentication.check()
-    actions.users.fetch()
+    actions.users.fetchInvitations()
   },
   view: (state, prev, actions) => {
     return (
@@ -19,9 +21,13 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
         activeTab={null}
       >
         <div className="flex-1 of-auto pa-5">
+          <div className="d-flex align-items-center mb-4">
+            <Title className="flex-1">Invitations</Title>
+            <Button size="small" href="/users/new">
+              New Invite
+            </Button>
+          </div>
           <ExpansionPanel
-            expandedIndex={state.users.expansionPanel.expansionIndex}
-            onExpand={actions.users.expansionPanel.setExpansionIndex}
             cards={state.users.invitations.map(invitation => {
               return {
                 header: (isExpanded: boolean) => (
@@ -43,7 +49,18 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                 ),
                 content: (
                   <div>
-                    <div className="pa-5" />
+                    <div className="pa-5 d-flex">
+                      <div className="flex-1 mr-3">
+                        <Label className="d-ib mb-1">Name</Label>
+                        <div className="lh-4">{invitation.name}</div>
+                      </div>
+                      <div className="flex-1 ml-3">
+                        <Label className="d-ib mb-1">
+                          Email Address
+                        </Label>
+                        <div className="lh-4">{invitation.email}</div>
+                      </div>
+                    </div>
                     <div className="ph-5 pv-4 bt bc-gray-200 d-flex">
                       <div className="flex-1" />
                       <div>

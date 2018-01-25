@@ -5,14 +5,19 @@ import {
   GlobalActions,
   ModelDependencies,
 } from './index'
-import * as ExpansionPanel from './expansion-panel'
+import * as Form from './form'
+
+interface InvitationFields {
+  name: string
+  email: string
+}
 
 export interface LocalState {
   invitations: Invitation[]
 }
 
 export interface State extends LocalState {
-  expansionPanel: ExpansionPanel.State
+  invitationForm: Form.State<InvitationFields>
 }
 
 interface Reducers {
@@ -20,13 +25,14 @@ interface Reducers {
 }
 
 interface Effects {
-  fetch: Helix.Effect0<GlobalState, GlobalActions>
+  fetchInvitations: Helix.Effect0<GlobalState, GlobalActions>
+  saveInvitation: Helix.Effect0<GlobalState, GlobalActions>
 }
 
 export type LocalActions = Helix.Actions<Reducers, Effects>
 
 export interface Actions extends LocalActions {
-  expansionPanel: ExpansionPanel.Actions
+  invitationForm: Form.Actions<InvitationFields>
 }
 
 function emptyState(): LocalState {
@@ -44,13 +50,28 @@ export function model(
       setInvitations: (state, invitations) => ({ invitations }),
     },
     effects: {
-      async fetch(state, actions) {
+      async fetchInvitations(state, actions) {
         const invitations = await deps.api.invitation.getAll()
         actions.users.setInvitations(invitations)
       },
+      async saveInvitation(state, actions) {
+        actions.users.invitationForm.validateOnSubmit().fold(
+          () => null,
+          async form => {
+            await deps.api.invitation.saveNew(form.fields)
+            actions.location.set('/users')
+          },
+        )
+      },
     },
     models: {
-      expansionPanel: ExpansionPanel.model(),
+      invitationForm: Form.model<InvitationFields>({
+        defaultForm: () => ({ name: '', email: '' }),
+        constraints: () => ({
+          name: { presence: true },
+          email: { presence: true },
+        }),
+      }),
     },
   }
 }

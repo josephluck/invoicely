@@ -48,16 +48,16 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
             ) : null}
           </div>
 
-          <Title className="mb-3 ml-5">Invoice Details</Title>
-          <Card className="mb-5 pa-5">
+          <Title className="mb-4">Invoice Details</Title>
+          <Card className="mb-6 pa-5">
             <InvoiceDetails invoice={state.invoice.invoice} />
           </Card>
 
           {state.invoice.invoice.paymentId &&
           state.invoice.invoice.payment ? (
             <div>
-              <Title className="mb-3 ml-5">Payment Details</Title>
-              <Card className="mb-5 pa-5">
+              <Title className="mb-4">Payment Details</Title>
+              <Card className="mb-6 pa-5">
                 <PaymentDetails
                   payment={state.invoice.invoice.payment}
                 />
@@ -67,7 +67,7 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
 
           {state.invoice.invoice.emails.length > 0 ? (
             <div>
-              <Title className="mb-3 ml-5">Emails Sent</Title>
+              <Title className="mb-4">Emails Sent</Title>
               <EmailList emails={state.invoice.invoice.emails} />
             </div>
           ) : null}
