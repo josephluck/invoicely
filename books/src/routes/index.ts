@@ -12,6 +12,7 @@ import reset from './reset'
 const routes = {
   '/users': users,
   '/users/new': inviteForm,
+  '/users/invitations/:invitationId': inviteForm,
   '/invoices': invoices,
   '/invoices/new': invoiceForm,
   '/invoices/:invoiceId': invoice,

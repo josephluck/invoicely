@@ -28,6 +28,7 @@
     "koa-jwt": "^3.3.0",
     "koa-router": "^7.3.0",
     "koa2-cors": "^2.0.5",
+    "mandle": "^1.1.0",
     "pg": "^7.4.1",
     "ramda": "^0.25.0",
     "reflect-metadata": "^0.1.10",

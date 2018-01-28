@@ -9,6 +9,13 @@ import Form from 'ui/src/form'
 import fieldChangeHandler from '../utils/field-change-handler'
 
 const page: Helix.Page<GlobalState, GlobalActions> = {
+  onEnter: (state, prev, actions) => {
+    if (state.location.params.invitationId) {
+      actions.users.fetchInvitation(
+        state.location.params.invitationId,
+      )
+    }
+  },
   view: (state, prev, actions) => {
     const change = fieldChangeHandler(
       actions.users.invitationForm.setFields,
@@ -20,10 +27,10 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
         state={state}
         actions={actions}
       >
-        <div className="of-auto pa-5">
+        <div className="flex-1 of-auto pa-5">
           <Form
             onSubmit={actions.users.saveInvitation}
-            className="bg-white box-card mh-auto w-6 bra-2"
+            className="bg-white box-card mh-auto bra-2"
           >
             <div className="pv-4 ph-5 bb bc-gray-200">
               <Title>Invitation</Title>
@@ -34,7 +41,7 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                 label="Name"
                 onChange={change('name')}
                 value={state.users.invitationForm.fields.name}
-                errors={state.users.invitationForm.errors.name}
+                errors={state.users.invitationForm.errors.name.errors}
                 className="mb-5"
               />
               <Textfield
@@ -42,7 +49,9 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                 label="Email"
                 onChange={change('email')}
                 value={state.users.invitationForm.fields.email}
-                errors={state.users.invitationForm.errors.email}
+                errors={
+                  state.users.invitationForm.errors.email.errors
+                }
               />
             </div>
             <div className="d-flex pa-5 bt bc-gray-200">

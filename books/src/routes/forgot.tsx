@@ -29,7 +29,9 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                 label="Email Address"
                 onChange={change('email')}
                 value={state.authentication.forgotForm.fields.email}
-                errors={state.authentication.forgotForm.errors.email}
+                errors={
+                  state.authentication.forgotForm.errors.email.errors
+                }
                 className="mb-5"
               />
             </div>

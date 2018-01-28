@@ -10,7 +10,7 @@ import { Omit } from 'type-zoo'
 
 @Entity()
 export class CompanyEntity {
-  @PrimaryGeneratedColumn('uuid') id: number
+  @PrimaryGeneratedColumn('uuid') id: string
 
   @Column() name: string
 
@@ -18,12 +18,19 @@ export class CompanyEntity {
 
   @Column() logo: string
 
-  @OneToMany(type => UserEntity, user => user.company)
+  @OneToMany(type => UserEntity, user => user.company, {
+    cascadeInsert: true,
+    cascadeUpdate: true,
+  })
   users: UserEntity[]
 
   @OneToMany(
     type => InvitationEntity,
     invitation => invitation.company,
+    {
+      cascadeInsert: true,
+      cascadeUpdate: true,
+    },
   )
   invitations: InvitationEntity[]
 }

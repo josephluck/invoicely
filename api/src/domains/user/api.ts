@@ -10,6 +10,9 @@ export function api(client: AxiosInstance) {
     findById(userId: string): Promise<Result<Error, User>> {
       return client.get(`/users/${userId}`).then(r => r.data)
     },
+    deleteById(userId: string): Promise<Result<Error, User>> {
+      return client.delete(`/users/${userId}`).then(r => r.data)
+    },
   }
 }
 

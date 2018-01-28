@@ -21,11 +21,7 @@ export function route(deps: Dependencies, cb: ControllerFn) {
     next: () => Promise<any>,
   ) {
     const user = ctx.state.user
-      ? await deps.db.manager.findOneById(
-          UserEntity,
-          ctx.state.user,
-          { relations: ['company'] },
-        )
+      ? await deps.db.manager.findOneById(UserEntity, ctx.state.user)
       : undefined
     await cb(ctx, Option(user))
     next()

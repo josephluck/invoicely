@@ -9,7 +9,7 @@ import { CompanyEntity } from '../company/entity'
 
 @Entity()
 export class UserEntity {
-  @PrimaryGeneratedColumn('uuid') id: number
+  @PrimaryGeneratedColumn('uuid') id: string
 
   @Column() name: string
 
@@ -20,7 +20,10 @@ export class UserEntity {
 
   @Column() password: string
 
-  @ManyToOne(type => CompanyEntity, company => company.users)
+  @ManyToOne(type => CompanyEntity, company => company.users, {
+    cascadeAll: true,
+    eager: true,
+  })
   company: CompanyEntity
 }
 

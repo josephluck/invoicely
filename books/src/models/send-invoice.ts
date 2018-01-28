@@ -42,8 +42,8 @@ export const model: Helix.Model<LocalState, Reducers, Effects> = {
   models: {
     form: Form.model<Fields>({
       constraints: () => ({
-        email: { presence: true },
-        notes: undefined,
+        email: { required: true },
+        notes: { required: false },
       }),
       defaultForm: () => ({
         email: '',

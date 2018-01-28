@@ -33,7 +33,7 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                   state.authentication.registerForm.fields.password
                 }
                 errors={
-                  state.authentication.registerForm.errors.password
+                  state.authentication.registerForm.errors.password.errors
                 }
                 className="mb-5"
               />
@@ -48,7 +48,7 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                 }
                 errors={
                   state.authentication.registerForm.errors
-                    .passwordConfirmation
+                    .passwordConfirmation.errors
                 }
               />
             </div>

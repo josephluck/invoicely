@@ -29,7 +29,7 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                 label="Email"
                 onChange={change('email')}
                 value={state.authentication.loginForm.fields.email}
-                errors={state.authentication.loginForm.errors.email}
+                errors={state.authentication.loginForm.errors.email.errors}
                 className="mb-5"
               />
               <Textfield
@@ -39,7 +39,7 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                 onChange={change('password')}
                 value={state.authentication.loginForm.fields.password}
                 errors={
-                  state.authentication.loginForm.errors.password
+                  state.authentication.loginForm.errors.password.errors
                 }
               />
             </div>

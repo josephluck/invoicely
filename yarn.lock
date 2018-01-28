@@ -130,6 +130,10 @@
     "@types/koa-compose" "*"
     "@types/node" "*"
 
+"@types/lodash@^4.14.66":
+  version "4.14.97"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.97.tgz#7262d6d5fc5e87cdb3f68eb33accd4024f2b211e"
+
 "@types/mime@*":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@types/mime/-/mime-2.0.0.tgz#5a7306e367c539b9f6543499de8dd519fac37a8b"
@@ -4998,6 +5002,13 @@ makeerror@1.0.x:
   resolved "https://registry.yarnpkg.com/makeerror/-/makeerror-1.0.11.tgz#e01a5c9109f2af79660e4e8b9587790184f5a96c"
   dependencies:
     tmpl "1.0.x"
+
+mandle@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/mandle/-/mandle-1.1.0.tgz#ca9de7adfc2f425c6a01b30cfa7f4e5545cbf75e"
+  dependencies:
+    "@types/lodash" "^4.14.66"
+    lodash "^4.17.4"
 
 map-obj@^1.0.0, map-obj@^1.0.1:
   version "1.0.1"

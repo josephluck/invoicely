@@ -112,7 +112,9 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                   id="vat-rate"
                   value={state.invoiceForm.form.fields.taxRate}
                   onChange={change('taxRate')}
-                  errors={state.invoiceForm.form.errors.taxRate}
+                  errors={
+                    state.invoiceForm.form.errors.taxRate.errors
+                  }
                   inputClassName="bg-white"
                   className="mt-4"
                 />
@@ -132,7 +134,9 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                   value={state.invoiceForm.form.fields.discount}
                   onChange={change('discount')}
                   displayFormat={formatAsCurrency}
-                  errors={state.invoiceForm.form.errors.discount}
+                  errors={
+                    state.invoiceForm.form.errors.discount.errors
+                  }
                   inputClassName="bg-white"
                   className="mt-4"
                 />

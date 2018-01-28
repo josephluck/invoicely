@@ -1,11 +1,11 @@
 import { Helix } from 'helix-js'
-import validate from '../validation/validator'
+import mandle, { ValidationResult } from 'mandle'
 import { Err, Ok, Result } from 'space-lift'
 
 interface ValidationError<F> {
   message: string
   type: 'validation_error'
-  errors: Record<keyof F, string[]>
+  errors: Record<keyof F, ValidationResult>
 }
 
 export interface State<F extends any> {
@@ -14,10 +14,16 @@ export interface State<F extends any> {
   errors: Errors<F>
 }
 
-export type Errors<F> = Record<keyof F, string[]>
-export type ConstraintsObj<F> = Record<keyof F, any>
-export type Constraints<F> = (fields: F) => Record<keyof F, any>
-export type FormConstraints<F> = Constraints<F>
+interface AvailableConstraints {
+  required?: boolean
+  min?: number
+  max?: number
+}
+
+export type Errors<F> = Record<keyof F, ValidationResult>
+export type Constraints<F> = (
+  fields: F,
+) => Record<keyof F, AvailableConstraints>
 
 export interface Reducers<F extends any> {
   resetForm: Helix.Reducer0<State<F>>
@@ -38,7 +44,7 @@ export type Actions<F extends any> = Helix.Actions<
 >
 
 interface Opts<F> {
-  constraints: FormConstraints<F>
+  constraints: Constraints<F>
   defaultForm: () => F
   onValidationError?: (errors: Errors<F>) => any
 }
@@ -78,9 +84,10 @@ export function model<F extends any>({
         return { fields, errors, valid }
       },
       validateEntireForm(state) {
+        const validate = mandle()
         const errors = validate(
-          state.fields,
           constraints(state.fields),
+          state.fields,
         )
         return {
           ...state,
@@ -139,20 +146,24 @@ export function makeDefaultErrors<F>(
 export function getErrorsForFields<F>(
   fields: F,
   makeConstraints: Constraints<F>,
-): Record<keyof F, string[]> {
-  const constraints = makeConstraints(fields) || {}
-  const keys = Object.keys(fields) as (keyof F)[]
-  const initialErrors = keys.reduce(
+): Record<keyof F, ValidationResult> {
+  const constraints = makeConstraints(fields)
+  const initialErrors = Object.keys(fields).reduce(
     (prev, key) => ({ ...prev, [key]: [] }),
     {},
   )
 
-  const filteredConstraints = keys.reduce((prev, key) => {
-    return constraints[key]
-      ? { ...prev, [key]: constraints[key] }
-      : prev
-  }, {})
-  const errors = validate(fields, filteredConstraints) || {}
+  const filteredConstraints = Object.keys(fields).reduce(
+    (prev, key: keyof F) => {
+      return constraints[key]
+        ? { ...prev, [key]: constraints[key] }
+        : prev
+    },
+    {} as any,
+  )
+
+  const validate = mandle()
+  const errors = (validate(filteredConstraints, fields) as any) || {}
   return { ...initialErrors, ...errors }
 }
 
@@ -163,6 +174,6 @@ export function isFormValid<F>(
   const errors = getErrorsForFields(fields, makeConstraints)
   const keys = Object.keys(errors) as (keyof F)[]
   return keys.reduce((prev, key) => {
-    return prev && !errors[key].length
+    return prev && errors[key].passes
   }, true)
 }

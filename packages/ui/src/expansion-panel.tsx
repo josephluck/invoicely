@@ -71,6 +71,8 @@ export class ExpansionPanel extends React.Component<Props, State> {
       props.expandedIndex !== this.state.expandedIndex
     ) {
       this.setState({ expandedIndex: props.expandedIndex })
+    } else if (props.cards.length !== this.props.cards.length) {
+      this.setState({ expandedIndex: null })
     }
   }
 

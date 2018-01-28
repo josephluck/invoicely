@@ -7,9 +7,17 @@ export function api(client: AxiosInstance) {
       return client.get('/invitations').then(r => r.data)
     },
     getById(inviteId: string): Promise<Invitation> {
-      return client.post(`/invitations/${inviteId}`).then(r => r.data)
+      return client.get(`/invitations/${inviteId}`).then(r => r.data)
     },
-    saveNew(data: CreateInvitation): Promise<Invitation> {
+    updateById(
+      inviteId: string,
+      data: CreateInvitation,
+    ): Promise<Invitation> {
+      return client
+        .put(`/invitations/${inviteId}`, data)
+        .then(r => r.data)
+    },
+    create(data: CreateInvitation): Promise<Invitation> {
       return client.post('/invitations', data).then(r => r.data)
     },
     deleteById(inviteId: string): Promise<Invitation> {

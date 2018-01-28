@@ -1,21 +1,39 @@
 import * as Router from 'koa-router'
 import { Dependencies } from '../../'
 import { UserEntity } from './entity'
-import { route, Controller } from '../../router'
+import { route } from '../../router'
+import { Option } from 'space-lift'
 
-const relation = {
-  relations: ['company'],
-}
-
-function makeController(deps: Dependencies): Controller {
+function makeController(deps: Dependencies) {
   const repo = deps.db.getRepository(UserEntity)
 
   return {
-    async getAll(ctx: Router.IRouterContext) {
-      ctx.body = await repo.find(relation)
+    async getAll(
+      ctx: Router.IRouterContext,
+      user: Option<UserEntity>,
+    ) {
+      return user.fold(
+        () => {
+          return deps.messages.throw(
+            ctx,
+            deps.messages.notFound('user'),
+          )
+        },
+        async usr => {
+          ctx.body = await repo.find({
+            where: { company: usr.company.id },
+          })
+          return ctx.body
+        },
+      )
     },
     async getById(ctx: Router.IRouterContext) {
-      ctx.body = await repo.findOneById(ctx.params.userId, relation)
+      ctx.body = await repo.findOneById(ctx.params.userId)
+      return ctx.body
+    },
+    async deleteById(ctx: Router.IRouterContext) {
+      await repo.deleteById(ctx.params.userId)
+      return (ctx.body = {})
     },
   }
 }
@@ -29,6 +47,11 @@ export function routes(deps: Dependencies) {
       '/users/:userId',
       deps.auth,
       route(deps, controller.getById),
+    )
+    router.delete(
+      '/users/:userId',
+      deps.auth,
+      route(deps, controller.deleteById),
     )
 
     return router

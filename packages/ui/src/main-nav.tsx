@@ -39,7 +39,7 @@ export function MainNav({
       </a>
       <a
         className={tabClassName(activeTab == 'settings')}
-        href="/settings"
+        href="/users"
       >
         Settings
       </a>

@@ -188,20 +188,22 @@ export const model: Helix.Model<LocalState, Reducers, Effects> = {
     form: Form.model<Fields>({
       constraints: fields => {
         return {
-          notes: undefined,
-          includeTax: undefined,
-          taxRate: fields.includeTax ? { presence: true } : undefined,
-          includeDiscount: undefined,
+          notes: { required: false },
+          includeTax: { required: false },
+          taxRate: fields.includeTax
+            ? { required: true }
+            : { required: false },
+          includeDiscount: { required: false },
           discount: fields.includeTax
-            ? { presence: true }
-            : undefined,
-          number: { presence: true },
-          billingAddress: { presence: true },
-          companyAddress: { presence: true },
-          dateCreated: { presence: true },
-          includeLabels: undefined,
-          includeQuantity: undefined,
-          includeSubTotal: undefined,
+            ? { required: true }
+            : { required: false },
+          number: { required: true },
+          billingAddress: { required: true },
+          companyAddress: { required: true },
+          dateCreated: { required: true },
+          includeLabels: { required: false },
+          includeQuantity: { required: false },
+          includeSubTotal: { required: false },
         }
       },
       defaultForm: () => ({

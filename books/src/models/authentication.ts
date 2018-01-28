@@ -155,8 +155,8 @@ export function model(
     models: {
       loginForm: Form.model<LoginFields>({
         constraints: fields => ({
-          email: { presence: true },
-          password: { presence: true },
+          email: { required: true },
+          password: { required: true },
         }),
         defaultForm: () => ({
           email: '',
@@ -165,10 +165,10 @@ export function model(
       }),
       registerForm: Form.model<RegisterFields>({
         constraints: fields => ({
-          email: { presence: true },
-          name: { presence: true },
-          password: { presence: true },
-          passwordConfirmation: { presence: true },
+          email: { required: true },
+          name: { required: true },
+          password: { required: true },
+          passwordConfirmation: { required: true },
         }),
         defaultForm: () => ({
           email: '',
@@ -179,7 +179,7 @@ export function model(
       }),
       forgotForm: Form.model<ForgotFields>({
         constraints: fields => ({
-          email: { presence: true },
+          email: { required: true },
         }),
         defaultForm: () => ({
           email: '',
@@ -187,8 +187,8 @@ export function model(
       }),
       resetForm: Form.model<ResetFields>({
         constraints: fields => ({
-          password: { presence: true },
-          passwordConfirmation: { presence: true },
+          password: { required: true },
+          passwordConfirmation: { required: true },
         }),
         defaultForm: () => ({
           password: '',

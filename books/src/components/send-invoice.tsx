@@ -49,7 +49,7 @@ export default function SendInvoice({ state, actions }: Props) {
             label="Email Address"
             className="mb-4"
             value={state.sendInvoice.form.fields.email}
-            errors={state.sendInvoice.form.errors.email}
+            errors={state.sendInvoice.form.errors.email.errors}
             onChange={change('email')}
           />
           <Textfield
@@ -57,7 +57,7 @@ export default function SendInvoice({ state, actions }: Props) {
             label="Note (optional)"
             type="textarea"
             value={state.sendInvoice.form.fields.notes}
-            errors={state.sendInvoice.form.errors.notes}
+            errors={state.sendInvoice.form.errors.notes.errors}
             onChange={change('notes')}
           />
         </div>
