@@ -7,8 +7,8 @@ export function api(client: AxiosInstance) {
     login(data: LoginRequest): Promise<LoginResponse> {
       return client.post('/login', data).then(r => r.data)
     },
-    signUp(data: SignupRequest): Promise<LoginResponse> {
-      return client.post('/signup', data).then(r => r.data)
+    register(data: SignupRequest): Promise<LoginResponse> {
+      return client.post('/register', data).then(r => r.data)
     },
     session(): Promise<User> {
       return client.get('/session').then(r => r.data)

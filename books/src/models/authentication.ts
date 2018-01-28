@@ -112,7 +112,6 @@ export function model(
             })
             deps.localStorage.setItem('auth-token', response.token)
             deps.api.setToken(response.token)
-            console.log(await deps.api.user.findAll())
             actions.authentication.setUser(response.user)
             actions.location.set(
               state.location.query.redirect || '/invoices',
@@ -123,7 +122,17 @@ export function model(
       register(state, actions) {
         actions.authentication.registerForm.validateOnSubmit().fold(
           () => null,
-          ({ fields }) => {
+          async ({ fields }) => {
+            const response = await deps.api.auth.register({
+              name: fields.name,
+              email: fields.email,
+              password: fields.password,
+              invitationId: state.location.params.invitationId,
+              avatar: '',
+            })
+            deps.localStorage.setItem('auth-token', response.token)
+            deps.api.setToken(response.token)
+            actions.authentication.setUser(response.user)
             actions.location.set(
               state.location.query.redirect || '/invoices',
             )

@@ -42,6 +42,11 @@ export function createEmail(
   relation: InvitationEntity,
 ) {
   return validate(fields, constraints).map(fields => {
-    return { ...new EmailEntity(), ...fields, company }
+    return {
+      ...new EmailEntity(),
+      ...fields,
+      [relationKey]: relation,
+      company,
+    }
   })
 }

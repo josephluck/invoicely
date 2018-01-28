@@ -6,6 +6,7 @@ export interface LoginRequest {
 }
 
 export interface SignupRequest {
+  invitationId: string
   name: string
   email: string
   avatar: string

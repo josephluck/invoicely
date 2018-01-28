@@ -29,7 +29,14 @@ export function makeController(deps: Dependencies) {
           to: invitation.email,
           subject: 'You have been invited',
           html: `
-            <div>You've been invited ${invitation.id}</div>
+            <div>
+              You've been invited to join ${
+                u.company.name
+              }. Click the link below to register <br />
+              <a href="http://localhost:3000/register/${
+                invitation.id
+              }">Register</a>
+            </div>
           `,
         }
         await deps.email(email)

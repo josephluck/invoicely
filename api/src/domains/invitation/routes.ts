@@ -5,8 +5,9 @@ import { route } from '../../router'
 import { Option } from 'space-lift'
 import { UserEntity } from '../user/entity'
 import { makeController as makeEmails } from '../email/routes'
+import { EmailEntity } from '../email/entity'
 
-function makeController(deps: Dependencies) {
+export function makeController(deps: Dependencies) {
   const repo = deps.db.getRepository(InvitationEntity)
   const emails = makeEmails(deps)
 
@@ -78,6 +79,10 @@ function makeController(deps: Dependencies) {
       return ctx.body
     },
     async destroy(ctx: Router.IRouterContext) {
+      // Remove all associated emails
+      await deps.db.manager.delete(EmailEntity, {
+        invitation: ctx.params.invitationId,
+      })
       await repo.deleteById(ctx.params.invitationId)
       ctx.body = deps.messages.successfullyDeleted('invite')
       return ctx.body

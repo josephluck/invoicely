@@ -19,7 +19,7 @@ const routes = {
   '/invoices/:invoiceId/edit': invoiceForm,
   '/payments': payments,
   '/login': login,
-  '/register': register,
+  '/register/:invitationId': register,
   '/forgot': forgot,
   '/reset': reset,
 }

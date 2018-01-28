@@ -24,6 +24,7 @@ export function validate<F>(
   constraints: ConstraintsFn<F>,
 ): Result<Record<keyof F, ValidationResult>, F> {
   const validator = mandle()
+  console.log(constraints(fields))
   const response = validator(constraints(fields), fields)
   return isValid(response) ? Ok(fields) : Err(response)
 }
