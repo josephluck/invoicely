@@ -18,7 +18,6 @@ export class InvitationEntity {
   @Column() email: string
 
   @ManyToOne(type => CompanyEntity, company => company.invitations, {
-    cascadeAll: true,
     eager: true,
   })
   company: CompanyEntity

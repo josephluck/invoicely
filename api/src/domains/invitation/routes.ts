@@ -21,6 +21,7 @@ function makeController(deps: Dependencies) {
           )
         },
         async usr => {
+          console.log(usr.company)
           ctx.body = await repo.find({
             where: { company: usr.company.id },
           })
@@ -52,7 +53,8 @@ function makeController(deps: Dependencies) {
               ))
             },
             async invite => {
-              return (ctx.body = await repo.save(invite))
+              ctx.body = await repo.save(invite)
+              return ctx.body
             },
           )
         },

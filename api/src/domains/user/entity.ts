@@ -21,7 +21,6 @@ export class UserEntity {
   @Column() password: string
 
   @ManyToOne(type => CompanyEntity, company => company.users, {
-    cascadeAll: true,
     eager: true,
   })
   company: CompanyEntity

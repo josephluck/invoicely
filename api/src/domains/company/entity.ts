@@ -18,10 +18,7 @@ export class CompanyEntity {
 
   @Column() logo: string
 
-  @OneToMany(type => UserEntity, user => user.company, {
-    cascadeInsert: true,
-    cascadeUpdate: true,
-  })
+  @OneToMany(type => UserEntity, user => user.company)
   users: UserEntity[]
 
   @OneToMany(
