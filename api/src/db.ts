@@ -1,6 +1,6 @@
 import { createConnection } from 'typeorm'
 import entities from './domains/entities'
-import seed from './seed'
+// import seed from './seed'
 
 async function connect() {
   return createConnection({
@@ -21,6 +21,6 @@ export default async function createDatabase() {
   // await c.dropDatabase()
   // await c.close()
   const connection = await connect()
-  await seed(connection)
+  // await seed(connection)
   return connection
 }

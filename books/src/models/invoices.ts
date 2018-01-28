@@ -61,9 +61,7 @@ export function model(
       setActiveFilter: (state, activeFilter) => ({ activeFilter }),
     },
     effects: {
-      async fetch(state, actions) {
-        console.log(await deps.api.user.findAll())
-      },
+      async fetch(state, actions) {},
       filter(state, actions, activeFilter) {
         actions.invoices.setActiveFilter(activeFilter)
         actions.invoices.setInvoices(

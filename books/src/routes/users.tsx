@@ -7,6 +7,7 @@ import Button from 'ui/src/button'
 import Title from 'ui/src/title'
 import Label from 'ui/src/label'
 import NoResults from 'ui/src/no-results'
+import formatDate from 'ui/src/format-date'
 
 const page: Helix.Page<GlobalState, GlobalActions> = {
   onEnter(state, prev, actions) {
@@ -56,8 +57,14 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                       <div className="pa-5 d-flex">
                         <div className="flex-1 mr-3">
                           <Label className="d-ib mb-1">Name</Label>
-                          <div className="lh-4">
+                          <div className="lh-4 mb-4">
                             {invitation.name}
+                          </div>
+                          <Label className="d-ib mb-1">
+                            Date Invited
+                          </Label>
+                          <div className="lh-4">
+                            {formatDate(invitation.dateCreated)}
                           </div>
                         </div>
                         <div className="flex-1 ml-3">
@@ -137,7 +144,13 @@ const page: Helix.Page<GlobalState, GlobalActions> = {
                     <div className="pa-5 d-flex">
                       <div className="flex-1 mr-3">
                         <Label className="d-ib mb-1">Name</Label>
-                        <div className="lh-4">{user.name}</div>
+                        <div className="lh-4 mb-4">{user.name}</div>
+                        <Label className="d-ib mb-1">
+                          Date Registered
+                        </Label>
+                        <div className="lh-4">
+                          {formatDate(user.dateCreated)}
+                        </div>
                       </div>
                       <div className="flex-1 ml-3">
                         <Label className="d-ib mb-1">

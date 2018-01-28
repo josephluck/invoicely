@@ -4,9 +4,11 @@ import { InvitationEntity, createInvite } from './entity'
 import { route } from '../../router'
 import { Option } from 'space-lift'
 import { UserEntity } from '../user/entity'
+import { makeController as makeEmails } from '../email/routes'
 
 function makeController(deps: Dependencies) {
   const repo = deps.db.getRepository(InvitationEntity)
+  const emails = makeEmails(deps)
 
   return {
     async getAll(
@@ -21,7 +23,6 @@ function makeController(deps: Dependencies) {
           )
         },
         async usr => {
-          console.log(usr.company)
           ctx.body = await repo.find({
             where: { company: usr.company.id },
           })
@@ -53,7 +54,9 @@ function makeController(deps: Dependencies) {
               ))
             },
             async invite => {
-              ctx.body = await repo.save(invite)
+              const i = await repo.save(invite)
+              await emails.sendInvitation(ctx, user, i)
+              ctx.body = await repo.findOneById(i.id)
               return ctx.body
             },
           )

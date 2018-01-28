@@ -150,6 +150,12 @@
   version "8.5.8"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-8.5.8.tgz#92509422653f10e9c0ac18d87e0610b39f9821c7"
 
+"@types/nodemailer@^4.3.1":
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/@types/nodemailer/-/nodemailer-4.3.1.tgz#e3985c1b7c7bbbb2a886108b89f1c7ce9a690654"
+  dependencies:
+    "@types/node" "*"
+
 "@types/pg-types@*":
   version "1.11.4"
   resolved "https://registry.yarnpkg.com/@types/pg-types/-/pg-types-1.11.4.tgz#8d7c59fb509ce3dca3f8bae589252051c639a9a8"
@@ -5397,6 +5403,10 @@ node-pre-gyp@^0.6.36, node-pre-gyp@^0.6.39:
 node-status-codes@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/node-status-codes/-/node-status-codes-1.0.0.tgz#5ae5541d024645d32a58fcddc9ceecea7ae3ac2f"
+
+nodemailer@^4.4.2:
+  version "4.4.2"
+  resolved "https://registry.yarnpkg.com/nodemailer/-/nodemailer-4.4.2.tgz#f215fb88e8a1052f9f93083909e116d2b79fc8de"
 
 nopt@^4.0.1:
   version "4.0.1"
